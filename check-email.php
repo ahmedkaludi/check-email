@@ -73,7 +73,8 @@ function checkemail_add_css() {
 // load the check email admin page
 function checkemail() {
 	global $current_user;
-
+        $from_name = '';
+        
 	$from_email = apply_filters( 'wp_mail_from', $current_user->user_email );
 	$from_name = apply_filters( 'wp_mail_from_name', $from_name );
 
@@ -190,7 +191,8 @@ Content-Type: text/plain; charset="' . get_option( 'blog_charset' ) . '"</pre>
 // send a test email
 function checkemail_send($to, $headers = "auto") {
 	global $current_user;
-
+        $from_name = '';
+        
 	$from_email = apply_filters( 'wp_mail_from', $current_user->user_email );
 	$from_name = apply_filters( 'wp_mail_from_name', $from_name );
 
