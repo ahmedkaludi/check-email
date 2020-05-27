@@ -5,15 +5,15 @@ class Check_Email_Review {
 	private $value;
 	private $messages;
 	private $link = 'https://wordpress.org/support/plugin/%s/reviews/#new-post';
-	private $slug = 'modula-best-grid-gallery';
+	private $slug = 'check-email';
 	
 	function __construct() {
 
 		$this->messages = array(
-			'notice'  => esc_html__( "Hi there! Stoked to see you're using Modula for a few days now - hope you like it! And if you do, please consider rating it. It would mean the world to us.  Keep on rocking!", 'modula-best-grid-gallery' ),
-			'rate'    => esc_html__( 'Rate the plugin', 'modula-best-grid-gallery' ),
-			'rated'   => esc_html__( 'Remind me later', 'modula-best-grid-gallery' ),
-			'no_rate' => esc_html__( 'Don\'t show again', 'modula-best-grid-gallery' ),
+			'notice'  => esc_html__( "Hi there! Stoked to see you're using Check Email for a few days now - hope you like it! And if you do, please consider rating it. It would mean the world to us.  Keep on rocking!", 'check-email' ),
+			'rate'    => esc_html__( 'Rate the plugin', 'check-email' ),
+			'rated'   => esc_html__( 'Remind me later', 'check-email' ),
+			'no_rate' => esc_html__( 'Don\'t show again', 'check-email' ),
 		);
 
 		if ( isset( $args['messages'] ) ) {
@@ -33,7 +33,7 @@ class Check_Email_Review {
 
 		if ( $this->check() ) {
 			add_action( 'admin_notices', array( $this, 'five_star_wp_rate_notice' ) );
-			add_action( 'wp_ajax_epsilon_modula_review', array( $this, 'ajax' ) );
+			add_action( 'wp_ajax_epsilon_check-email_review', array( $this, 'ajax' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 			add_action( 'admin_print_footer_scripts', array( $this, 'ajax_script' ) );
 		}
@@ -52,14 +52,14 @@ class Check_Email_Review {
 
 	private function value() {
 
-		$value = get_option( 'modula-rate-time', false );
+		$value = get_option( 'check-email-rate-time', false );
 
 		if ( $value ) {
 			return $value;
 		}
 
 		$value = time() + DAY_IN_SECONDS;
-		update_option( 'modula-rate-time', $value );
+		update_option( 'check-email-rate-time', $value );
 
 		return $value;
 
@@ -84,13 +84,13 @@ class Check_Email_Review {
 
 	public function ajax() {
 
-		check_ajax_referer( 'epsilon-modula-review', 'security' );
+		check_ajax_referer( 'epsilon-check-email-review', 'security' );
 
 		if ( ! isset( $_POST['check'] ) ) {
 			wp_die( 'ok' );
 		}
 
-		$time = get_option( 'modula-rate-time' );
+		$time = get_option( 'check-email-rate-time' );
 
 		if ( 'epsilon-rate' == $_POST['check'] ) {
 			$time = time() + YEAR_IN_SECONDS * 5;
@@ -100,7 +100,7 @@ class Check_Email_Review {
 			$time = time() + YEAR_IN_SECONDS * 5;
 		}
 
-		update_option( 'modula-rate-time', $time );
+		update_option( 'check-email-rate-time', $time );
 		wp_die( 'ok' );
 
 	}
@@ -111,7 +111,7 @@ class Check_Email_Review {
 
 	public function ajax_script() {
 
-		$ajax_nonce = wp_create_nonce( "epsilon-modula-review" );
+		$ajax_nonce = wp_create_nonce( "epsilon-check-email-review" );
 
 		?>
 
@@ -127,7 +127,7 @@ class Check_Email_Review {
 					}
 
 					var data = {
-						action: 'epsilon_modula_review',
+						action: 'epsilon_check-email_review',
 						security: '<?php echo $ajax_nonce; ?>',
 						check: id
 					};
