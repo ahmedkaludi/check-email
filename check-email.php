@@ -9,16 +9,7 @@ Author: Chris Taylor
 Author URI: http://www.stillbreathing.co.uk
 */
 
-// Plugin Register from http://wordpress.org/extend/plugins/plugin-register/
-require_once( "plugin-register.class.php" );
-$register = new Plugin_Register();
-$register->file = __FILE__;
-$register->slug = "checkemail";
-$register->name = "Check Email";
-$register->version = "0.5.7";
-$register->developer = "Chris Taylor";
-$register->homepage = "http://www.stillbreathing.co.uk";
-$register->Register();
+require_once( "class-check-email-review.php" );
 
 // add the admin menu option
 add_action( 'admin_menu', 'checkemail_add_admin' );
