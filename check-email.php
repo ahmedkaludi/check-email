@@ -21,7 +21,6 @@
 * NOTE:
 * Chris Taylor transferred ownership rights on: 2020-06-19 07:52:03 GMT when ownership was handed over to MachoThemes
 * The MachoThemes ownership period started on: 2020-06-19 07:52:03 GMT
-* SVN commit proof of ownership transferral: https://plugins.trac.wordpress.org/changeset/1607943/modula-best-grid-gallery
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License, version 3, as
