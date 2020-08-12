@@ -3,7 +3,7 @@
 * Plugin Name: 				Check Email
 * Description: 				Check email allows you to test if your WordPress installation is sending emails correctly.
 * Author: 					MachoThemes
-* Version: 					0.6.0
+* Version: 					0.6.1
 * Author URI: 				https://www.machothemes.com/
 * License: 					GPLv3 or later
 * License URI:         		http://www.gnu.org/licenses/gpl-3.0.html
@@ -11,12 +11,8 @@
 * Text Domain: 				check-email
 * Domain Path: 				/languages
 *
-* Copyright 2015-2017 		Chris Taylor 		chris@stillbreathing.co.uk
-* Copyright 2017-2019 		MachoThemes 		office@machothemes.com
-*
-* Original Plugin URI: 		https://modula.greentreelabs.net/
-* Original Author URI: 		https://greentreelabs.net
-* Original Author: 			https://profiles.wordpress.org/greentreelabs/
+* Copyright 2015-2020 		Chris Taylor 		chris@stillbreathing.co.uk
+* Copyright 2020 		    MachoThemes 		office@machothemes.com
 *
 * NOTE:
 * Chris Taylor transferred ownership rights on: 2020-06-19 07:52:03 GMT when ownership was handed over to MachoThemes
