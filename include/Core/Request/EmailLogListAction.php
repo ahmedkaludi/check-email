@@ -148,9 +148,9 @@ class EmailLogListAction implements Loadie {
 	}
 
 	protected function get_table_manager() {
-		$email_log = check_email();
+		$check_email = check_email();
 
-		return $email_log->table_manager;
+		return $check_email->table_manager;
 	}
 
 	protected function el_kses_allowed_html( $context = 'post' ) {

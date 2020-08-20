@@ -54,8 +54,8 @@ class CheckEmailLogger implements Loadie {
 
 		$log = apply_filters( 'el_email_log_before_insert', $log, $original_mail_info );
 
-		$email_log = check_email();
-		$email_log->table_manager->insert_log( $log );
+		$check_email = check_email();
+		$check_email->table_manager->insert_log( $log );
 
 		do_action( 'el_email_log_inserted', $log );
 
@@ -105,14 +105,14 @@ class CheckEmailLogger implements Loadie {
 			return;
 		}
 
-		$email_log = check_email();
+		$check_email = check_email();
 
-		$log_item_id = $email_log->table_manager->fetch_log_id_by_data( $log );
+		$log_item_id = $check_email->table_manager->fetch_log_id_by_data( $log );
 
 		if ( empty( $log_item_id ) ) {
 			return;
 		}
 
-		$email_log->table_manager->mark_log_as_failed( $log_item_id, $error_message );
+		$check_email->table_manager->mark_log_as_failed( $log_item_id, $error_message );
 	}
 }

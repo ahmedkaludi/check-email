@@ -167,8 +167,8 @@ class EmailCoreSetting extends EmailSetting {
 		$admin_email_field_name          = $field_name . '[admin_email]';
 		$logs_threshold_field_name       = $field_name . '[logs_threshold]';
 
-		$email_log  = check_email();
-		$logs_count = $email_log->table_manager->get_logs_count();
+		$check_email  = check_email();
+		$logs_count = $check_email->table_manager->get_logs_count();
 
 		$admin_email_input_field = sprintf(
 			'<input type="email" name="%1$s" value="%2$s" size="35" />', esc_attr( $admin_email_field_name ), empty( $db_size_notification_data['admin_email'] ) ? get_option( 'admin_email', '' ) : esc_attr( $db_size_notification_data['admin_email'] ) );
@@ -279,8 +279,8 @@ class EmailCoreSetting extends EmailSetting {
 	}
 
 	public function trigger_threshold_met_notification_email() {
-		$email_log  = check_email();
-		$logs_count = absint( $email_log->table_manager->get_logs_count() );
+		$check_email  = check_email();
+		$logs_count = absint( $check_email->table_manager->get_logs_count() );
 
 		$setting_data = $this->get_value();
 
@@ -339,8 +339,8 @@ EOT;
 	}
         
 	public function render_log_threshold_met_notice() {
-		$email_log      = check_email();
-		$logs_count     = absint( $email_log->table_manager->get_logs_count() );
+		$check_email      = check_email();
+		$logs_count     = absint( $check_email->table_manager->get_logs_count() );
 		$notice_message = sprintf( __( 'Currently there are %1$s logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ),
 			$logs_count . _n( ' email log', ' email logs', $logs_count, 'check-email' )
 			 );

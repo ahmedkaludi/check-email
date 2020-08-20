@@ -19,8 +19,8 @@ class EmailOverridePluginAPI implements Loadie {
 	}
 
 	public function setup_updaters_for_inactive_addons() {
-		$email_log = check_email();
-		$licenser  = $email_log->get_licenser();
+		$check_email = check_email();
+		$licenser  = $check_email->get_licenser();
 
 		if ( is_null( $licenser ) ) {
 			return;
@@ -32,7 +32,7 @@ class EmailOverridePluginAPI implements Loadie {
 			$license_key = $licenser->get_addon_license_key( $inactive_addon->name );
 
 			$updater = new EDDUpdater(
-				$email_log->get_store_url(),
+				$check_email->get_store_url(),
 				$inactive_addon->file,
 				array(
 					'version'   => $inactive_addon->get_version(),
