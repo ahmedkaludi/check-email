@@ -14,10 +14,10 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 class Check_Email_Table_Manager implements Loadie {
 
 	/* Database table name */
-	const LOG_TABLE_NAME = 'email_log';
+	const LOG_TABLE_NAME = 'check_email_log';
 
 	/* Database option name */
-	const DB_OPTION_NAME = 'email-log-db';
+	const DB_OPTION_NAME = 'check_email-log-db';
 
 	/* Database version */
 	const DB_VERSION = '0.3';
