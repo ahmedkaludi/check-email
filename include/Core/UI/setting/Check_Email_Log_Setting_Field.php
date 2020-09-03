@@ -1,4 +1,4 @@
-<?php namespace EmailLog\Core\UI\Setting;
+<?php namespace CheckEmail\Core\UI\Setting;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
  *
  * @see add_settings_field()
  */
-class EmailLogSettingField {
+class Check_Email_Log_Setting_Field {
 
 	public $id;
 	public $title;

@@ -1,7 +1,7 @@
-<?php namespace EmailLog\Core\UI;
+<?php namespace CheckEmail\Core\UI;
 
-use EmailLog\Core\Loadie;
-use EmailLog\Core\UI\Page\EmailLogListPage;
+use CheckEmail\Core\Loadie;
+use CheckEmail\Core\UI\Page\Check_Email_Log_List_Page;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
  * Admin UI Loader.
  * Loads and initializes all admin pages and components.
  */
-class CheckEmailUILoader implements Loadie {
+class Check_Email_UI_Loader implements Loadie {
 
 	protected $components = array();
 
@@ -29,7 +29,7 @@ class CheckEmailUILoader implements Loadie {
 	}
 
 	public function is_show_dashboard_widget() {
-		$this->components['core_settings'] = new Setting\EmailCoreSetting();
+		$this->components['core_settings'] = new Setting\Check_Email_Core_Setting();
 		$dashboard_status                  = false;
 		$options                           = get_option( 'email-log-core' );
 		if( isset( $options['hide_dashboard_widget'] ) ) {
@@ -47,7 +47,7 @@ class CheckEmailUILoader implements Loadie {
 	 * @access protected
 	 */
 	protected function initialize_pages() {
-		$this->pages['log_list_page']    = new Page\EmailLogListPage();
-                $this->pages['check_email']      = new Page\StatusPage();
+		$this->pages['log_list_page']    = new Page\Check_Email_Log_List_Page();
+                $this->pages['check_email']      = new Page\Check_Email_Status_Page();
 	}
 }

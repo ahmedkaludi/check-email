@@ -1,4 +1,4 @@
-<?php namespace EmailLog\Core;
+<?php namespace CheckEmail\Core;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 

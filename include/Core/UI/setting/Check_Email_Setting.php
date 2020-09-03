@@ -1,16 +1,16 @@
-<?php namespace EmailLog\Core\UI\Setting;
+<?php namespace CheckEmail\Core\UI\Setting;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 /**
  * Check Email Log Setting.
  */
-abstract class EmailSetting {
+abstract class Check_Email_Setting {
 
 	protected $section;
 
 	public function __construct() {
-		$this->section = new EmailLogSettingSection();
+		$this->section = new Check_Email_Log_Setting_Section();
 
 		$this->initialize();
 
@@ -70,7 +70,7 @@ abstract class EmailSetting {
 		$fields = array();
 
 		foreach ( $this->section->field_labels as $field_id => $label ) {
-			$field           = new EmailLogSettingField();
+			$field           = new Check_Email_Log_Setting_Field();
 			$field->id       = $field_id;
 			$field->title    = $label;
 			$field->args     = array( 'id' => $field_id );

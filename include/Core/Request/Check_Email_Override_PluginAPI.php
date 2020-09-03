@@ -1,7 +1,7 @@
-<?php namespace EmailLog\Core\Request;
+<?php namespace CheckEmail\Core\Request;
 
-use EmailLog\Addon\API\EDDUpdater;
-use EmailLog\Core\Loadie;
+use CheckEmail\Addon\API\EDDUpdater;
+use CheckEmail\Core\Loadie;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
  * This is already done by EDD_SL_Plugin_Updater for Active add-on
  * and this class does it for all in active or yet to be installed add-ons.
  */
-class EmailOverridePluginAPI implements Loadie {
+class Check_Email_Override_PluginAPI implements Loadie {
 
 	public function load() {
 		add_action( 'admin_init', array( $this, 'setup_updaters_for_inactive_addons' ) );

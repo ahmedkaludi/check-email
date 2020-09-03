@@ -1,11 +1,11 @@
-<?php namespace EmailLog\Core\UI\Page;
+<?php namespace CheckEmail\Core\UI\Page;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 /**
  * Status Page.
  */
-class StatusPage extends CheckEmailBasePage {
+class Check_Email_Status_Page extends Check_Email_BasePage {
 
 	/**
 	 * Page slug.
@@ -28,7 +28,7 @@ class StatusPage extends CheckEmailBasePage {
 	 */
 	public function register_page() {
 		$this->page = add_submenu_page(
-			EmailLogListPage::PAGE_SLUG,
+			Check_Email_Log_List_Page::PAGE_SLUG,
 			__( 'Status', 'check-email' ),
 			__( 'Status', 'check-email' ),
 			'manage_options',

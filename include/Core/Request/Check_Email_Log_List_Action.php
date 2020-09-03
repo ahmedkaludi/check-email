@@ -1,12 +1,12 @@
-<?php namespace EmailLog\Core\Request;
+<?php namespace CheckEmail\Core\Request;
 
-use EmailLog\Core\Loadie;
-use EmailLog\Core\UI\Page\EmailLogListPage;
+use CheckEmail\Core\Loadie;
+use CheckEmail\Core\UI\Page\Check_Email_Log_List_Page;
 
 /**
  * Actions performed in Log List.
  */
-class EmailLogListAction implements Loadie {
+class Check_Email_Log_List_Action implements Loadie {
 
 	public function load() {
 		add_action( 'wp_ajax_el-log-list-view-message', array( $this, 'view_log_message' ) );
@@ -33,7 +33,7 @@ class EmailLogListAction implements Loadie {
 
 			$headers = array();
 			if ( ! empty( $log_item['headers'] ) ) {
-				$parser  = new \EmailLog\Util\CheckEmailHeaderParser();
+				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
 				$headers = $parser->parse_headers( $log_item['headers'] );
 			}
 
@@ -117,7 +117,7 @@ class EmailLogListAction implements Loadie {
 			$role = get_role( $old_role );
 
 			if ( ! is_null( $role ) ) {
-				$role->remove_cap( EmailLogListPage::CAPABILITY );
+				$role->remove_cap( Check_Email_Log_List_Page::CAPABILITY );
 			}
 		}
 
@@ -125,7 +125,7 @@ class EmailLogListAction implements Loadie {
 			$role = get_role( $new_role );
 
 			if ( ! is_null( $role ) ) {
-				$role->add_cap( EmailLogListPage::CAPABILITY );
+				$role->add_cap( Check_Email_Log_List_Page::CAPABILITY );
 			}
 		}
 	}

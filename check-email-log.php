@@ -11,27 +11,27 @@ function check_email_log( $plugin_file ) {
 	$plugin_dir = plugin_dir_path( $plugin_file );
 
 	// setup autoloader.
-	require_once 'include/CheckEmailLogAutoloader.php';
+	require_once 'include/class-check-email-log-autoloader.php';
 
-	$loader = new \EmailLog\CheckEmailLogAutoloader();
-	$loader->add_namespace( 'EmailLog', $plugin_dir . 'include' );
+	$loader = new \CheckEmail\Check_Email_Log_Autoloader();
+	$loader->add_namespace( 'CheckEmail', $plugin_dir . 'include' );
 
 	if ( file_exists( $plugin_dir . 'tests/' ) ) {
 		// if tests are present, then add them.
-		$loader->add_namespace( 'EmailLog', $plugin_dir . 'tests/wp-tests' );
+		$loader->add_namespace( 'CheckEmail', $plugin_dir . 'tests/wp-tests' );
 	}
 
 	$loader->add_file( $plugin_dir . 'include/Util/helper.php' );
 
 	$loader->register();
 
-	$check_email = new \EmailLog\Core\CheckEmailLog( $plugin_file, $loader, new \EmailLog\Core\DB\CheckEmailTableManager() );
+	$check_email = new \CheckEmail\Core\Check_Email_Log( $plugin_file, $loader, new \CheckEmail\Core\DB\Check_Email_Table_Manager() );
 
-	$check_email->add_loadie( new \EmailLog\Core\CheckEmailLogger() );
-	$check_email->add_loadie( new \EmailLog\Core\UI\CheckEmailUILoader() );
+	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Logger() );
+	$check_email->add_loadie( new \CheckEmail\Core\UI\Check_Email_UI_Loader() );
 
-	$check_email->add_loadie( new \EmailLog\Core\Request\CheckEmailNonceChecker() );
-	$check_email->add_loadie( new \EmailLog\Core\Request\EmailLogListAction() );
+	$check_email->add_loadie( new \CheckEmail\Core\Request\Check_Email_Nonce_Checker() );
+	$check_email->add_loadie( new \CheckEmail\Core\Request\Check_Email_Log_List_Action() );
 
 
 	// `register_activation_hook` can't be called from inside any hook.
@@ -43,9 +43,6 @@ function check_email_log( $plugin_file ) {
 	add_action( 'plugins_loaded', array( $check_email, 'load' ), 101 );
 }
 
-/**
- * Return the global instance of Check Email Log plugin.
- */
 function check_email() {
 	global $check_email;
 

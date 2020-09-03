@@ -1,6 +1,6 @@
-<?php namespace EmailLog\Core\UI\ListTable;
+<?php namespace CheckEmail\Core\UI\list_table;
 
-use EmailLog\Util;
+use CheckEmail\Util;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . WPINC . '/class-wp-list-table.php';
@@ -9,7 +9,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * Table to display Check Email Logs.
  */
-class EmailLogListTable extends \WP_List_Table {
+class Check_Email_Log_List_Table extends \WP_List_Table {
     
 	protected $page;
 
@@ -32,7 +32,7 @@ class EmailLogListTable extends \WP_List_Table {
 		);
 
 		foreach ( array( 'sent_date', 'result', 'to_email', 'subject' ) as $column ) {
-			$columns[ $column ] = Util\check_email_get_column_label( $column );
+			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
 		}
 
 		return apply_filters( 'el_manage_log_columns', $columns );
@@ -125,9 +125,9 @@ class EmailLogListTable extends \WP_List_Table {
 			return '';
 		}
 
-		$icon = \EmailLog\Util\get_dismiss_icon();
+		$icon = \CheckEmail\Util\wp_chill_check_email_get_dismiss_icon();
 		if ( $item->result ) {
-			$icon = \EmailLog\Util\get_confirm_icon();
+			$icon = \CheckEmail\Util\wp_chill_check_email_get_confirm_icon();
 		}
 
 		if ( ! isset( $item->error_message ) ) {

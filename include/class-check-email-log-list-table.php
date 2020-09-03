@@ -115,8 +115,8 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 		if ( 'delete' === $this->current_action() ) {
 			// Delete a list of logs by id.
 
-			$nonce = $_REQUEST[ CheckEmailLog::DELETE_LOG_NONCE_FIELD ];
-			if ( wp_verify_nonce( $nonce, CheckEmailLog::DELETE_LOG_ACTION ) ) {
+			$nonce = $_REQUEST[ Check_Email_Log::DELETE_LOG_NONCE_FIELD ];
+			if ( wp_verify_nonce( $nonce, Check_Email_Log::DELETE_LOG_ACTION ) ) {
 
 				$ids = $_GET[ $this->_args['singular'] ];
 
@@ -128,16 +128,16 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 
 				$selected_ids = esc_sql( $selected_ids );
 
-				$table_name = $wpdb->prefix . CheckEmailLog::TABLE_NAME;
+				$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
 				$EmailLog->logs_deleted = $wpdb->query( "DELETE FROM $table_name where id IN ( $selected_ids )" ); //@codingStandardsIgnoreLine
 			} else {
 				wp_die( 'Cheating, Huh? ' );
 			}
 		} elseif ( 'delete-all' === $this->current_action() ) {
 			// Delete all logs.
-			$nonce = $_REQUEST[ CheckEmailLog::DELETE_LOG_NONCE_FIELD ];
-			if ( wp_verify_nonce( $nonce, CheckEmailLog::DELETE_LOG_ACTION ) ) {
-				$table_name = $wpdb->prefix . CheckEmailLog::TABLE_NAME;
+			$nonce = $_REQUEST[ Check_Email_Log::DELETE_LOG_NONCE_FIELD ];
+			if ( wp_verify_nonce( $nonce, Check_Email_Log::DELETE_LOG_ACTION ) ) {
+				$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
 				$EmailLog->logs_deleted = $wpdb->query( "DELETE FROM $table_name" ); //@codingStandardsIgnoreLine
 			} else {
 				wp_die( 'Cheating, Huh? ' );
@@ -148,7 +148,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . CheckEmailLog::TABLE_NAME;
+		$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
 		$this->_column_headers = $this->get_column_info();
 
 		// Handle bulk actions.
@@ -179,7 +179,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 		$total_items = $wpdb->get_var( $count_query );
 
 		// Adjust the query to take pagination into account.
-		$per_page = CheckEmailLog::get_per_page();
+		$per_page = Check_Email_Log::get_per_page();
 		if ( ! empty( $current_page ) && ! empty( $per_page ) ) {
 			$offset = ( $current_page - 1 ) * $per_page;
 			$query_cond .= ' LIMIT ' . (int) $offset . ',' . (int) $per_page;

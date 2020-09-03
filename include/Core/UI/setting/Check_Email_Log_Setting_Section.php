@@ -1,11 +1,11 @@
-<?php namespace EmailLog\Core\UI\Setting;
+<?php namespace CheckEmail\Core\UI\Setting;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 /**
  * A Section used in Check Email Log Settings page.
  */
-class EmailLogSettingSection {
+class Check_Email_Log_Setting_Section {
 
 	public $id;
 	public $title;
@@ -21,7 +21,7 @@ class EmailLogSettingSection {
 
 	public $field_labels = array();
 
-	public function add_field( EmailLogSettingField $field ) {
+	public function add_field( Check_Email_Log_Setting_Field $field ) {
 		$this->fields[] = $field;
 	}
 }

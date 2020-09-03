@@ -1,9 +1,9 @@
-<?php namespace EmailLog\Core;
+<?php namespace CheckEmail\Core;
 
 /**
  * Log's emails sent through `wp_mail`.
  */
-class CheckEmailLogger implements Loadie {
+class Check_Email_Logger implements Loadie {
 
 	public function load() {
 		add_filter( 'wp_mail', array( $this, 'log_email' ) );
@@ -36,11 +36,11 @@ class CheckEmailLogger implements Loadie {
 		);
 
 		$log = array(
-			'to_email'        => \EmailLog\Util\check_email_stringify( $mail_info['to'] ),
+			'to_email'        => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['to'] ),
 			'subject'         => $mail_info['subject'],
 			'message'         => $mail_info['message'],
-			'headers'         => \EmailLog\Util\check_email_stringify( $mail_info['headers'], "\n" ),
-			'attachment_name' => \EmailLog\Util\check_email_stringify( $mail_info['attachments'] ),
+			'headers'         => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['headers'], "\n" ),
+			'attachment_name' => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['attachments'] ),
 			'sent_date'       => current_time( 'mysql' ),
 			'ip_address'      => $_SERVER['REMOTE_ADDR'],
 			'result'          => 1,

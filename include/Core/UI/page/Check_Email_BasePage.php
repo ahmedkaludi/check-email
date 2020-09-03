@@ -1,6 +1,6 @@
-<?php namespace EmailLog\Core\UI\Page;
+<?php namespace CheckEmail\Core\UI\Page;
 
-use EmailLog\Core\Loadie;
+use CheckEmail\Core\Loadie;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
  * Base class for all Check Email Log admin pages.
  */
 
-abstract class CheckEmailBasePage implements Loadie {
+abstract class Check_Email_BasePage implements Loadie {
 
 	/**
 	 * Current page.

@@ -1,9 +1,9 @@
-<?php namespace EmailLog;
+<?php namespace CheckEmail;
 
 /**
  * Autoloader for EmailLog, based on the PSR-4 general purpose implementation.
  */
-class CheckEmailLogAutoloader {
+class Check_Email_Log_Autoloader {
 
 	protected $prefixes = array();
 
@@ -47,7 +47,6 @@ class CheckEmailLogAutoloader {
 	public function load_class( $class ) {
 		// the current namespace prefix
 		$prefix = $class;
-
 		// work backwards through the namespace names of the fully-qualified
 		// class name to find a mapped file name
 		while ( false !== $pos = strrpos( $prefix, '\\' ) ) {
@@ -81,7 +80,6 @@ class CheckEmailLogAutoloader {
 
 		// look through base directories for this namespace prefix
 		foreach ( $this->prefixes[ $prefix ] as $base_dir ) {
-
 			// replace the namespace prefix with the base directory,
 			// replace namespace separators with directory separators
 			// in the relative class name, append with .php

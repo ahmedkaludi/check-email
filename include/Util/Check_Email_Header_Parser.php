@@ -1,11 +1,11 @@
-<?php namespace EmailLog\Util;
+<?php namespace CheckEmail\Util;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly
 
 /**
  * Class Email Header Parser.
  */
-class CheckEmailHeaderParser {
+class Check_Email_Header_Parser {
 
 	public function join_headers( $data ) {
 		$headers = '';

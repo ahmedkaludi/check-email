@@ -1,17 +1,17 @@
-<?php namespace EmailLog\Core\DB;
+<?php namespace CheckEmail\Core\DB;
 
 /**
  * Handle installation and db table creation.
  */
-use EmailLog\Core\Loadie;
-use EmailLog\Util;
+use CheckEmail\Core\Loadie;
+use CheckEmail\Util;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 /**
  * Helper class to create table.
  */
-class CheckEmailTableManager implements Loadie {
+class Check_Email_Table_Manager implements Loadie {
 
 	/* Database table name */
 	const LOG_TABLE_NAME = 'email_log';
@@ -148,8 +148,8 @@ class CheckEmailTableManager implements Loadie {
 		if ( isset( $request['s'] ) && is_string( $request['s'] ) && $request['s'] !== '' ) {
 			$search_term = trim( esc_sql( $request['s'] ) );
 
-			if ( Util\check_email_advanced_search_term( $search_term ) ) {
-				$predicates = Util\check_email_get_advanced_search_term_predicates( $search_term );
+			if ( Util\wp_chill_check_email_advanced_search_term( $search_term ) ) {
+				$predicates = Util\wp_chill_check_email_get_advanced_search_term_predicates( $search_term );
 
 				foreach ( $predicates as $column => $email ) {
 					switch ( $column ) {
@@ -288,7 +288,7 @@ class CheckEmailTableManager implements Loadie {
 		// Execute the following `if` conditions only when $data is array.
 		if ( array_key_exists( 'to', $data ) ) {
 			// Since the value is stored as CSV in DB, convert the values from error data to CSV to compare.
-			$to_email = Util\check_email_stringify( $data['to'] );
+			$to_email = Util\wp_chill_check_email_stringify( $data['to'] );
 
 			$to_email = trim( esc_sql( $to_email ) );
 			$where[]  = "to_email = '$to_email'";
@@ -403,7 +403,7 @@ class CheckEmailTableManager implements Loadie {
 		// Execute the following `if` conditions only when $data is array.
 		if ( array_key_exists( 'to', $columns ) ) {
 			// Since the value is stored as CSV in DB, convert the values from error data to CSV to compare.
-			$to_email = Util\check_email_stringify( $columns['to'] );
+			$to_email = Util\wp_chill_check_email_stringify( $columns['to'] );
 
 			$to_email = trim( esc_sql( $to_email ) );
 			$where[]  = "to_email = '$to_email'";

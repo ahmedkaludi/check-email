@@ -1,14 +1,14 @@
-<?php namespace EmailLog\Core\Request;
+<?php namespace CheckEmail\Core\Request;
 
-use EmailLog\Core\Loadie;
-use EmailLog\Core\UI\Page\EmailLogListPage;
+use CheckEmail\Core\Loadie;
+use CheckEmail\Core\UI\Page\Check_Email_Log_List_Page;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 /**
  * Check nonce for all Check Email Log requests.
  */
-class CheckEmailNonceChecker implements Loadie {
+class Check_Email_Nonce_Checker implements Loadie {
 
 	public function load() {
 		add_action( 'admin_init', array( $this, 'check_nonce' ) );
@@ -46,11 +46,11 @@ class CheckEmailNonceChecker implements Loadie {
 				return;
 			}
 
-			if ( ! isset( $_REQUEST[ EmailLogListPage::LOG_LIST_ACTION_NONCE_FIELD ] ) ) {
+			if ( ! isset( $_REQUEST[ Check_Email_Log_List_Page::LOG_LIST_ACTION_NONCE_FIELD ] ) ) {
 				return;
 			}
 
-			if ( ! wp_verify_nonce( $_REQUEST[ EmailLogListPage::LOG_LIST_ACTION_NONCE_FIELD ], EmailLogListPage::LOG_LIST_ACTION_NONCE ) ) {
+			if ( ! wp_verify_nonce( $_REQUEST[ Check_Email_Log_List_Page::LOG_LIST_ACTION_NONCE_FIELD ], Check_Email_Log_List_Page::LOG_LIST_ACTION_NONCE ) ) {
 				return;
 			}
 		}

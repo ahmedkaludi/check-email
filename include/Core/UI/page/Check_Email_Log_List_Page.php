@@ -1,12 +1,12 @@
-<?php namespace EmailLog\Core\UI\Page;
+<?php namespace CheckEmail\Core\UI\Page;
 
-use EmailLog\Core\DB\CheckEmailTableManager;
-use EmailLog\Core\UI\ListTable\EmailLogListTable;
+use CheckEmail\Core\DB\Check_Email_Table_Manager;
+use CheckEmail\Core\UI\list_table\Check_Email_Log_List_Table;
 
 /**
  * Log List Page.
  */
-class EmailLogListPage extends CheckEmailBasePage {
+class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	/**
 	 * @var LogListTable
 	 */
@@ -99,7 +99,7 @@ class EmailLogListPage extends CheckEmailBasePage {
 			)
 		);
 
-		$this->log_list_table = new EmailLogListTable( $this );
+		$this->log_list_table = new Check_Email_Log_List_Table( $this );
 	}
 
 	public function get_per_page() {

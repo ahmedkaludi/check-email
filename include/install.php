@@ -37,14 +37,14 @@ class Check_Email_Log_Init {
 
 	public static function on_delete_blog( $tables ) {
 		global $wpdb;
-		$tables[] = $wpdb->prefix . CheckEmailLog::TABLE_NAME;
+		$tables[] = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
 		return $tables;
 	}
 
 	private static function create_emaillog_table() {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . CheckEmailLog::TABLE_NAME;
+		$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
 
 		if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
@@ -63,7 +63,7 @@ class Check_Email_Log_Init {
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
 
-			add_option( CheckEmailLog::DB_OPTION_NAME, CheckEmailLog::DB_VERSION );
+			add_option( Check_Email_Log::DB_OPTION_NAME, Check_Email_Log::DB_VERSION );
 		}
 	}
 }

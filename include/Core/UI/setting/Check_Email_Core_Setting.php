@@ -1,11 +1,11 @@
-<?php namespace EmailLog\Core\UI\Setting;
+<?php namespace CheckEmail\Core\UI\Setting;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 /**
  * All Check Email Log Core settings.
  */
-class EmailCoreSetting extends EmailSetting {
+class Check_Email_Core_Setting extends Check_Email_Setting {
 
 	protected function initialize() {
 		$this->section->id          = 'email-log-core';
@@ -62,7 +62,7 @@ class EmailCoreSetting extends EmailSetting {
 		<?php foreach ( $available_roles as $role_id => $role ) : ?>
 			<p>
 				<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $role_id ); ?>"
-					<?php \EmailLog\Util\array_checked( $selected_roles, $role_id ); ?>>
+					<?php \CheckEmail\Util\wp_chill_check_email_array_checked( $selected_roles, $role_id ); ?>>
 
 				<?php echo $role['name']; ?>
 			</p>
@@ -91,21 +91,6 @@ class EmailCoreSetting extends EmailSetting {
 		$remove_data = $option[ $args['id'] ];
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
-		?>
-
-		<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $remove_data ); ?>>
-		<?php _e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ) ?>
-
-		<p>
-			<em>
-				<?php printf(
-					__( '<strong>Note:</strong> You can also export the Email Logs using our <a href="%s" rel="noopener noreferrer" target="_blank">Export Logs</a> add-on.', 'check-email' ),
-					'https://wpemaillog.com/addons/export-logs/?utm_campaign=Upsell&utm_medium=wpadmin&utm_source=settings&utm_content=el'
-				); ?>
-			</em>
-		</p>
-
-		<?php
 	}
 
 	public function sanitize_remove_on_uninstall( $value ) {
@@ -201,7 +186,7 @@ class EmailCoreSetting extends EmailSetting {
             <p>
 				<?php printf(
 					__( 'Last notification email was sent on %1$s. Click %2$s button to reset sending the notification.', 'check-email' ),
-					'<strong>' . get_date_from_gmt( date( 'Y-m-d H:i:s', $db_size_notification_data['threshold_email_last_sent'] ), \EmailLog\Util\get_user_defined_date_format() ) . '</strong>',
+					'<strong>' . get_date_from_gmt( date( 'Y-m-d H:i:s', $db_size_notification_data['threshold_email_last_sent'] ), \CheckEmail\Util\wp_chill_check_email_get_user_defined_date_format() ) . '</strong>',
 					'<b>Save</b>'
 				); ?>
             </p>
@@ -237,7 +222,7 @@ class EmailCoreSetting extends EmailSetting {
 			if ( 'notify' === $setting ) {
 				$db_size_notification_data[ $setting ] = \filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 			} elseif ( 'admin_email' === $setting ) {
-				$db_size_notification_data[ $setting ] = \sanitize_check_email( $value );
+				$db_size_notification_data[ $setting ] = \wpchill_sanitize_check_email( $value );
 			} elseif ( 'logs_threshold' === $setting ) {
 				$db_size_notification_data[ $setting ] = absint( \sanitize_text_field( $value ) );
 			}

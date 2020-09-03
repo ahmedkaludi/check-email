@@ -1,12 +1,12 @@
-<?php namespace EmailLog\Core;
+<?php namespace CheckEmail\Core;
 
-use EmailLog\Core\DB\CheckEmailTableManager;
-use EmailLog\CheckEmailLogAutoloader;
+use CheckEmail\Core\DB\Check_Email_Table_Manager;
+use CheckEmail\CheckEmailLogAutoloader;
 
 /**
  * The main plugin class.
  */
-class CheckEmailLog {
+class Check_Email_Log {
 
 	const VERSION = '0.6.1';
 
