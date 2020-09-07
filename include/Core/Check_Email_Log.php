@@ -61,7 +61,7 @@ class Check_Email_Log {
 
 		$this->loaded = true;
 
-		do_action( 'el_loaded' );
+		do_action( 'check_email_loaded' );
 	}
 
 	public function get_version() {

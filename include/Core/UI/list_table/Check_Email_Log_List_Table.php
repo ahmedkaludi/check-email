@@ -35,7 +35,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
 		}
 
-		return apply_filters( 'el_manage_log_columns', $columns );
+		return apply_filters( 'check_email_manage_log_columns', $columns );
 	}
         
 	protected function get_sortable_columns() {
@@ -50,7 +50,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 	protected function column_default( $item, $column_name ) {
 
-		do_action( 'el_display_log_columns', $column_name, $item );
+		do_action( 'check_email_display_log_columns', $column_name, $item );
 	}
 
 	protected function column_sent_date( $item ) {
@@ -63,7 +63,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 		$content_ajax_url = add_query_arg(
 			array(
-				'action' => 'log-list-view-message',
+				'action' => 'check-email-log-list-view-message',
 				'log_id' => $item->id,
 				'width'  => '800',
 				'height' => '550',
@@ -80,7 +80,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$delete_url = add_query_arg(
 			array(
 				'page'                   => $_REQUEST['page'],
-				'action'                 => 'log-list-delete',
+				'action'                 => 'check-email-log-list-delete',
 				$this->_args['singular'] => $item->id,
 			)
 		);
@@ -91,7 +91,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			__( 'Delete', 'check-email' )
 		);
 
-		$actions = apply_filters( 'el_row_actions', $actions, $item );
+		$actions = apply_filters( 'check_email_row_actions', $actions, $item );
 
 		return sprintf( '%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
 			/*$1%s*/ $email_date,
@@ -102,7 +102,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 	protected function column_to_email( $item ) {
 
-		$email = apply_filters( 'el_log_list_column_to_email', esc_html( $item->to_email ) );
+		$email = apply_filters( 'check_email_log_list_column_to_email', esc_html( $item->to_email ) );
 
 		return $email;
 	}
@@ -138,14 +138,14 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			'<span class="%3$s" title="%2$s">%1$s</span>',
 			$icon,
 			esc_attr( $item->error_message ),
-			'el-help'
+			'check-email-help'
 		);
 	}
 
 	protected function get_bulk_actions() {
 		$actions = array(
-			'log-list-delete'     => __( 'Delete', 'check-email' ),
-			'log-list-delete-all' => __( 'Delete All Logs', 'check-email' ),
+			'check-email-log-list-delete'     => __( 'Delete', 'check-email' ),
+			'check-email-log-list-delete-all' => __( 'Delete All Logs', 'check-email' ),
 		);
 		$actions = apply_filters( 'el_bulk_actions', $actions );
 

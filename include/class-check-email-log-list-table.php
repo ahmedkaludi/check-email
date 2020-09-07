@@ -75,7 +75,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 			__( 'Delete', 'check-email' )
 		);
 
-		$actions = apply_filters( 'el_row_actions', $actions, $item );
+		$actions = apply_filters( 'check_email_row_actions', $actions, $item );
 
 		return sprintf( '%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
 			/*$1%s*/ $email_date,

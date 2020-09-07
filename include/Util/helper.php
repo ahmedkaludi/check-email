@@ -79,7 +79,7 @@ function wp_chill_check_email_get_user_defined_date_format() {
 	return sprintf( '%1$s %2$s', get_option( 'date_format', 'Y-m-d' ), get_option( 'time_format', 'g:i a' ) );
 }
 
-function wp_chill_check_email_el_array_get( $array, $key, $default = null ) {
+function wp_chill_check_email_array_get( $array, $key, $default = null ) {
 	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
 }
 
@@ -114,7 +114,7 @@ function wp_chill_check_email_get_advanced_search_term_predicates( $term ) {
 function wp_chill_check_email_get_advanced_search_url() {
 	$admin_url = get_admin_url( null, 'admin.php?page=check-email-logs' );
 
-	return add_query_arg( 'el_as', 1, $admin_url );
+	return add_query_arg( 'check_email_as', 1, $admin_url );
 }
 
 function wp_chill_check_email_get_column_label_by_db_column( $db_column ) {
@@ -147,5 +147,5 @@ function wp_chill_check_email_get_column_label_map() {
 		'result'      => __( 'Sent Status', 'check-email' ),
 	);
 
-	return apply_filters( 'el_db_column_labels', $labels );
+	return apply_filters( 'check_email_db_column_labels', $labels );
 }

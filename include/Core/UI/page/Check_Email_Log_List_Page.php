@@ -20,12 +20,12 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	/**
 	 * Nonce Field.
 	 */
-	const LOG_LIST_ACTION_NONCE_FIELD = 'el-log-list-nonce-field';
+	const LOG_LIST_ACTION_NONCE_FIELD = 'check-email-log-list-nonce-field';
 
 	/**
 	 * Nonce name.
 	 */
-	const LOG_LIST_ACTION_NONCE = 'el-log-list-nonce';
+	const LOG_LIST_ACTION_NONCE = 'check-email-log-list-nonce';
 
 	/**
 	 * Setup hooks.
@@ -60,7 +60,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 
 		add_action( "load-{$this->page}", array( $this, 'load_page' ) );
 
-		do_action( 'el_load_log_list_page', $this->page );
+		do_action( 'check_email_load_log_list_page', $this->page );
 	}
 
 	public function render_page() {
@@ -141,11 +141,11 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 
 		wp_register_style( 'jquery-ui-css', $plugin_dir_url . 'assets/vendor/jquery-ui/themes/base/jquery-ui.min.css', array(), '1.12.1' );
-		wp_enqueue_style( 'el-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
+		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
 
 		wp_register_script( 'jquery-ui', $plugin_dir_url . 'assets/vendor/jquery-ui/jquery-ui.min.js', array( 'jquery' ), '1.12.1', true );
 		wp_register_script( 'insertionQ', $plugin_dir_url . 'assets/vendor/insertion-query/insQ.min.js', array( 'jquery' ), '1.0.4', true );
 
-		wp_enqueue_script( 'el-view-logs', $plugin_dir_url . 'assets/js/admin/view-logs.js', array( 'insertionQ', 'jquery-ui', 'jquery-ui-datepicker', 'jquery-ui-tooltip' ), $check_email->get_version(), true );
+		wp_enqueue_script( 'check-email-view-logs', $plugin_dir_url . 'assets/js/admin/view-logs.js', array( 'insertionQ', 'jquery-ui', 'jquery-ui-datepicker', 'jquery-ui-tooltip' ), $check_email->get_version(), true );
 	}
 }

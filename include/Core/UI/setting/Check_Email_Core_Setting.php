@@ -36,13 +36,13 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	}
 
 	public function load() {
-		add_filter( 'el_setting_sections', array( $this, 'register' ), 9 );
+		add_filter( 'check_email_setting_sections', array( $this, 'register' ), 9 );
 
 		add_action( 'add_option_' . $this->section->option_name, array( $this, 'allowed_user_roles_added' ), 10, 2 );
 		add_action( 'update_option_' . $this->section->option_name, array( $this, 'allowed_user_roles_changed' ), 10, 2 );
 
-		add_action( 'el_email_log_inserted', array( $this, 'verify_email_log_threshold' ) );
-		add_action( 'el_trigger_notify_email_when_log_threshold_met', array( $this, 'trigger_threshold_met_notification_email' ) );
+		add_action( 'check_email_log_inserted', array( $this, 'verify_email_log_threshold' ) );
+		add_action( 'check_email_trigger_notify_email_when_log_threshold_met', array( $this, 'trigger_threshold_met_notification_email' ) );
 	}
 
 	public function render_allowed_user_roles_settings( $args ) {
@@ -105,7 +105,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$old_roles = $this->get_user_roles( $old_value );
 		$new_roles = $this->get_user_roles( $new_value );
 
-		do_action( 'log-list-manage-user-roles-changed', $old_roles, $new_roles );
+		do_action( 'check-email-log-list-manage-user-roles-changed', $old_roles, $new_roles );
 	}
 
 	protected function get_user_roles( $option ) {
@@ -193,7 +193,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		<?php
 		endif;
 
-		do_action( 'el_after_db_size_notification_setting' );
+		do_action( 'check_email_after_db_size_notification_setting' );
 	}
 
 	protected function restrict_array_to_db_size_notification_setting_keys( $arr ) {
@@ -243,7 +243,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	}
 
 	public function verify_email_log_threshold() {
-		$cron_hook = 'el_trigger_notify_email_when_log_threshold_met';
+		$cron_hook = 'check_email_trigger_notify_email_when_log_threshold_met';
 		if ( ! wp_next_scheduled( $cron_hook ) ) {
 			wp_schedule_event( time(), 'hourly', $cron_hook );
 		}
@@ -307,9 +307,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 EOT;
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
-			$subject = apply_filters( 'el_log_threshold_met_notification_email_subject', $subject );
+			$subject = apply_filters( 'check_email_log_threshold_met_notification_email_subject', $subject );
 
-			$message = apply_filters( 'el_log_threshold_met_notification_email_body', $message, $logs_threshold );
+			$message = apply_filters( 'check_email_log_threshold_met_notification_email_body', $message, $logs_threshold );
 
 			wp_mail( $admin_email, $subject, $message, $headers );
 

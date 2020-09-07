@@ -9,11 +9,11 @@ use CheckEmail\Core\UI\Page\Check_Email_Log_List_Page;
 class Check_Email_Log_List_Action implements Loadie {
 
 	public function load() {
-		add_action( 'wp_ajax_log-list-view-message', array( $this, 'view_log_message' ) );
+		add_action( 'wp_ajax_check-email-log-list-view-message', array( $this, 'view_log_message' ) );
 
-		add_action( 'log-list-delete', array( $this, 'delete_logs' ) );
-		add_action( 'log-list-delete-all', array( $this, 'delete_all_logs' ) );
-		add_action( 'log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
+		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
+		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
+		add_action( 'check-email-log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
 	}
 
 	public function view_log_message() {
@@ -59,7 +59,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				</tr>
 
 				<?php
-                                    do_action( 'el_view_log_after_headers', $log_item );
+                                    do_action( 'check_email_view_log_after_headers', $log_item );
 				?>
 
 			</table>
@@ -75,7 +75,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				</div>
 
 				<div id="tabs-preview">
-					<?php echo wp_kses( $log_item['message'], $this->el_kses_allowed_html( 'post' ) ); ?>
+					<?php echo wp_kses( $log_item['message'], $this->check_email_kses_allowed_html( 'post' ) ); ?>
 				</div>
 			</div>
 
@@ -153,7 +153,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		return $check_email->table_manager;
 	}
 
-	protected function el_kses_allowed_html( $context = 'post' ) {
+	protected function check_email_kses_allowed_html( $context = 'post' ) {
 		$allowed_tags = wp_kses_allowed_html( $context );
 
 		$allowed_tags['link'] = array(

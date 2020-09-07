@@ -15,12 +15,12 @@ class Check_Email_Nonce_Checker implements Loadie {
 	}
 
 	public function check_nonce() {
-		if ( ! isset( $_POST['el-action'] ) && ! isset( $_REQUEST['action'] ) && ! isset( $_REQUEST['action2'] ) ) {
+		if ( ! isset( $_POST['check-email-action'] ) && ! isset( $_REQUEST['action'] ) && ! isset( $_REQUEST['action2'] ) ) {
 			return;
 		}
 
-		if ( isset( $_POST['el-action'] ) ) {
-			$action = sanitize_text_field( $_POST['el-action'] );
+		if ( isset( $_POST['check-email-action'] ) ) {
+			$action = sanitize_text_field( $_POST['check-email-action'] );
 
 			if ( ! isset( $_POST[ $action . '_nonce' ] ) ) {
 				return;
@@ -42,7 +42,7 @@ class Check_Email_Nonce_Checker implements Loadie {
 				$action = sanitize_text_field( $_REQUEST['action2'] );
 			}
 
-			if ( strpos( $action, 'log-list-' ) !== 0 ) {
+			if ( strpos( $action, 'check-email-log-list-' ) !== 0 ) {
 				return;
 			}
 
@@ -55,7 +55,7 @@ class Check_Email_Nonce_Checker implements Loadie {
 			}
 		}
 
-		do_action( 'el_action', $action, $_REQUEST );
+		do_action( 'check_action_action', $action, $_REQUEST );
 		do_action( $action, $_REQUEST );
 	}
 }

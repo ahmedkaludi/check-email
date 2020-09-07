@@ -22,7 +22,7 @@ class Check_Email_Logger implements Loadie {
 	 */
 	public function log_email( $original_mail_info ) {
 
-		$original_mail_info = apply_filters( 'el_wp_mail_log', $original_mail_info );
+		$original_mail_info = apply_filters( 'check_email_wp_mail_log', $original_mail_info );
                 
 		$mail_info = wp_parse_args(
 			$original_mail_info,
@@ -52,12 +52,12 @@ class Check_Email_Logger implements Loadie {
 			$log['attachments'] = 'true';
 		}
 
-		$log = apply_filters( 'el_email_log_before_insert', $log, $original_mail_info );
+		$log = apply_filters( 'check_email_email_log_before_insert', $log, $original_mail_info );
 
 		$check_email = check_email();
 		$check_email->table_manager->insert_log( $log );
 
-		do_action( 'el_email_log_inserted', $log );
+		do_action( 'check_email_email_log_inserted', $log );
 
 		return $original_mail_info;
 	}

@@ -20,7 +20,7 @@ abstract class Check_Email_Setting {
 	}
 
 	public function load() {
-		add_filter( 'el_setting_sections', array( $this, 'register' ) );
+		add_filter( 'check_email_setting_sections', array( $this, 'register' ) );
 	}
 
 	public function register( $sections ) {
