@@ -63,7 +63,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 		$content_ajax_url = add_query_arg(
 			array(
-				'action' => 'el-log-list-view-message',
+				'action' => 'log-list-view-message',
 				'log_id' => $item->id,
 				'width'  => '800',
 				'height' => '550',
@@ -80,7 +80,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$delete_url = add_query_arg(
 			array(
 				'page'                   => $_REQUEST['page'],
-				'action'                 => 'el-log-list-delete',
+				'action'                 => 'log-list-delete',
 				$this->_args['singular'] => $item->id,
 			)
 		);
@@ -144,8 +144,8 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 	protected function get_bulk_actions() {
 		$actions = array(
-			'el-log-list-delete'     => __( 'Delete', 'check-email' ),
-			'el-log-list-delete-all' => __( 'Delete All Logs', 'check-email' ),
+			'log-list-delete'     => __( 'Delete', 'check-email' ),
+			'log-list-delete-all' => __( 'Delete All Logs', 'check-email' ),
 		);
 		$actions = apply_filters( 'el_bulk_actions', $actions );
 

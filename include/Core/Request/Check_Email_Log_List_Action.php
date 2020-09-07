@@ -9,11 +9,11 @@ use CheckEmail\Core\UI\Page\Check_Email_Log_List_Page;
 class Check_Email_Log_List_Action implements Loadie {
 
 	public function load() {
-		add_action( 'wp_ajax_el-log-list-view-message', array( $this, 'view_log_message' ) );
+		add_action( 'wp_ajax_log-list-view-message', array( $this, 'view_log_message' ) );
 
-		add_action( 'el-log-list-delete', array( $this, 'delete_logs' ) );
-		add_action( 'el-log-list-delete-all', array( $this, 'delete_all_logs' ) );
-		add_action( 'el-log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
+		add_action( 'log-list-delete', array( $this, 'delete_logs' ) );
+		add_action( 'log-list-delete-all', array( $this, 'delete_all_logs' ) );
+		add_action( 'log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
 	}
 
 	public function view_log_message() {

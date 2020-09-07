@@ -42,7 +42,7 @@ class Check_Email_Nonce_Checker implements Loadie {
 				$action = sanitize_text_field( $_REQUEST['action2'] );
 			}
 
-			if ( strpos( $action, 'el-log-list-' ) !== 0 ) {
+			if ( strpos( $action, 'log-list-' ) !== 0 ) {
 				return;
 			}
 

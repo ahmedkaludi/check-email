@@ -105,7 +105,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$old_roles = $this->get_user_roles( $old_value );
 		$new_roles = $this->get_user_roles( $new_value );
 
-		do_action( 'el-log-list-manage-user-roles-changed', $old_roles, $new_roles );
+		do_action( 'log-list-manage-user-roles-changed', $old_roles, $new_roles );
 	}
 
 	protected function get_user_roles( $option ) {
