@@ -8,9 +8,9 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 class Check_Email_Core_Setting extends Check_Email_Setting {
 
 	protected function initialize() {
-		$this->section->id          = 'email-log-core';
-		$this->section->title       = __( 'Core Email Log Settings', 'check-email' );
-		$this->section->option_name = 'email-log-core';
+		$this->section->id          = 'check-email-log-core';
+		$this->section->title       = __( 'Core Check Email Log Settings', 'check-email' );
+		$this->section->option_name = 'check-email-log-core';
 
 		$this->section->field_labels = array(
 			'allowed_user_roles'    => __( 'Allowed User Roles', 'check-email' ),

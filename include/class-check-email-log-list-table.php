@@ -6,8 +6,8 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 
 	public function __construct() {
 		parent::__construct( array(
-			'singular'  => 'email-log',     //singular name of the listed records
-			'plural'    => 'email-logs',    //plural name of the listed records
+			'singular'  => 'check-email-log',     //singular name of the listed records
+			'plural'    => 'check-email-logs',    //plural name of the listed records
 			'ajax'      => false,           //does this table support ajax?
 		) );
 	}
@@ -20,7 +20,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 			'subject'   => __( 'Subject', 'check-email' ),
 		);
 
-		return apply_filters( EmailLog::HOOK_LOG_COLUMNS, $columns );
+		return apply_filters( CheckEmailLog::HOOK_LOG_COLUMNS, $columns );
 	}
 
 	protected function get_sortable_columns() {
@@ -33,7 +33,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 	}
 
 	protected function column_default( $item, $column_name ) {
-		do_action( EmailLog::HOOK_LOG_DISPLAY_COLUMNS, $column_name, $item );
+		do_action( CheckEmailLog::HOOK_LOG_DISPLAY_COLUMNS, $column_name, $item );
 	}
 
 	protected function column_sent_date( $item ) {
@@ -66,7 +66,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 				'page'                           => $_REQUEST['page'],
 				'action'                         => 'delete',
 				$this->_args['singular']         => $item->id,
-				EmailLog::DELETE_LOG_NONCE_FIELD => wp_create_nonce( EmailLog::DELETE_LOG_ACTION ),
+				CheckEmailLog::DELETE_LOG_NONCE_FIELD => wp_create_nonce( CheckEmailLog::DELETE_LOG_ACTION ),
 			)
 		);
 
@@ -110,7 +110,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 
 	public function process_bulk_action() {
 		global $wpdb;
-		global $EmailLog; //@codingStandardsIgnoreLine
+		global $CheckEmailLog; //@codingStandardsIgnoreLine
 
 		if ( 'delete' === $this->current_action() ) {
 			// Delete a list of logs by id.
@@ -129,7 +129,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 				$selected_ids = esc_sql( $selected_ids );
 
 				$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
-				$EmailLog->logs_deleted = $wpdb->query( "DELETE FROM $table_name where id IN ( $selected_ids )" ); //@codingStandardsIgnoreLine
+				$CheckEmailLog->logs_deleted = $wpdb->query( "DELETE FROM $table_name where id IN ( $selected_ids )" ); //@codingStandardsIgnoreLine
 			} else {
 				wp_die( 'Cheating, Huh? ' );
 			}
@@ -138,7 +138,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 			$nonce = $_REQUEST[ Check_Email_Log::DELETE_LOG_NONCE_FIELD ];
 			if ( wp_verify_nonce( $nonce, Check_Email_Log::DELETE_LOG_ACTION ) ) {
 				$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
-				$EmailLog->logs_deleted = $wpdb->query( "DELETE FROM $table_name" ); //@codingStandardsIgnoreLine
+				$CheckEmailLog->logs_deleted = $wpdb->query( "DELETE FROM $table_name" ); //@codingStandardsIgnoreLine
 			} else {
 				wp_die( 'Cheating, Huh? ' );
 			}

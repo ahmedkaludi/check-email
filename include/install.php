@@ -18,18 +18,18 @@ class Check_Email_Log_Init {
 			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
 			foreach ( $blog_ids as $blog_id ) {
 				switch_to_blog( $blog_id );
-				self::create_emaillog_table();
+				self::create_checkemaillog_table();
 				restore_current_blog();
 			}
 		} else {
-			self::create_emaillog_table();
+			self::create_checkemaillog_table();
 		}
 	}
 
 	public static function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-		if ( is_plugin_active_for_network( 'email-log/email-log.php' ) ) {
+		if ( is_plugin_active_for_network( 'check-email-log/check-email.php' ) ) {
 			switch_to_blog( $blog_id );
-			self::create_emaillog_table();
+			self::create_checkemaillog_table();
 			restore_current_blog();
 		}
 	}
@@ -41,7 +41,7 @@ class Check_Email_Log_Init {
 		return $tables;
 	}
 
-	private static function create_emaillog_table() {
+	private static function create_checkemaillog_table() {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;

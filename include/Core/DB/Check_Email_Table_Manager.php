@@ -54,7 +54,7 @@ class Check_Email_Table_Manager implements Loadie {
 	 * Create email log table when a new blog is created.
 	 */
 	public function create_table_for_new_blog( $blog_id ) {
-		if ( is_plugin_active_for_network( 'email-log/email-log.php' ) ) {
+		if ( is_plugin_active_for_network( 'check-email-log/check-email.php' ) ) {
 			switch_to_blog( $blog_id );
 			$this->create_table_if_needed();
 			restore_current_blog();

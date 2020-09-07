@@ -51,7 +51,7 @@ class Check_Email_Override_PluginAPI implements Loadie {
 			return $response;
 		}
 
-		if ( ! isset( $args->slug ) || ( substr( $args->slug, 0, 10 ) != 'email-log-' ) ) {
+		if ( ! isset( $args->slug ) || ( substr( $args->slug, 0, 10 ) != 'check-email-log-' ) ) {
 			return $response;
 		}
 

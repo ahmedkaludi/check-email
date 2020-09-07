@@ -112,7 +112,7 @@ function wp_chill_check_email_get_advanced_search_term_predicates( $term ) {
 }
 
 function wp_chill_check_email_get_advanced_search_url() {
-	$admin_url = get_admin_url( null, 'admin.php?page=email-log' );
+	$admin_url = get_admin_url( null, 'admin.php?page=check-email-logs' );
 
 	return add_query_arg( 'el_as', 1, $admin_url );
 }
@@ -133,18 +133,18 @@ function wp_chill_check_email_get_column_label( $column_name ) {
 
 function wp_chill_check_email_get_column_label_map() {
 	$labels = array(
-		'id'          => __( 'ID', 'email-log' ),
-		'to_email'    => __( 'To', 'email-log' ),
-		'subject'     => __( 'Subject', 'email-log' ),
-		'message'     => __( 'Message', 'email-log' ),
-		'attachments' => __( 'Attachment', 'email-log' ),
-		'sent_date'   => __( 'Sent at', 'email-log' ),
-		'from'        => __( 'From', 'email-log' ),
-		'cc'          => __( 'CC', 'email-log' ),
-		'bcc'         => __( 'BCC', 'email-log' ),
-		'reply_to'    => __( 'Reply To', 'email-log' ),
-		'ip_address'  => __( 'IP Address', 'email-log' ),
-		'result'      => __( 'Sent Status', 'email-log' ),
+		'id'          => __( 'ID', 'check-email' ),
+		'to_email'    => __( 'To', 'check-email' ),
+		'subject'     => __( 'Subject', 'check-email' ),
+		'message'     => __( 'Message', 'check-email' ),
+		'attachments' => __( 'Attachment', 'check-email' ),
+		'sent_date'   => __( 'Sent at', 'check-email' ),
+		'from'        => __( 'From', 'check-email' ),
+		'cc'          => __( 'CC', 'check-email' ),
+		'bcc'         => __( 'BCC', 'check-email' ),
+		'reply_to'    => __( 'Reply To', 'check-email' ),
+		'ip_address'  => __( 'IP Address', 'check-email' ),
+		'result'      => __( 'Sent Status', 'check-email' ),
 	);
 
 	return apply_filters( 'el_db_column_labels', $labels );

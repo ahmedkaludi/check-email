@@ -1,8 +1,5 @@
 <?php namespace CheckEmail;
 
-/**
- * Autoloader for EmailLog, based on the PSR-4 general purpose implementation.
- */
 class Check_Email_Log_Autoloader {
 
 	protected $prefixes = array();

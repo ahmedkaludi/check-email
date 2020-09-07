@@ -17,8 +17,8 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$this->page = $page;
 
 		$args = wp_parse_args( $args, array(
-			'singular' => 'email-log',     // singular name of the listed records
-			'plural'   => 'email-logs',    // plural name of the listed records
+			'singular' => 'check-email-log',     // singular name of the listed records
+			'plural'   => 'check-email-logs',    // plural name of the listed records
 			'ajax'     => false,           // does this table support ajax?
 			'screen'   => $this->page->get_screen(),
 		) );

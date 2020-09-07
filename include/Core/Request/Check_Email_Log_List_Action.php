@@ -91,11 +91,11 @@ class Check_Email_Log_List_Action implements Loadie {
 	}
 
 	public function delete_logs( $data ) {
-		if ( ! is_array( $data ) || ! array_key_exists( 'email-log', $data ) ) {
+		if ( ! is_array( $data ) || ! array_key_exists( 'check-email-log', $data ) ) {
 			return;
 		}
 
-		$ids = $data['email-log'];
+		$ids = $data['check-email-log'];
 		if ( ! is_array( $ids ) ) {
 			$ids = array( $ids );
 		}
@@ -141,7 +141,7 @@ class Check_Email_Log_List_Action implements Loadie {
 
 		add_settings_error(
 			'log-list',
-			'deleted-email-logs',
+			'deleted-check-email-logs',
 			$message,
 			$type
 		);

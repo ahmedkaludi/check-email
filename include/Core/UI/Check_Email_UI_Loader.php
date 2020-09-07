@@ -31,7 +31,7 @@ class Check_Email_UI_Loader implements Loadie {
 	public function is_show_dashboard_widget() {
 		$this->components['core_settings'] = new Setting\Check_Email_Core_Setting();
 		$dashboard_status                  = false;
-		$options                           = get_option( 'email-log-core' );
+		$options                           = get_option( 'check-email-log-core' );
 		if( isset( $options['hide_dashboard_widget'] ) ) {
 			$dashboard_status = $options['hide_dashboard_widget'];
 		}
