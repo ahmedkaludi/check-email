@@ -55,7 +55,7 @@ class Check_Email_Nonce_Checker implements Loadie {
 			}
 		}
 
-		do_action( 'check_action_action', $action, $_REQUEST );
+		do_action( 'check_email_action', $action, $_REQUEST );
 		do_action( $action, $_REQUEST );
 	}
 }
