@@ -40,8 +40,8 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
         
 	public function register_page() {
 		add_menu_page(
-			__( 'Check Email', 'check-email' ),
-			__( 'Check Email', 'check-email' ),
+			__( 'Check & Log Email', 'check-email' ),
+			__( 'Check & Log Email', 'check-email' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' ),

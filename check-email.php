@@ -1,9 +1,9 @@
 <?php
 /*
-* Plugin Name: 				Check Email
-* Description: 				Check email allows you to test if your WordPress installation is sending emails correctly.
+* Plugin Name: 				Check & Log Email
+* Description: 				Check & Log email allows you to test if your WordPress installation is sending emails correctly and logs every email.
 * Author: 					MachoThemes
-* Version: 					0.6.1
+* Version: 					1.0.0
 * Author URI: 				https://www.machothemes.com/
 * License: 					GPLv3 or later
 * License URI:         		http://www.gnu.org/licenses/gpl-3.0.html
@@ -40,7 +40,7 @@ if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
 			<p>
 				<?php
 				printf(
-					__( 'Check Email requires at least PHP 5.6 to function properly. Please upgrade PHP.', 'check-email' )
+					__( 'Check & Log Email requires at least PHP 5.6 to function properly. Please upgrade PHP.', 'check-email' )
 				);
 				?>
 			</p>

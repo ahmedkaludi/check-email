@@ -51,7 +51,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 
                         echo '<div id="CKE_banner">
                         <h2>👉 '. __('Suggest a new feature!', 'check-email') . '👈 </h2>
-                        <p>'. __('Help us build the next set of features for Check Email. Tell us what you think and we will make it happen!', 'check-email') . '</p>
+                        <p>'. __('Help us build the next set of features for Check & Log Email. Tell us what you think and we will make it happen!', 'check-email') . '</p>
                         <a target="_blank" rel="noreferrer noopener" href="https://bit.ly/33QzqBU" class="button button-primary button-hero"> ' . __('Click here', 'check-email') . '</a>
                         </div>
                         '; //end CKE_Banner code
@@ -71,7 +71,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         }
 
                         echo '
-                        <h2>' . __( "Check Email" ) . '</h2>
+                        <h2>' . __( "Check & Log Email" ) . '</h2>
                         <hr />
 
                         <h3>' . __( "Current mail settings:", "check-email" ) . '</h3>

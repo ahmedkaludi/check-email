@@ -10,7 +10,7 @@ class Check_Email_Review {
 	function __construct() {
 
 		$this->messages = array(
-			'notice'  => esc_html__( "Hi there! Stoked to see you're using Check Email for a few days now - hope you like it! And if you do, please consider rating it. It would mean the world to us.  Keep on rocking!", 'check-email' ),
+			'notice'  => esc_html__( "Hi there! Stoked to see you're using Check & Log Email for a few days now - hope you like it! And if you do, please consider rating it. It would mean the world to us.  Keep on rocking!", 'check-email' ),
 			'rate'    => esc_html__( 'Rate the plugin', 'check-email' ),
 			'rated'   => esc_html__( 'Remind me later', 'check-email' ),
 			'no_rate' => esc_html__( 'Don\'t show again', 'check-email' ),
