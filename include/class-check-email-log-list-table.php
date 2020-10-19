@@ -1,4 +1,4 @@
-<?php
+<?php namespace CheckEmail;
 /**
  * Table to display Check Email Logs.
  */

@@ -1,5 +1,10 @@
-<?php
+<?php namespace CheckEmail\Core;
 
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+
+/**
+ * Class Check Email Review.
+ */
 class Check_Email_Review {
 
 	private $value;
@@ -154,6 +159,4 @@ class Check_Email_Review {
 		<?php
 	}
 }
-
-new Check_Email_Review();
 
