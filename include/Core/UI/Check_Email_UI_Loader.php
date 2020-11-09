@@ -48,6 +48,6 @@ class Check_Email_UI_Loader implements Loadie {
 	 */
 	protected function initialize_pages() {
 		$this->pages['log_list_page']    = new Page\Check_Email_Log_List_Page();
-                $this->pages['check_email']      = new Page\Check_Email_Status_Page();
+        $this->pages['check_email']      = new Page\Check_Email_Status_Page();
 	}
 }
