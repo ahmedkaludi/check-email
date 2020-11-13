@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-function wpchill_sanitize_check_email( $email, $multiple = true ) {
+function sanitize_email( $email, $multiple = true ) {
 	$emails = explode( ',', $email );
 	if ( ! $multiple ) {
 		$emails = array_slice( $emails, 0, 1 );
@@ -25,11 +25,11 @@ function wpchill_sanitize_check_email_with_name( $string ) {
 			$email = substr( $string, $bracket_pos + 1 );
 			$email = str_replace( '>', '', $email );
 
-			return sanitize_text_field( $name ) . ' <' . \wpchill_sanitize_check_email( $email ) . '>';
+			return sanitize_text_field( $name ) . ' <' . \sanitize_email( $email ) . '>';
 		}
 	}
 
-	return \wpchill_sanitize_check_email( $string );
+	return \sanitize_email( $string );
 }
 
 function wp_chill_check_email_is_admin_non_ajax() {

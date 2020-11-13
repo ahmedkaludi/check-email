@@ -7,25 +7,11 @@ use CheckEmail\Core\UI\list_table\Check_Email_Log_List_Table;
  * Log List Page.
  */
 class Check_Email_Log_List_Page extends Check_Email_BasePage {
-	/**
-	 * @var LogListTable
-	 */
 	protected $log_list_table;
-
-	/**
-	 * Page slug.
-	 */
 	const PAGE_SLUG = 'check-email-logs';
-
-	/**
-	 * Nonce Field.
-	 */
 	const LOG_LIST_ACTION_NONCE_FIELD = 'check-email-log-list-nonce-field';
-
-	/**
-	 * Nonce name.
-	 */
 	const LOG_LIST_ACTION_NONCE = 'check-email-log-list-nonce';
+        const CAPABILITY = 'manage_email_logs';
 
 	/**
 	 * Setup hooks.

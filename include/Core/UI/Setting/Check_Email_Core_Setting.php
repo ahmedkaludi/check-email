@@ -70,8 +70,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		<p>
 			<em>
-				<?php _e( '<strong>Note:</strong> Users with the above User Roles can view Email Logs.', 'check-email' ); ?>
-				<?php _e( 'Administrator role always has access and cannot be disabled.', 'check-email' ); ?>
+				<?php _e( '<strong>Note:</strong> Users with the above User Roles can view Logs.', 'check-email' ); ?>
+				<?php _e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
 			</em>
 		</p>
 
@@ -91,6 +91,12 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$remove_data = $option[ $args['id'] ];
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
+		?>
+
+		<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $remove_data ); ?>>
+		<?php _e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ) ?>
+
+		<?php
 	}
 
 	public function sanitize_remove_on_uninstall( $value ) {
@@ -222,7 +228,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			if ( 'notify' === $setting ) {
 				$db_size_notification_data[ $setting ] = \filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 			} elseif ( 'admin_email' === $setting ) {
-				$db_size_notification_data[ $setting ] = \wpchill_sanitize_check_email( $value );
+				$db_size_notification_data[ $setting ] = \sanitize_email( $value );
 			} elseif ( 'logs_threshold' === $setting ) {
 				$db_size_notification_data[ $setting ] = absint( \sanitize_text_field( $value ) );
 			}
@@ -241,7 +247,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		return $db_size_notification_data;
 	}
-
+        
 	public function verify_email_log_threshold() {
 		$cron_hook = 'check_email_trigger_notify_email_when_log_threshold_met';
 		if ( ! wp_next_scheduled( $cron_hook ) ) {

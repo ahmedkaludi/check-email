@@ -57,7 +57,7 @@ class Check_Email_Logger implements Loadie {
 		$check_email = check_email();
 		$check_email->table_manager->insert_log( $log );
 
-		do_action( 'check_email_email_log_inserted', $log );
+		do_action( 'check_email_log_inserted', $log );
 
 		return $original_mail_info;
 	}
