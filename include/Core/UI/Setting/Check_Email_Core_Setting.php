@@ -46,6 +46,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	}
 
 	public function render_allowed_user_roles_settings( $args ) {
+           
 		$option         = $this->get_value();
 		$selected_roles = $option[ $args['id'] ];
 
@@ -198,8 +199,6 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
             </p>
 		<?php
 		endif;
-
-		do_action( 'check_email_after_db_size_notification_setting' );
 	}
 
 	protected function restrict_array_to_db_size_notification_setting_keys( $arr ) {
