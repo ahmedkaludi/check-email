@@ -14,15 +14,17 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		$this->section->field_labels = array(
 			'allowed_user_roles'    => __( 'Allowed User Roles', 'check-email' ),
+                        'enable_logs'    => __( 'Enable Logs', 'check-email' ),
+			'enable_dashboard_widget' => __( 'Enable Dashboard Widget', 'check-email' ),
 			'remove_on_uninstall'   => __( 'Remove Data on Uninstall?', 'check-email' ),
-			'hide_dashboard_widget' => __( 'Disable Dashboard Widget', 'check-email' ),
 			'db_size_notification'  => __( 'Database Size Notification', 'check-email' ),
 		);
 
 		$this->section->default_value = array(
 			'allowed_user_roles'    => array(),
+                        'enable_logs'    => false,
+                        'enable_dashboard_widget' => false,
 			'remove_on_uninstall'   => '',
-			'hide_dashboard_widget' => false,
 			'db_size_notification'  => array(
 				'notify'                    => false,
 				'admin_email'               => '',
@@ -87,6 +89,22 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		return array_map( 'sanitize_text_field', $roles );
 	}
 
+        public function render_enable_logs_settings( $args ) {
+            $option      = $this->get_value();
+            $enable_logs = $option[ $args['id'] ];
+
+            $field_name = $this->section->option_name . '[' . $args['id'] . ']';
+            ?>
+                
+            <input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
+            <?php _e( 'Check this box if you would like to log your emails.', 'check-email' ) ?>
+            <?php
+	}
+        
+        public function sanitize_enable_logs( $value ) {
+		return sanitize_text_field( $value );
+	}
+        
 	public function render_remove_on_uninstall_settings( $args ) {
 		$option      = $this->get_value();
 		$remove_data = $option[ $args['id'] ];
@@ -128,23 +146,15 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		return $user_roles;
 	}
 
-	public function render_hide_dashboard_widget_settings( $args ) {
+	public function render_enable_dashboard_widget_settings( $args ) {
 		$option                = $this->get_value();
-		$hide_dashboard_widget = $option[ $args['id'] ];
+		$enable_dashboard_widget = $option[ $args['id'] ];
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
 
-		<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $hide_dashboard_widget ); ?>>
-		<?php _e( 'Check this box if you would like to disable dashboard widget.', 'check-email' ) ?>
-
-		<p>
-			<em>
-				<?php printf(
-					__( '<strong>Note:</strong> Each users can also disable dashboard widget using screen options', 'check-email' )
-				); ?>
-			</em>
-		</p>
+		<input id="check-email-enable-widget" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_dashboard_widget ); ?>>
+		<?php _e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ) ?>
 
 		<?php
 	}

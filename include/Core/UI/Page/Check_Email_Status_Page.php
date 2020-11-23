@@ -27,8 +27,19 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	 * Register page.
 	 */
 	public function register_page() {
+            
+                add_menu_page(
+                        __( 'Check & Log Email', 'check-email' ),
+                        __( 'Check & Log Email', 'check-email' ),
+                        'manage_options',
+                        self::PAGE_SLUG,
+                        array( $this, 'render_page' ),
+                        'dashicons-email-alt',
+                        26
+                );
+                
 		$this->page = add_submenu_page(
-			Check_Email_Log_List_Page::PAGE_SLUG,
+			Check_Email_Status_Page::PAGE_SLUG,
 			__( 'Status', 'check-email' ),
 			__( 'Status', 'check-email' ),
 			'manage_options',

@@ -30,7 +30,7 @@ class Check_Email_UI_Loader implements Loadie {
 
         protected function initialize_components() {
 		if ( current_user_can( Check_Email_Log_List_Page::CAPABILITY ) ) {
-			if( ! $this->is_show_dashboard_widget() ) {
+			if( $this->is_show_dashboard_widget() ) {
 				$this->components['dashboard_widget']  = new Component\Check_Email_Dashboard_Widget();
 			}
 		}
@@ -40,8 +40,8 @@ class Check_Email_UI_Loader implements Loadie {
 		$this->components['core_settings'] = new Setting\Check_Email_Core_Setting();
 		$dashboard_status                  = false;
 		$options                           = get_option( 'check-email-log-core' );
-		if( isset( $options['hide_dashboard_widget'] ) ) {
-			$dashboard_status = $options['hide_dashboard_widget'];
+		if( isset( $options['enable_dashboard_widget'] ) ) {
+			$dashboard_status = $options['enable_dashboard_widget'];
 		}
 
 		return $dashboard_status;
@@ -55,8 +55,8 @@ class Check_Email_UI_Loader implements Loadie {
 	 * @access protected
 	 */
 	protected function initialize_pages() {
-		$this->pages['log_list_page']    = new Page\Check_Email_Log_List_Page();
                 $this->pages['check_email']      = new Page\Check_Email_Status_Page();
+                $this->pages['log_list_page']    = new Page\Check_Email_Log_List_Page();
                 $this->pages['settings_page']    = new Page\Check_Email_Settings_Page();
 	}
 }

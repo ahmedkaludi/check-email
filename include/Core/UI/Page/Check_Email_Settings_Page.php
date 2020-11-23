@@ -55,7 +55,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		}
 
 		$this->page = add_submenu_page(
-			Check_Email_Log_List_Page::PAGE_SLUG,
+			Check_Email_Status_Page::PAGE_SLUG,
 			__( 'Settings', 'check-email' ),
 			__( 'Settings', 'check-email' ),
 			'manage_options',
