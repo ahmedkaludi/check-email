@@ -5,8 +5,10 @@
 	$( document ).ready( function() {
             $(".checkemail-hide").hide();
             var widget = $("#check-email-enable-widget").parent().parent();
+            var dbNotifications = $("#check-email-enable-db-notifications").parent().parent();
             if (!$('#check-email-enable-logs').is(":checked")) {
                 widget.hide();
+                dbNotifications.hide();
             }
             
             $("#checkemail_autoheaders,#checkemail_customheaders").bind("change", function(){
@@ -22,8 +24,10 @@
             $('#check-email-enable-logs').on('click', function() {
                 if ($(this).is(":checked")) {
                     widget.show();
+                    dbNotifications.show();
                 } else {
                     widget.hide();
+                    dbNotifications.hide();
                 }
             });
 	} );

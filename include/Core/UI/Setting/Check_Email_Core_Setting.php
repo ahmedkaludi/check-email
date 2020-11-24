@@ -16,22 +16,22 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			'allowed_user_roles'    => __( 'Allowed User Roles', 'check-email' ),
                         'enable_logs'    => __( 'Enable Logs', 'check-email' ),
 			'enable_dashboard_widget' => __( 'Enable Dashboard Widget', 'check-email' ),
-			'remove_on_uninstall'   => __( 'Remove Data on Uninstall?', 'check-email' ),
 			'db_size_notification'  => __( 'Database Size Notification', 'check-email' ),
+			'remove_on_uninstall'   => __( 'Remove Data on Uninstall?', 'check-email' )
 		);
 
 		$this->section->default_value = array(
 			'allowed_user_roles'    => array(),
                         'enable_logs'    => false,
                         'enable_dashboard_widget' => false,
-			'remove_on_uninstall'   => '',
-			'db_size_notification'  => array(
-				'notify'                    => false,
-				'admin_email'               => '',
-				'logs_threshold'            => '',
-				'log_threshold_met'         => false,
-				'threshold_email_last_sent' => false,
+                    	'db_size_notification'  => array(
+                            'notify'                    => false,
+                            'admin_email'               => '',
+                            'logs_threshold'            => '',
+                            'log_threshold_met'         => false,
+                            'threshold_email_last_sent' => false,
 			),
+			'remove_on_uninstall'   => ''
 		);
 
 		$this->load();
@@ -181,7 +181,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		);
 		?>
 
-        <input type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php
+        <input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php
 		checked( true, $db_size_notification_data['notify'] ); ?> />
 		<?php
 		// The values within each field are already escaped.
