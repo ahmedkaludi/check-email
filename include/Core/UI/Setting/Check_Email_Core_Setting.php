@@ -73,7 +73,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		<p>
 			<em>
-				<?php _e( '<strong>Note:</strong> Users with the above User Roles can view Logs.', 'check-email' ); ?>
+				<?php _e( '<strong>Note:</strong> Users with the above User Roles can view Status and Logs Page.', 'check-email' ); ?>
 				<?php _e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
 			</em>
 		</p>

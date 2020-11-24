@@ -17,7 +17,7 @@ class Check_Email_Log_List_Action implements Loadie {
 	}
 
 	public function view_log_message() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_check_email' ) ) {
 			wp_die();
 		}
 

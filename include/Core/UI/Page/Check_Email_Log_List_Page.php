@@ -11,7 +11,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	const PAGE_SLUG = 'check-email-logs';
 	const LOG_LIST_ACTION_NONCE_FIELD = 'check-email-log-list-nonce-field';
 	const LOG_LIST_ACTION_NONCE = 'check-email-log-list-nonce';
-        const CAPABILITY = 'manage_email_logs';
+        const CAPABILITY = 'manage_check_email';
 
 	/**
 	 * Setup hooks.
@@ -32,7 +32,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
                             Check_Email_Status_Page::PAGE_SLUG,
                             __( 'View Logs', 'check-email'),
                             __( 'View Logs', 'check-email'),
-                            'manage_options',
+                            'manage_check_email',
                             self::PAGE_SLUG,
                             array( $this, 'render_page' )
                     );

@@ -45,7 +45,7 @@ function check_email_delete_db_data() {
 			$role = get_role( $role_name );
 
 			if ( ! is_null( $role ) ) {
-				$role->remove_cap( 'manage_email_logs' );
+				$role->remove_cap( 'manage_check_email' );
 			}
 		}
 	}
