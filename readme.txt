@@ -1,5 +1,5 @@
 === Check & Log Email ===
-Contributors: machothemes, silkalns, giucu91
+Contributors: wpchill, silkalns, giucu91
 Tags: check, test, email, smtp, pop, send, delivery
 Requires at least: 5.0
 Tested up to: 5.5
