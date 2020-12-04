@@ -194,7 +194,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
             <em>
 				<?php printf(
 					__( '%1$s There are %2$s email logs currently logged in the database.', 'check-email' ),
-					'<strong>Note:</strong>',
+					'<strong>' . __('Note', 'check-email') . ':</strong>',
 					'<strong>' . esc_attr( $logs_count ) . '</strong>'
 				); ?>
             </em>
