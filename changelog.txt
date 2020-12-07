@@ -1,4 +1,7 @@
 == Changelog ==
+= 1.0.2 =
+* Added translation for roles and notices.
+
 = 1.0.1 =
 * Fixed admin menu capabilities.
 * Rezolved incompatibility with Wp Mail Logging.
