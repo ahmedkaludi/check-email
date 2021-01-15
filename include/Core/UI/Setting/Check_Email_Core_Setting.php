@@ -169,7 +169,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$admin_email_field_name          = $field_name . '[admin_email]';
 		$logs_threshold_field_name       = $field_name . '[logs_threshold]';
 
-		$check_email  = check_email();
+		$check_email  = wpchill_check_email();
 		$logs_count = $check_email->table_manager->get_logs_count();
 
 		$admin_email_input_field = sprintf(
@@ -279,7 +279,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	}
 
 	public function trigger_threshold_met_notification_email() {
-		$check_email  = check_email();
+		$check_email  = wpchill_check_email();
 		$logs_count = absint( $check_email->table_manager->get_logs_count() );
 
 		$setting_data = $this->get_value();
@@ -339,7 +339,7 @@ EOT;
 	}
         
 	public function render_log_threshold_met_notice() {
-		$check_email      = check_email();
+		$check_email      = wpchill_check_email();
 		$logs_count     = absint( $check_email->table_manager->get_logs_count() );
 		$notice_message = sprintf( __( 'Currently there are %1$s logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ),
 			$logs_count . _n( ' email log', ' email logs', $logs_count, 'check-email' )

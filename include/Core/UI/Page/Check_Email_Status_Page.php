@@ -215,7 +215,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
         }
         
         public function checkemail_assets() {
-		$check_email      = check_email();
+		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		wp_enqueue_style( 'checkemail-css', $plugin_dir_url . 'assets/css/admin/checkemail.css', array(), $check_email->get_version() );
 		wp_enqueue_script( 'checkemail', $plugin_dir_url . 'assets/js/admin/checkemail.js', array(), $check_email->get_version(), true );

@@ -148,7 +148,7 @@ class Check_Email_Log_List_Action implements Loadie {
 	}
 
 	protected function get_table_manager() {
-		$check_email = check_email();
+		$check_email = wpchill_check_email();
 
 		return $check_email->table_manager;
 	}

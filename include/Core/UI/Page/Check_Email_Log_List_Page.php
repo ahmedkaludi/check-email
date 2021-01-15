@@ -44,7 +44,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	}
 
 	public function render_page() {
-                $check_email      = check_email();
+                $check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
@@ -107,7 +107,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	}
 
 	public function get_table_manager() {
-		$check_email = check_email();
+		$check_email = wpchill_check_email();
 
 		return $check_email->table_manager;
 	}
@@ -122,7 +122,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 
 	public function load_view_logs_assets( $hook ) {
 
-		$check_email      = check_email();
+		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 
 		wp_register_style( 'jquery-ui-css', $plugin_dir_url . 'assets/vendor/jquery-ui/themes/base/jquery-ui.min.css', array(), '1.12.1' );

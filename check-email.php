@@ -109,7 +109,7 @@ function check_email_log( $plugin_file ) {
 	add_action( 'plugins_loaded', array( $check_email, 'load' ), 101 );
 }
 
-function check_email() {
+function wpchill_check_email() {
 	global $check_email;
 	return $check_email;
 }
