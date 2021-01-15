@@ -44,6 +44,9 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	}
 
 	public function render_page() {
+                $check_email      = check_email();
+		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
+		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
                 if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {
                     add_thickbox();
@@ -123,7 +126,6 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 
 		wp_register_style( 'jquery-ui-css', $plugin_dir_url . 'assets/vendor/jquery-ui/themes/base/jquery-ui.min.css', array(), '1.12.1' );
-		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
 
 		wp_register_script( 'insertionQ', $plugin_dir_url . 'assets/vendor/insertion-query/insQ.min.js', array( 'jquery' ), '1.0.4', true );
 
