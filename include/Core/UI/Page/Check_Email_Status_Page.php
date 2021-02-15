@@ -95,7 +95,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         <br />
                         <h3>' . __( "Send a test email", "check-email" ) . '</h3>
                         <hr />
-                        <form action="/wp-admin/admin.php?page=check-email-status" method="post">
+                        <form action="' . get_admin_url() . 'admin.php?page=check-email-status" method="post">
                         <p><label for="checkemail_to">' . __( "Send test email to:", "check-email" ) . '</label>
                         <input type="text" name="checkemail_to" id="checkemail_to" class="text"';
                                 if ( isset( $_POST["checkemail_to"] ) ) {
