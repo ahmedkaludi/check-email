@@ -31,7 +31,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			'cb' => '<input type="checkbox" />',
 		);
 
-		foreach ( array( 'sent_date', 'result', 'to_email', 'subject' ) as $column ) {
+		foreach ( array( 'sent_date', 'result', 'to_email', 'from_email', 'subject' ) as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
 		}
 
@@ -42,6 +42,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$sortable_columns = array(
 			'sent_date' => array( 'sent_date', true ), // true means it's already sorted.
 			'to_email'  => array( 'to_email', false ),
+			'from_email'=> array( 'from_email', false ),
 			'subject'   => array( 'subject', false ),
 		);
 
@@ -104,6 +105,18 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 		$email = apply_filters( 'check_email_log_list_column_to_email', esc_html( $item->to_email ) );
 
+		return $email;
+	}
+
+	protected function column_from_email( $item ) {
+		$from = '';
+		if (isset($item->headers) && !empty($item->headers)) {
+			$headers = imap_rfc822_parse_headers($item->headers);
+			if (isset($headers->fromaddress) && !empty($headers->fromaddress)) {
+				$from = $headers->fromaddress;
+			}
+		}
+		$email = apply_filters( 'check_email_log_list_column_from_email', esc_html( $from ) );
 		return $email;
 	}
 

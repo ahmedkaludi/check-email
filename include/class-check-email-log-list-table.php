@@ -17,6 +17,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 			'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
 			'sent_date' => __( 'Sent at', 'check-email' ),
 			'to'        => __( 'To', 'check-email' ),
+			'from'      => __( 'From', 'check-email' ),
 			'subject'   => __( 'Subject', 'check-email' ),
 		);
 
@@ -27,6 +28,7 @@ class Check_Email_Log_List_Table extends WP_List_Table {
 		$sortable_columns = array(
 			'sent_date'   => array( 'sent_date', true ), //true means it's already sorted
 			'to'          => array( 'to_email', false ),
+			'from_email'  => array( 'from_email', false ),
 			'subject'     => array( 'subject', false ),
 		);
 		return $sortable_columns;
