@@ -14,7 +14,7 @@ module.exports = function( grunt ) {
 		checktextdomain: {
 			standard: {
 				options: {
-					text_domain: [ 'modula-best-grid-gallery' ], //Specify allowed domain(s)
+					text_domain: [ 'check-email' ], //Specify allowed domain(s)
 					create_report_file: 'true',
 					keywords: [ //List keyword specifications
 						'__:1,2d',
@@ -51,9 +51,9 @@ module.exports = function( grunt ) {
 	                domainPath: 'languages/',         // Where to save the POT file.
 	                exclude: [],                      // List of files or directories to ignore.
 	                include: [],                      // List of files or directories to include.
-	                mainFile: 'Modula.php',                     // Main project file.
+	                mainFile: 'check-email.php',                     // Main project file.
 	                potComments: '',                  // The copyright at the beginning of the POT file.
-	                potFilename: 'modula-best-grid-gallery.po',                  // Name of the POT file.
+	                potFilename: 'check-email.po',                  // Name of the POT file.
 	                potHeaders: {
 	                    poedit: true,                 // Includes common Poedit headers.
 	                    'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
@@ -90,7 +90,7 @@ module.exports = function( grunt ) {
 					'!postcss.config.js',
 					'!webpack.config.js',
 					'!set_tags.sh',
-					'!modula-best-grid-gallery.zip',
+					'!check-email.zip',
 					'!old/**',
 					'!nbproject/**'
 				],
@@ -120,7 +120,7 @@ module.exports = function( grunt ) {
 		'checktextdomain',
 		'makepot'
 	] );
-	
+
 	// Build task
 	grunt.registerTask( 'build-archive', [
 		'clean:init',
