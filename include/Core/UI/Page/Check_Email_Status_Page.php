@@ -26,7 +26,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	 * Register page.
 	 */
 	public function register_page() {
-            
+
                 add_menu_page(
                         __( 'Check & Log Email', 'check-email' ),
                         __( 'Check & Log Email', 'check-email' ),
@@ -36,7 +36,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         'dashicons-email-alt',
                         26
                 );
-                
+
 		$this->page = add_submenu_page(
 			Check_Email_Status_Page::PAGE_SLUG,
 			__( 'Status', 'check-email' ),
@@ -55,17 +55,17 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         <?php
                         global $current_user;
                         global $phpmailer;
-                        
+
                         $from_name = '';
                         $from_email = apply_filters( 'wp_mail_from', $current_user->user_email );
                         $from_name = apply_filters( 'wp_mail_from_name', $from_name );
-                        
+
                         $headers = '';
-                        if ( isset($_REQUEST['_wpnonce']) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'checkemail' ) ) {		
+                        if ( isset($_REQUEST['_wpnonce']) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'checkemail' ) ) {
                             $headers = $this->checkemail_send( $_POST['checkemail_to'], $_POST['checkemail_headers'] );
                         }
                         ?>
-                        
+
                         <div id="CKE_banner">
                             <h2>
                                 <img draggable="false" role="img" class="emoji" alt="👉" src="https://s.w.org/images/core/emoji/13.0.1/svg/1f449.svg">
@@ -75,18 +75,18 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                             <p><?php _e('Help us build the next set of features for Check & Log Email. Tell us what you think and we will make it happen!', 'check-email') ?></p>
                             <a target="_blank" rel="noreferrer noopener" href="https://bit.ly/33QzqBU" class="button button-primary button-hero"><?php _e('Click here', 'check-email') ?></a>
                         </div>
-                        
+
                         <?php
                         require_once 'partials/check-email-admin-status-display.php';
                         ?>
 		</div>
 		<?php
 	}
-        
+
         // send a test email
         private function checkemail_send($to, $headers = "auto") {
                 global $current_user;
-                
+
                 $from_name = '';
                 $from_email = apply_filters( 'wp_mail_from', $current_user->user_email );
                 $from_name = apply_filters( 'wp_mail_from_name', $from_name );
@@ -97,7 +97,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\r\n";
                 } else {
                         $break = chr( 10 );
-                        if ( stripslashes( $_POST["checkemail_break"] ) == '\r\n' ) {
+                        if ( isset( $_POST['checkemail_break'] ) && stripslashes( $_POST["checkemail_break"] ) == '\r\n' ) {
                                 $break = chr( 13 ) . chr( 10 );
                         }
                         $headers = "MIME-Version: " . trim( $_POST["checkemail_mime"] ) . $break .
@@ -110,7 +110,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                 wp_mail( $to, $title, $body, $headers );
                 return $headers;
         }
-        
+
         public function checkemail_assets() {
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
