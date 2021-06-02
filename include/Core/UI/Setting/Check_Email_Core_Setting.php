@@ -48,7 +48,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	}
 
 	public function render_allowed_user_roles_settings( $args ) {
-           
+
 		$option         = $this->get_value();
 		$selected_roles = $option[ $args['id'] ];
 
@@ -95,16 +95,16 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
             $field_name = $this->section->option_name . '[' . $args['id'] . ']';
             ?>
-                
+
             <input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
             <?php _e( 'Check this box if you would like to log your emails.', 'check-email' ) ?>
             <?php
 	}
-        
+
         public function sanitize_enable_logs( $value ) {
 		return sanitize_text_field( $value );
 	}
-        
+
 	public function render_remove_on_uninstall_settings( $args ) {
 		$option      = $this->get_value();
 		$remove_data = $option[ $args['id'] ];
@@ -161,6 +161,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 	public function render_db_size_notification_settings( $args ) {
 		$option                    = $this->get_value();
+
 		$db_size_notification_data = $option[ $args['id'] ];
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
@@ -168,6 +169,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$db_size_notification_field_name = $field_name . '[notify]';
 		$admin_email_field_name          = $field_name . '[admin_email]';
 		$logs_threshold_field_name       = $field_name . '[logs_threshold]';
+
 
 		$check_email  = wpchill_check_email();
 		$logs_count = $check_email->table_manager->get_logs_count();
@@ -181,8 +183,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		);
 		?>
 
-        <input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php
-		checked( true, $db_size_notification_data['notify'] ); ?> />
+        <input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php !isset( $db_size_notification_data['notify'] ) ? false :
+		checked( 'true', $db_size_notification_data['notify'] ); ?> />
 		<?php
 		// The values within each field are already escaped.
 		printf( __( 'Notify %1$s if there are more than %2$s logs.', 'check-email' ),
@@ -256,7 +258,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		return $db_size_notification_data;
 	}
-        
+
 	public function verify_email_log_threshold() {
 		$cron_hook = 'check_email_trigger_notify_email_when_log_threshold_met';
 		if ( ! wp_next_scheduled( $cron_hook ) ) {
@@ -337,7 +339,7 @@ EOT;
 	public function register_threshold_met_admin_notice() {
 		add_action( 'admin_notices', array( $this, 'render_log_threshold_met_notice' ) );
 	}
-        
+
 	public function render_log_threshold_met_notice() {
 		$check_email      = wpchill_check_email();
 		$logs_count     = absint( $check_email->table_manager->get_logs_count() );
