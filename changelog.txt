@@ -1,6 +1,6 @@
 == Changelog ==
 
-= v1.0.2 - 15/02/2021 =
+= v1.0.2 - 16/06/2021 =
 - Added: Translation for roles and notices. ( https://github.com/WPChill/check-email/issues/10 )
 - Added: Headers of the emails in the view log tab. ( https://github.com/WPChill/check-email/issues/12 )
 - Fixed: Admin subpages link bug. ( https://github.com/WPChill/check-email/issues/9 )
