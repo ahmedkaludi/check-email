@@ -19,7 +19,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	 */
 	public function load() {
 		parent::load();
-                
+
                 add_action( 'admin_enqueue_scripts', array( $this, 'checkemail_assets' ) );;
 	}
 
@@ -27,7 +27,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	 * Register page.
 	 */
 	public function register_page() {
-            
+
                 add_menu_page(
                         __( 'Check & Log Email', 'check-email' ),
                         __( 'Check & Log Email', 'check-email' ),
@@ -37,7 +37,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         'dashicons-email-alt',
                         26
                 );
-                
+
 		$this->page = add_submenu_page(
 			Check_Email_Status_Page::PAGE_SLUG,
 			__( 'Status', 'check-email' ),
@@ -73,7 +73,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         if ( isset( $_POST["checkemail_to"]) && $_POST["checkemail_to"] != "" )
                         {
                                 $nonce = $_REQUEST['_wpnonce'];
-                                if ( wp_verify_nonce( $nonce, 'checkemail' ) ) {			
+                                if ( wp_verify_nonce( $nonce, 'checkemail' ) ) {
                                         $headers = $this->checkemail_send( $_POST["checkemail_to"], $_POST["checkemail_headers"] );
                                         echo '<div class="updated"><p>' . __( 'The test email has been sent by WordPress. Please note this does NOT mean it has been delivered. See <a href="http://codex.wordpress.org/Function_Reference/wp_mail">wp_mail in the Codex</a> for more information. The headers sent were:', "check-email" ) . '</p><pre>' . str_replace( chr( 10 ), '\n' . "\n", str_replace( chr( 13 ), '\r', $headers ) ) . '</pre></div>';
                                 } else {
@@ -185,9 +185,17 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 		</div>
 		<?php
 	}
-        
+
         // send a test email
         private function checkemail_send($to, $headers = "auto") {
+                $defaults = array(
+                        'checkemail_break' => '\r\n',
+                        'checkemail_mime'  => '1.0',
+                        'checkemail_from'  => '',
+                        'checkemail_cc'    => '',
+                        'checkemail_type'  => 'text/html; charset=iso-8859-1',
+                );
+                $_POST = wp_parse_args( $_POST, $defaults );
                 global $current_user;
                 $from_name = '';
 
@@ -213,7 +221,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                 wp_mail( $to, $title, $body, $headers );
                 return $headers;
         }
-        
+
         public function checkemail_assets() {
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
