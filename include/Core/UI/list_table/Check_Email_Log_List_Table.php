@@ -10,7 +10,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Table to display Check Email Logs.
  */
 class Check_Email_Log_List_Table extends \WP_List_Table {
-    
+
 	protected $page;
 
 	public function __construct( $page, $args = array() ) {
@@ -37,7 +37,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 		return apply_filters( 'check_email_manage_log_columns', $columns );
 	}
-        
+
 	protected function get_sortable_columns() {
 		$sortable_columns = array(
 			'sent_date' => array( 'sent_date', true ), // true means it's already sorted.
@@ -111,9 +111,18 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	protected function column_from_email( $item ) {
 		$from = '';
 		if (isset($item->headers) && !empty($item->headers)) {
-			$headers = imap_rfc822_parse_headers($item->headers);
-			if (isset($headers->fromaddress) && !empty($headers->fromaddress)) {
-				$from = $headers->fromaddress;
+
+			if(function_exists('imap_rfc822_parse_headers') ) {
+
+				$headers = imap_rfc822_parse_headers($item->headers);
+				if (isset($headers->fromaddress) && !empty($headers->fromaddress)) {
+					$from = $headers->fromaddress;
+				}
+			}
+			else {
+				$find_from = substr($item->headers, strpos($item->headers, 'From') + 5 );
+				echo $find_from;
+
 			}
 		}
 		$email = apply_filters( 'check_email_log_list_column_from_email', esc_html( $from ) );
@@ -133,7 +142,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	}
 
 	protected function column_result( $item ) {
-            
+
 		if ( is_null( $item->result ) ) {
 			return '';
 		}
