@@ -135,6 +135,7 @@ function wp_chill_check_email_get_column_label_map() {
 	$labels = array(
 		'id'          => __( 'ID', 'check-email' ),
 		'to_email'    => __( 'To', 'check-email' ),
+		'from_email'    => __( 'From', 'check-email' ),
 		'subject'     => __( 'Subject', 'check-email' ),
 		'message'     => __( 'Message', 'check-email' ),
 		'attachments' => __( 'Attachment', 'check-email' ),

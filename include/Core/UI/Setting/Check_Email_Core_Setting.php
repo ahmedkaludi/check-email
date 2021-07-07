@@ -95,13 +95,12 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
-
-			<input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
-			<?php _e( 'Check this box if you would like to log your emails.', 'check-email' ); ?>
-			<?php
+            <input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
+            <?php _e( 'Check this box if you would like to log your emails.', 'check-email' ) ?>
+            <?php
 	}
 
-	public function sanitize_enable_logs( $value ) {
+        public function sanitize_enable_logs( $value ) {
 		return sanitize_text_field( $value );
 	}
 
@@ -161,6 +160,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 	public function render_db_size_notification_settings( $args ) {
 		$option                    = $this->get_value();
+
 		$db_size_notification_data = $option[ $args['id'] ];
 		$defaults = array(
 			'notify' => false,
@@ -174,8 +174,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$admin_email_field_name          = $field_name . '[admin_email]';
 		$logs_threshold_field_name       = $field_name . '[logs_threshold]';
 
-		$check_email = wpchill_check_email();
-		$logs_count  = $check_email->table_manager->get_logs_count();
+
+		$check_email  = wpchill_check_email();
+		$logs_count = $check_email->table_manager->get_logs_count();
 
 		$admin_email_input_field = sprintf(
 			'<input type="email" name="%1$s" value="%2$s" size="35" />',
@@ -190,7 +191,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		);
 		?>
 
-		<input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php !isset( $db_size_notification_data['notify'] ) ? false :
+        <input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php !isset( $db_size_notification_data['notify'] ) ? false :
 		checked( 'true', $db_size_notification_data['notify'] ); ?> />
 		<?php
 		// The values within each field are already escaped.

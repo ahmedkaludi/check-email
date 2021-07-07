@@ -1,4 +1,6 @@
 == Changelog ==
+= v1.0.3 - TBD
+- Added: From column in Email Logs. ( https://github.com/WPChill/check-email/issues/24 )
 
 = v1.0.2 - 16/06/2021 =
 - Added: Translation for roles and notices. ( https://github.com/WPChill/check-email/issues/10 )
@@ -14,13 +16,13 @@
 * Fixed admin menu capabilities.
 * Rezolved incompatibility with Wp Mail Logging.
 
-= 1.0.0 = 
+= 1.0.0 =
 * Added Email Logs for all the emails sent through Wordpress.
 
 = 0.6.1 =
 Added feedback form. Improved CSS backend.
 
-= 0.6.0 = 
+= 0.6.0 =
 Fixed loopback error.
 
 = 0.5.7 =
@@ -62,7 +64,7 @@ Fixed version number
 = 0.1.2 =
 Fixed bug in Plugin Register caused by latest version of WordPress
 
-= 0.1.1 = 
+= 0.1.1 =
 Fixed typo in plugin name
 
 = 0.1 =
