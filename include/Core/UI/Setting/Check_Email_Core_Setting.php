@@ -162,7 +162,12 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	public function render_db_size_notification_settings( $args ) {
 		$option                    = $this->get_value();
 		$db_size_notification_data = $option[ $args['id'] ];
-
+		$defaults = array(
+			'notify' => false,
+			'logs_threshold' => 5000,
+			'admin_email' => 'dev@email.com',
+		);
+		$db_size_notification_data = wp_parse_args( $db_size_notification_data, $defaults );
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		// Since we store three different fields, give each field a unique name.
 		$db_size_notification_field_name = $field_name . '[notify]';
@@ -185,8 +190,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		);
 		?>
 
-		<input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php checked( true, $db_size_notification_data['notify'] ); ?>
-		 />
+		<input id="check-email-enable-db-notifications" type="checkbox" name="<?php echo esc_attr( $db_size_notification_field_name ); ?>" value="true" <?php !isset( $db_size_notification_data['notify'] ) ? false :
+		checked( 'true', $db_size_notification_data['notify'] ); ?> />
 		<?php
 		// The values within each field are already escaped.
 		printf(
