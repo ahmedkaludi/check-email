@@ -12,7 +12,7 @@ class Check_Email_Dashboard_Widget implements Loadie {
 	public function register() {
 		wp_add_dashboard_widget(
 			'check_email_dashboard_widget',
-			__( 'Check Email Summary', 'check-email' ),
+			esc_html__( 'Check Email Summary', 'check-email' ),
 			array( $this, 'render' )
 		);
 	}
