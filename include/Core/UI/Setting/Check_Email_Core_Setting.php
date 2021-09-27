@@ -67,7 +67,11 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $role_id ); ?>"
 					<?php \CheckEmail\Util\wp_chill_check_email_array_checked( $selected_roles, $role_id ); ?>>
 
+<<<<<<< Updated upstream
 				<?php echo translate_user_role($role['name']); ?>
+=======
+				<?php echo esc_html( translate_user_role( $role['name'] ) ); ?>
+>>>>>>> Stashed changes
 			</p>
 		<?php endforeach; ?>
 
@@ -347,9 +351,15 @@ EOT;
 			$logs_count . _n( ' email log', ' email logs', $logs_count, 'check-email' )
 			 );
 		?>
+<<<<<<< Updated upstream
         <div class="notice notice-warning is-dismissible">
             <p><?php echo $notice_message; ?></p>
         </div>
+=======
+		<div class="notice notice-warning is-dismissible">
+			<p><?php echo esc_html( $notice_message ); ?></p>
+		</div>
+>>>>>>> Stashed changes
 		<?php
 	}
 

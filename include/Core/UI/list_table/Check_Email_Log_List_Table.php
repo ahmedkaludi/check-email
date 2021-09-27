@@ -80,7 +80,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 		$delete_url = add_query_arg(
 			array(
-				'page'                   => $_REQUEST['page'],
+				'page'                   => ( isset( $_REQUEST['page'] ) and !empty ($_REQUEST['page']) ) ? sanitize_text_field( $_REQUEST['page'] ) : '',
 				'action'                 => 'check-email-log-list-delete',
 				$this->_args['singular'] => $item->id,
 			)
@@ -212,8 +212,8 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />';
 		?>
 		<p class="search-box">
-			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo esc_attr( $input_date_id ); ?>" name="d" value="<?php echo $input_date_val; ?>" placeholder="<?php _e( 'Search by date', 'check-email' ); ?>" />
+			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
+			<input type="search" id="<?php echo esc_attr( $input_date_id ); ?>" name="d" value="<?php echo esc_html( $input_date_val ); ?>" placeholder="<?php _e( 'Search by date', 'check-email' ); ?>" />
 			<input type="search" id="<?php echo esc_attr( $input_text_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php _e( 'Search by term', 'check-email' ); ?>" />
 			<?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>
 		</p>

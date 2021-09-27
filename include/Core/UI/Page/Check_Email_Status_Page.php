@@ -93,17 +93,17 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 
                 if ( $headers == "auto" ) {
                         $headers = "MIME-Version: 1.0\r\n" .
-                        "From: " . $from_email . "\r\n" .
+                        "From: " . esc_html( $from_email ). "\r\n" .
                         "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\r\n";
                 } else {
                         $break = chr( 10 );
                         if ( isset( $_POST['checkemail_break'] ) && stripslashes( $_POST["checkemail_break"] ) == '\r\n' ) {
                                 $break = chr( 13 ) . chr( 10 );
                         }
-                        $headers = "MIME-Version: " . trim( $_POST["checkemail_mime"] ) . $break .
-                        "From: " . trim( $_POST["checkemail_from"] ) . $break .
-                        "Cc: " . trim( $_POST["checkemail_cc"] ) . $break .
-                        "Content-Type: " . trim( $_POST["checkemail_type"] ) . $break;
+                        $headers = "MIME-Version: " . trim(isset( $_POST['checkemail_mime'] ) ? esc_attr($_POST['checkemail_mime']) : '1.0'). $break .
+                        "From: " . trim( isset( $_POST['checkemail_from'] ) ? esc_attr($_POST['checkemail_from']) : esc_html( $from_email ) ). $break .
+                        "Cc: " . trim( isset( $_POST['checkemail_cc'] ) ? esc_attr($_POST['checkemail_cc']) : '' ). $break .
+                        "Content-Type: " . trim( isset( $_POST['checkemail_type'] ) ? esc_attr($_POST['checkemail_type']) : ('text/html; charset='.get_option('blog_charset')) ). $break;
                 }
                 $title = __( sprintf( "Test email from %s ", get_bloginfo("url") ), "check-email" );
                 $body = __( sprintf( 'This test email proves that your WordPress installation at %1$s can send emails.\n\nSent: %2$s', get_bloginfo( "url" ), date( "r" ) ), "check-email" );
