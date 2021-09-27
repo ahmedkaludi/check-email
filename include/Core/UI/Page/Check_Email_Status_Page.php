@@ -100,13 +100,28 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         if ( isset( $_POST['checkemail_break'] ) && stripslashes( $_POST["checkemail_break"] ) == '\r\n' ) {
                                 $break = chr( 13 ) . chr( 10 );
                         }
-                        $headers = "MIME-Version: " . trim(isset( $_POST['checkemail_mime'] ) ? esc_attr($_POST['checkemail_mime']) : '1.0'). $break .
-                        "From: " . trim( isset( $_POST['checkemail_from'] ) ? esc_attr($_POST['checkemail_from']) : esc_html( $from_email ) ). $break .
-                        "Cc: " . trim( isset( $_POST['checkemail_cc'] ) ? esc_attr($_POST['checkemail_cc']) : '' ). $break .
-                        "Content-Type: " . trim( isset( $_POST['checkemail_type'] ) ? esc_attr($_POST['checkemail_type']) : ('text/html; charset='.get_option('blog_charset')) ). $break;
-                }
-                $title = __( sprintf( "Test email from %s ", get_bloginfo("url") ), "check-email" );
-                $body = __( sprintf( 'This test email proves that your WordPress installation at %1$s can send emails.\n\nSent: %2$s', get_bloginfo( "url" ), date( "r" ) ), "check-email" );
+                        $defaults = array(
+                                'MIME-Version'  => '1.0',
+                                'From'	        => esc_html( $from_email ),
+                                'Cc'            => '',
+                                'Content-Type'  => 'text/html; charset='.get_option('blog_charset')
+                        );
+                        $args = array(
+                                'MIME-Version'  => $_POST['checkemail_mime'],
+                                'From'		=> esc_html($_POST['checkemail_from']),
+                                'Cc'            => esc_html($_POST['checkemail_cc']),
+                                'Content-Type'  => esc_html($_POST['checkemail_type'])
+                        );
+                                
+                        $args = wp_parse_args($args,$defaults);
+                        
+                        $headers = "MIME-Version: " . trim($args['MIME-Version']). $break .
+                                "From: " . trim($args['From']). $break .
+                                "Cc: " . trim($args['Cc']). $break .
+                                "Content-Type: " . trim( $args['Content-Type'] ). $break;
+                        }
+                $title = sprintf( __( "Test email from %s ", "check-email"),get_bloginfo("url") );
+                $body = sprintf( __( 'This test email proves that your WordPress installation at %1$s can send emails.\n\nSent: %2$s', "check-email" ), get_bloginfo( "url" ), date( "r" ) );
                 wp_mail( $to, $title, $body, $headers );
                 return $headers;
         }
