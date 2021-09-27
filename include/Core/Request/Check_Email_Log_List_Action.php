@@ -46,19 +46,19 @@ class Check_Email_Log_List_Action implements Loadie {
 			?>
 			<table style="width: 100%;">
 				<tr style="background: #eee;">
-					<td style="padding: 5px;"><?php _e( 'Sent at', 'check-email' ); ?>:</td>
+					<td style="padding: 5px;"><?php esc_html_e( 'Sent at', 'check-email' ); ?>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['sent_date'] ); ?></td>
 				</tr>
 				<tr style="background: #eee;">
-					<td style="padding: 5px;"><?php _e( 'To', 'check-email' ); ?>:</td>
+					<td style="padding: 5px;"><?php esc_html_e( 'To', 'check-email' ); ?>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['to_email'] ); ?></td>
 				</tr>
 				<tr style="background: #eee;">
-					<td style="padding: 5px;"><?php _e( 'Subject', 'check-email' ); ?>:</td>
+					<td style="padding: 5px;"><?php esc_html_e( 'Subject', 'check-email' ); ?>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['subject'] ); ?></td>
 				</tr>
                                 <tr style="background: #eee;">
-					<td style="padding: 5px;"><?php _e( 'Headers', 'check-email' ); ?>:</td>
+					<td style="padding: 5px;"><?php esc_html_e( 'Headers', 'check-email' ); ?>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['headers'] ); ?></td>
 				</tr>
 
@@ -70,8 +70,8 @@ class Check_Email_Log_List_Action implements Loadie {
 
 			<div id="tabs">
 				<ul data-active-tab="<?php echo absint( $active_tab ); ?>">
-					<li><a href="#tabs-text"><?php _e( 'Raw Email Content', 'check-email' ); ?></a></li>
-					<li><a href="#tabs-preview"><?php _e( 'Preview Content as HTML', 'check-email' ); ?></a></li>
+					<li><a href="#tabs-text"><?php esc_html_e( 'Raw Email Content', 'check-email' ); ?></a></li>
+					<li><a href="#tabs-preview"><?php esc_html_e( 'Preview Content as HTML', 'check-email' ); ?></a></li>
 				</ul>
 
 				<div id="tabs-text">
@@ -84,7 +84,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			</div>
 
 			<div id="view-message-footer">
-				<a href="#" class="button action" id="thickbox-footer-close"><?php _e( 'Close', 'check-email' ); ?></a>
+				<a href="#" class="button action" id="thickbox-footer-close"><?php esc_html_e( 'Close', 'check-email' ); ?></a>
 			</div>
 
 			<?php
@@ -135,11 +135,11 @@ class Check_Email_Log_List_Action implements Loadie {
 	}
 
 	protected function render_log_deleted_notice( $logs_deleted ) {
-		$message = __( 'There was some problem in deleting the email logs', 'check-email' );
+		$message = esc_html__( 'There was some problem in deleting the email logs', 'check-email' );
 		$type    = 'error';
 
 		if ( absint( $logs_deleted ) > 0 ) {
-			$message = sprintf( _n( '1 email log deleted.', '%s email logs deleted', $logs_deleted, 'check-email' ), $logs_deleted );
+			$message = sprintf( esc_html( _n( '1 email log deleted.', '%s email logs deleted', $logs_deleted, 'check-email' )), $logs_deleted );
 			$type    = 'updated';
 		}
 

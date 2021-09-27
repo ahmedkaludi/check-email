@@ -9,15 +9,15 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 	protected function initialize() {
 		$this->section->id          = 'check-email-log-core';
-		$this->section->title       = __( 'Core Check Email Log Settings', 'check-email' );
+		$this->section->title       = esc_html__( 'Core Check Email Log Settings', 'check-email' );
 		$this->section->option_name = 'check-email-log-core';
 
 		$this->section->field_labels = array(
-			'allowed_user_roles'      => __( 'Allowed User Roles', 'check-email' ),
-			'enable_logs'             => __( 'Enable Logs', 'check-email' ),
-			'enable_dashboard_widget' => __( 'Enable Dashboard Widget', 'check-email' ),
-			'db_size_notification'    => __( 'Database Size Notification', 'check-email' ),
-			'remove_on_uninstall'     => __( 'Remove Data on Uninstall?', 'check-email' ),
+			'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
+			'enable_logs'             => esc_html__( 'Enable Logs', 'check-email' ),
+			'enable_dashboard_widget' => esc_html__( 'Enable Dashboard Widget', 'check-email' ),
+			'db_size_notification'    => esc_html__( 'Database Size Notification', 'check-email' ),
+			'remove_on_uninstall'     => esc_html__( 'Remove Data on Uninstall?', 'check-email' ),
 		);
 
 		$this->section->default_value = array(
@@ -59,7 +59,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		?>
 
 		<p>
-			<input type="checkbox" checked disabled><?php _e( 'Administrator', 'check-email' ); ?>
+			<input type="checkbox" checked disabled><?php esc_html_e( 'Administrator', 'check-email' ); ?>
 		</p>
 
 		<?php foreach ( $available_roles as $role_id => $role ) : ?>
@@ -73,8 +73,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		<p>
 			<em>
-				<?php _e( '<strong>Note:</strong> Users with the above User Roles can view Status and Logs Page.', 'check-email' ); ?>
-				<?php _e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
+				<?php esc_html_e( '<strong>Note:</strong> Users with the above User Roles can view Status and Logs Page.', 'check-email' ); ?>
+				<?php esc_html_e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
 			</em>
 		</p>
 
@@ -96,7 +96,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
             <input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
-            <?php _e( 'Check this box if you would like to log your emails.', 'check-email' ) ?>
+            <?php esc_html_e( 'Check this box if you would like to log your emails.', 'check-email' ) ?>
             <?php
 	}
 
@@ -112,7 +112,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		?>
 
 		<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $remove_data ); ?>>
-		<?php _e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ); ?>
+		<?php esc_html_e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ); ?>
 
 		<?php
 	}
@@ -153,7 +153,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		?>
 
 		<input id="check-email-enable-widget" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_dashboard_widget ); ?>>
-		<?php _e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ); ?>
+		<?php esc_html_e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ); ?>
 
 		<?php
 	}
@@ -196,7 +196,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		<?php
 		// The values within each field are already escaped.
 		printf(
-			__( 'Notify %1$s if there are more than %2$s logs.', 'check-email' ),
+			esc_html__( 'Notify %1$s if there are more than %2$s logs.', 'check-email' ),
 			$admin_email_input_field,
 			$logs_threshold_input_field
 		);
@@ -205,8 +205,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			<em>
 				<?php
 				printf(
-					__( '%1$s There are %2$s email logs currently logged in the database.', 'check-email' ),
-					'<strong>' . __( 'Note', 'check-email' ) . ':</strong>',
+					esc_html__( '%1$s There are %2$s email logs currently logged in the database.', 'check-email' ),
+					'<strong>' . esc_html__( 'Note', 'check-email' ) . ':</strong>',
 					'<strong>' . esc_attr( $logs_count ) . '</strong>'
 				);
 				?>
@@ -216,7 +216,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			<p>
 				<?php
 				printf(
-					__( 'Last notification email was sent on %1$s. Click %2$s button to reset sending the notification.', 'check-email' ),
+					esc_html__( 'Last notification email was sent on %1$s. Click %2$s button to reset sending the notification.', 'check-email' ),
 					'<strong>' . get_date_from_gmt( date( 'Y-m-d H:i:s', $db_size_notification_data['threshold_email_last_sent'] ), \CheckEmail\Util\wp_chill_check_email_get_user_defined_date_format() ) . '</strong>',
 					'<b>Save</b>'
 				);
@@ -330,7 +330,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$this->register_threshold_met_admin_notice();
 
 		if ( $is_notification_enabled && is_email( $admin_email ) ) {
-			$subject = sprintf( __( 'Check & Log Email: Your log threshold of %s has been met', 'check-email' ), $logs_threshold );
+			$subject = sprintf( esc_html__( 'Check & Log Email: Your log threshold of %s has been met', 'check-email' ), $logs_threshold );
 			$message = <<<EOT
 <p>This email is generated by the Check & Log Email plugin.</p>
 <p>Your log threshold of $logs_threshold has been met. You may manually delete the logs to keep your database table in size.</p>
@@ -357,8 +357,8 @@ EOT;
 		$check_email    = wpchill_check_email();
 		$logs_count     = absint( $check_email->table_manager->get_logs_count() );
 		$notice_message = sprintf(
-			__( 'Currently there are %1$s logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ),
-			$logs_count . _n( ' email log', ' email logs', $logs_count, 'check-email' )
+			esc_html__( 'Currently there are %1$s logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ),
+			$logs_count . esc_html(_n( ' email log', ' email logs', $logs_count, 'check-email' ))
 		);
 		?>
 		<div class="notice notice-warning is-dismissible">

@@ -41,7 +41,7 @@ if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
 			<p>
 				<?php
 				printf(
-					__( 'Check & Log Email requires at least PHP 5.6 to function properly. Please upgrade PHP.', 'check-email' )
+					esc_html__( 'Check & Log Email requires at least PHP 5.6 to function properly. Please upgrade PHP.', 'check-email' )
 				);
 				?>
 			</p>

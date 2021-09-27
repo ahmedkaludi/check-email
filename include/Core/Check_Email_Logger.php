@@ -39,8 +39,8 @@ class Check_Email_Logger implements Loadie {
 
                     $log = array(
                             'to_email'        => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['to'] ),
-                            'subject'         => $mail_info['subject'],
-                            'message'         => $mail_info['message'],
+                            'subject'         => esc_html($mail_info['subject']),
+                            'message'         => wp_kses_post($mail_info['message']),
                             'headers'         => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['headers'], "\n" ),
                             'attachment_name' => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['attachments'] ),
                             'sent_date'       => current_time( 'mysql' ),
