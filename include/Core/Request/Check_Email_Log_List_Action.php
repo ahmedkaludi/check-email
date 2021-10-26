@@ -14,6 +14,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
 		add_action( 'check-email-log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
+		add_action( 'admin_init', array( $this, 'deleted_logs_message' ) );
 	}
 
 	public function view_log_message() {
@@ -108,14 +109,25 @@ class Check_Email_Log_List_Action implements Loadie {
 		$id_list = implode( ',', $ids );
 
 		$logs_deleted = $this->get_table_manager()->delete_logs( $id_list );
-		$this->render_log_deleted_notice( $logs_deleted );
+		if( isset( $_REQUEST['_wp_http_referer'] ) ){
+			wp_redirect( $_REQUEST['_wp_http_referer'] . '&deleted_logs=' . $logs_deleted ); exit;
+		}else{
+			wp_redirect( $_SERVER['HTTP_REFERER'] . '&deleted_logs=' . $logs_deleted ); exit;
+		}
 	}
 
 	public function delete_all_logs() {
 		$logs_deleted = $this->get_table_manager()->delete_all_logs();
-		$this->render_log_deleted_notice( $logs_deleted );
+		if( isset($_REQUEST['_wp_http_referer'] ) ){
+			wp_redirect( $_REQUEST['_wp_http_referer'] . '&deleted_logs=' . $logs_deleted ); exit;
+		}
 	}
 
+	public function deleted_logs_message(){
+		if( isset( $_GET['deleted_logs'] ) ){
+			$this->render_log_deleted_notice( intval( $_GET['deleted_logs'] ) );
+		}
+	}
 	public function update_capabilities_for_user_roles( $old_roles, $new_roles ) {
 		foreach ( $old_roles as $old_role ) {
 			$role = get_role( $old_role );
