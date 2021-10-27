@@ -112,7 +112,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$from = '';
 		if (isset($item->headers) && !empty($item->headers)) {
 
-			if(function_exists('imap_rfc822_parse_headers') ) {
+			if ( function_exists('imap_rfc822_parse_headers' ) ) {
 
 				$headers = imap_rfc822_parse_headers($item->headers);
 				if (isset($headers->fromaddress) && !empty($headers->fromaddress)) {
@@ -121,7 +121,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			}
 			else {
 				$find_from = substr($item->headers, strpos($item->headers, 'From') + 5 );
-				echo $find_from;
+				echo esc_html( $find_from );
 
 			}
 		}
@@ -203,13 +203,13 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$input_date_val = ( ! empty( $_REQUEST['d'] ) ) ? sanitize_text_field( $_REQUEST['d'] ) : '';
 
 		if ( ! empty( $_REQUEST['orderby'] ) )
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( $_REQUEST['orderby'] ) ) . '" />';
 		if ( ! empty( $_REQUEST['order'] ) )
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( $_REQUEST['order'] ) ) . '" />';
 		if ( ! empty( $_REQUEST['post_mime_type'] ) )
-			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( $_REQUEST['post_mime_type'] ) . '" />';
+			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( sanitize_text_field( $_REQUEST['post_mime_type'] ) ) . '" />';
 		if ( ! empty( $_REQUEST['detached'] ) )
-			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />';
+			echo '<input type="hidden" name="detached" value="' . esc_attr( sanitize_text_field( $_REQUEST['detached'] ) ) . '" />';
 		?>
 		<p class="search-box">
 			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>

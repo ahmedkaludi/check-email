@@ -51,7 +51,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	public function render_page() {
 		?>
 		<div class="wrap">
-			<h1><?php _e( 'Status', 'check-email' ); ?></h1>
+			<h1><?php esc_html_e( 'Status', 'check-email' ); ?></h1>
                         <?php
                         global $current_user;
                         global $phpmailer;
@@ -61,8 +61,9 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         $from_name = apply_filters( 'wp_mail_from_name', $from_name );
 
                         $headers = '';
+                        //phpcs:ignore
                         if ( isset($_REQUEST['_wpnonce']) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'checkemail' ) ) {
-                            $headers = $this->checkemail_send( $_POST['checkemail_to'], $_POST['checkemail_headers'] );
+                            $headers = $this->checkemail_send( sanitize_email( $_POST['checkemail_to'] ), $_POST['checkemail_headers'] );
                         }
                         ?>
 
@@ -107,15 +108,15 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                                 'Content-Type'  => 'text/html; charset='.get_option('blog_charset')
                         );
                         $args = array(
-                                'MIME-Version'  => esc_html($_POST['checkemail_mime']),
-                                'From'		=> esc_html($_POST['checkemail_from']),
-                                'Cc'            => esc_html($_POST['checkemail_cc']),
-                                'Content-Type'  => esc_html($_POST['checkemail_type'])
+                                'MIME-Version'  => esc_html( sanitize_text_field( $_POST['checkemail_mime'] ) ),
+                                'From'		=> esc_html( sanitize_email( $_POST['checkemail_from'] )),
+                                'Cc'            => esc_html( sanitize_email( $_POST['checkemail_cc'] ) ),
+                                'Content-Type'  => esc_html( sanitize_text_field( $_POST['checkemail_type'] ) )
                         );
-                                
+
                         $args = wp_parse_args($args,$defaults);
-                        
-                        $headers = 
+
+                        $headers =
                                 "MIME-Version: " . trim($args['MIME-Version']). $break .
                                 "From: " . trim($args['From']). $break .
                                 "Cc: " . trim($args['Cc']). $break .

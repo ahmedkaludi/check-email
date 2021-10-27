@@ -94,7 +94,7 @@ function check_email_log( $plugin_file ) {
 
 	$check_email->add_loadie( new \CheckEmail\Core\Request\Check_Email_Nonce_Checker() );
 	$check_email->add_loadie( new \CheckEmail\Core\Request\Check_Email_Log_List_Action() );
-        
+
     $capability_giver = new \CheckEmail\Core\Check_Email_Admin_Capability_Giver();
 	$check_email->add_loadie( $capability_giver );
 	$capability_giver->add_cap_to_admin();

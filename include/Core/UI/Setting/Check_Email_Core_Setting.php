@@ -67,7 +67,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $role_id ); ?>"
 					<?php \CheckEmail\Util\wp_chill_check_email_array_checked( $selected_roles, $role_id ); ?>>
 
-				<?php echo  translate_user_role( esc_html( $role['name'] ) ); ?>
+				<?php echo esc_html( translate_user_role( $role['name'] ) ); ?>
 			</p>
 		<?php endforeach; ?>
 
