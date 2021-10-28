@@ -73,7 +73,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		<p>
 			<em>
-				<?php esc_html_e( '<strong>Note:</strong> Users with the above User Roles can view Status and Logs Page.', 'check-email' ); ?>
+				<?php echo wp_kses_post( __( '<strong>Note:</strong> Users with the above User Roles can view Status and Logs Page.', 'check-email' ) ); ?>
 				<?php esc_html_e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
 			</em>
 		</p>

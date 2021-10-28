@@ -1,7 +1,8 @@
 == Changelog ==
 
-= v1.0.4 - TBA =
+= v1.0.4 - 28/10/2021 =
 - Fixed: URL got too long when bulk deleting email logs. (https://github.com/WPChill/check-email/issues/30)
+- Fixed: Sanitization and Escaping
 
 = v1.0.3 - 24/09/2021 =
 - Fixed: Secutiry issue
