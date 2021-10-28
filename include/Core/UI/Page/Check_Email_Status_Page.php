@@ -28,8 +28,8 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	public function register_page() {
 
                 add_menu_page(
-                        __( 'Check & Log Email', 'check-email' ),
-                        __( 'Check & Log Email', 'check-email' ),
+                        esc_html__( 'Check & Log Email', 'check-email' ),
+                        esc_html__( 'Check & Log Email', 'check-email' ),
                         'manage_check_email',
                         self::PAGE_SLUG,
                         array( $this, 'render_page' ),
@@ -39,8 +39,8 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 
 		$this->page = add_submenu_page(
 			Check_Email_Status_Page::PAGE_SLUG,
-			__( 'Status', 'check-email' ),
-			__( 'Status', 'check-email' ),
+			esc_html__( 'Status', 'check-email' ),
+			esc_html__( 'Status', 'check-email' ),
 			'manage_check_email',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' ),
@@ -51,7 +51,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	public function render_page() {
 		?>
 		<div class="wrap">
-			<h1><?php _e( 'Status', 'check-email' ); ?></h1>
+			<h1><?php esc_html_e( 'Status', 'check-email' ); ?></h1>
                         <?php
                         global $current_user;
                         global $phpmailer;
@@ -61,19 +61,20 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                         $from_name = apply_filters( 'wp_mail_from_name', $from_name );
 
                         $headers = '';
+                        //phpcs:ignore
                         if ( isset($_REQUEST['_wpnonce']) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'checkemail' ) ) {
-                            $headers = $this->checkemail_send( $_POST['checkemail_to'], $_POST['checkemail_headers'] );
+                            $headers = $this->checkemail_send( sanitize_email( $_POST['checkemail_to'] ), $_POST['checkemail_headers'] );
                         }
                         ?>
 
                         <div id="CKE_banner">
                             <h2>
                                 <img draggable="false" role="img" class="emoji" alt="👉" src="https://s.w.org/images/core/emoji/13.0.1/svg/1f449.svg">
-                                <?php _e('Suggest a new feature!', 'check-email') ?>
+                                <?php esc_html_e('Suggest a new feature!', 'check-email') ?>
                                 <img draggable="false" role="img" class="emoji" alt="👈" src="https://s.w.org/images/core/emoji/13.0.1/svg/1f448.svg">
                             </h2>
-                            <p><?php _e('Help us build the next set of features for Check & Log Email. Tell us what you think and we will make it happen!', 'check-email') ?></p>
-                            <a target="_blank" rel="noreferrer noopener" href="https://bit.ly/33QzqBU" class="button button-primary button-hero"><?php _e('Click here', 'check-email') ?></a>
+                            <p><?php esc_html_e('Help us build the next set of features for Check & Log Email. Tell us what you think and we will make it happen!', 'check-email') ?></p>
+                            <a target="_blank" rel="noreferrer noopener" href="https://bit.ly/33QzqBU" class="button button-primary button-hero"><?php esc_html_e('Click here', 'check-email') ?></a>
                         </div>
 
                         <?php
@@ -93,20 +94,36 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 
                 if ( $headers == "auto" ) {
                         $headers = "MIME-Version: 1.0\r\n" .
-                        "From: " . $from_email . "\r\n" .
+                        "From: " . esc_html( $from_email ). "\r\n" .
                         "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\r\n";
                 } else {
                         $break = chr( 10 );
                         if ( isset( $_POST['checkemail_break'] ) && stripslashes( $_POST["checkemail_break"] ) == '\r\n' ) {
                                 $break = chr( 13 ) . chr( 10 );
                         }
-                        $headers = "MIME-Version: " . trim( $_POST["checkemail_mime"] ) . $break .
-                        "From: " . trim( $_POST["checkemail_from"] ) . $break .
-                        "Cc: " . trim( $_POST["checkemail_cc"] ) . $break .
-                        "Content-Type: " . trim( $_POST["checkemail_type"] ) . $break;
-                }
-                $title = __( sprintf( "Test email from %s ", get_bloginfo("url") ), "check-email" );
-                $body = __( sprintf( 'This test email proves that your WordPress installation at %1$s can send emails.\n\nSent: %2$s', get_bloginfo( "url" ), date( "r" ) ), "check-email" );
+                        $defaults = array(
+                                'MIME-Version'  => '1.0',
+                                'From'	        => esc_html( $from_email ),
+                                'Cc'            => '',
+                                'Content-Type'  => 'text/html; charset='.get_option('blog_charset')
+                        );
+                        $args = array(
+                                'MIME-Version'  => esc_html( sanitize_text_field( $_POST['checkemail_mime'] ) ),
+                                'From'		=> esc_html( sanitize_email( $_POST['checkemail_from'] )),
+                                'Cc'            => esc_html( sanitize_email( $_POST['checkemail_cc'] ) ),
+                                'Content-Type'  => esc_html( sanitize_text_field( $_POST['checkemail_type'] ) )
+                        );
+
+                        $args = wp_parse_args($args,$defaults);
+
+                        $headers =
+                                "MIME-Version: " . trim($args['MIME-Version']). $break .
+                                "From: " . trim($args['From']). $break .
+                                "Cc: " . trim($args['Cc']). $break .
+                                "Content-Type: " . trim( $args['Content-Type'] ). $break;
+                        }
+                $title = sprintf( esc_html__( "Test email from %s ", "check-email"),get_bloginfo("url") );
+                $body = sprintf( esc_html__( 'This test email proves that your WordPress installation at %1$s can send emails.\n\nSent: %2$s', "check-email" ), get_bloginfo( "url" ), date( "r" ) );
                 wp_mail( $to, $title, $body, $headers );
                 return $headers;
         }
