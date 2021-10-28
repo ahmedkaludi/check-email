@@ -137,7 +137,7 @@ class Check_Email_Review {
 
 					var data = {
 						action: 'epsilon_check-email_review',
-						security: '<?php echo $ajax_nonce; ?>',
+						security: '<?php echo esc_js($ajax_nonce); ?>',
 						check: id
 					};
 

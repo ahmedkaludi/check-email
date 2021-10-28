@@ -18,11 +18,12 @@ class Check_Email_Log_List_Action implements Loadie {
 	}
 
 	public function view_log_message() {
+
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			wp_die();
 		}
 
-		$id = absint( $_GET['log_id'] );
+		$id = isset( $_GET['log_id'] ) ? absint( $_GET['log_id'] ) : 0 ;
 
 		if ( $id <= 0 ) {
 			wp_die();
@@ -43,7 +44,6 @@ class Check_Email_Log_List_Action implements Loadie {
 				$active_tab = '1';
 			}
 
-			ob_start();
 			?>
 			<table style="width: 100%;">
 				<tr style="background: #eee;">
@@ -58,14 +58,12 @@ class Check_Email_Log_List_Action implements Loadie {
 					<td style="padding: 5px;"><?php esc_html_e( 'Subject', 'check-email' ); ?>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['subject'] ); ?></td>
 				</tr>
-                                <tr style="background: #eee;">
+                <tr style="background: #eee;">
 					<td style="padding: 5px;"><?php esc_html_e( 'Headers', 'check-email' ); ?>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['headers'] ); ?></td>
 				</tr>
 
-				<?php
-                                    do_action( 'check_email_view_log_after_headers', $log_item );
-				?>
+				<?php do_action( 'check_email_view_log_after_headers', $log_item ); ?>
 
 			</table>
 
@@ -89,7 +87,6 @@ class Check_Email_Log_List_Action implements Loadie {
 			</div>
 
 			<?php
-			echo ob_get_clean();
 		}
 
 		wp_die(); // this is required to return a proper result.
@@ -110,16 +107,17 @@ class Check_Email_Log_List_Action implements Loadie {
 
 		$logs_deleted = $this->get_table_manager()->delete_logs( $id_list );
 		if( isset( $_REQUEST['_wp_http_referer'] ) ){
-			wp_redirect( $_REQUEST['_wp_http_referer'] . '&deleted_logs=' . $logs_deleted ); exit;
+			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
 		}else{
-			wp_redirect( $_SERVER['HTTP_REFERER'] . '&deleted_logs=' . $logs_deleted ); exit;
+			// phpcs:ignore
+			wp_redirect( wp_unslash( $_SERVER['HTTP_REFERER'] ) . '&deleted_logs=' . $logs_deleted ); exit;
 		}
 	}
 
 	public function delete_all_logs() {
 		$logs_deleted = $this->get_table_manager()->delete_all_logs();
 		if( isset($_REQUEST['_wp_http_referer'] ) ){
-			wp_redirect( $_REQUEST['_wp_http_referer'] . '&deleted_logs=' . $logs_deleted ); exit;
+			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
 		}
 	}
 

@@ -11,7 +11,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	const PAGE_SLUG = 'check-email-logs';
 	const LOG_LIST_ACTION_NONCE_FIELD = 'check-email-log-list-nonce-field';
 	const LOG_LIST_ACTION_NONCE = 'check-email-log-list-nonce';
-        const CAPABILITY = 'manage_check_email';
+    const CAPABILITY = 'manage_check_email';
 
 	/**
 	 * Setup hooks.
@@ -129,6 +129,6 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 
 		wp_register_script( 'insertionQ', $plugin_dir_url . 'assets/vendor/insertion-query/insQ.min.js', array( 'jquery' ), '1.0.4', true );
 
-		wp_enqueue_script( 'check-email-view-logs', $plugin_dir_url . 'assets/js/admin/view-logs.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip' ), $check_email->get_version(), true );
+		wp_enqueue_script( 'check-email-view-logs', $plugin_dir_url . 'assets/js/admin/view-logs.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip', 'jquery-ui-tabs' ), $check_email->get_version(), true );
 	}
 }

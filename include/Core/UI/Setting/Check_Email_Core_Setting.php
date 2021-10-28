@@ -195,11 +195,13 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		checked( 'true', $db_size_notification_data['notify'] ); ?> />
 		<?php
 		// The values within each field are already escaped.
+		// phpcs:disable
 		printf(
 			esc_html__( 'Notify %1$s if there are more than %2$s logs.', 'check-email' ),
 			$admin_email_input_field,
 			$logs_threshold_input_field
 		);
+		// phpcs:enable
 		?>
 		<p>
 			<em>
@@ -207,7 +209,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				printf(
 					esc_html__( '%1$s There are %2$s email logs currently logged in the database.', 'check-email' ),
 					'<strong>' . esc_html__( 'Note', 'check-email' ) . ':</strong>',
-					'<strong>' . esc_attr( $logs_count ) . '</strong>'
+					'<strong>' . esc_html( $logs_count ) . '</strong>'
 				);
 				?>
 			</em>
@@ -217,7 +219,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				<?php
 				printf(
 					esc_html__( 'Last notification email was sent on %1$s. Click %2$s button to reset sending the notification.', 'check-email' ),
-					'<strong>' . get_date_from_gmt( date( 'Y-m-d H:i:s', $db_size_notification_data['threshold_email_last_sent'] ), \CheckEmail\Util\wp_chill_check_email_get_user_defined_date_format() ) . '</strong>',
+					'<strong>' . esc_html( get_date_from_gmt( date( 'Y-m-d H:i:s', $db_size_notification_data['threshold_email_last_sent'] ), \CheckEmail\Util\wp_chill_check_email_get_user_defined_date_format() ) ) . '</strong>',
 					'<b>Save</b>'
 				);
 				?>
