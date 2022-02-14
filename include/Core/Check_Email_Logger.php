@@ -6,7 +6,7 @@
 class Check_Email_Logger implements Loadie {
 
 	public function load() {
-		add_filter( 'wp_mail', array( $this, 'log_email' ) );
+		add_filter( 'wp_mail', array( $this, 'log_email' ), 20 );
 		add_action( 'wp_mail_failed', array( $this, 'on_email_failed' ) );
 
 		/**

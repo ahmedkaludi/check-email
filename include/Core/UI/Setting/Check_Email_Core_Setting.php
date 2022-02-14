@@ -18,6 +18,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			'enable_dashboard_widget' => esc_html__( 'Enable Dashboard Widget', 'check-email' ),
 			'db_size_notification'    => esc_html__( 'Database Size Notification', 'check-email' ),
 			'remove_on_uninstall'     => esc_html__( 'Remove Data on Uninstall?', 'check-email' ),
+			'override_emails_from'    => esc_html__( 'Override Emails From', 'check-email' ),
+			'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
+			'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
 		);
 
 		$this->section->default_value = array(
@@ -32,6 +35,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'threshold_email_last_sent' => false,
 			),
 			'remove_on_uninstall'     => '',
+			'email_from_name'         => '',
+			'email_from_email'        => '',
+			'override_emails_from'    => false,
 		);
 
 		$this->load();
@@ -369,4 +375,43 @@ EOT;
 		<?php
 	}
 
+	public function render_override_emails_from_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		?>
+            <input id="check-email-overdide-from" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+            <?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?>
+		<?php
+
+	}
+
+	public function render_email_from_name_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+
+		echo sprintf(
+			'<input id="check-email-from_name" type="text" name="%s" value="%s" size="35" />',
+			esc_attr( $field_name ),
+			esc_attr( $field_value )
+		);
+
+	}
+	
+
+	public function render_email_from_email_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+
+		echo sprintf(
+			'<input id="check-email-from_email" type="email" name="%s" value="%s" size="35" />',
+			esc_attr( $field_name ),
+			esc_attr( $field_value )
+		);
+	}
 }

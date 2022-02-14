@@ -99,6 +99,7 @@ function check_email_log( $plugin_file ) {
 	$check_email->add_loadie( $capability_giver );
 	$capability_giver->add_cap_to_admin();
 
+	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_From_Handler() );
 
 	// `register_activation_hook` can't be called from inside any hook.
 	register_activation_hook( $plugin_file, array( $check_email->table_manager, 'on_activate' ) );

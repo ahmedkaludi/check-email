@@ -30,5 +30,23 @@
                     dbNotifications.hide();
                 }
             });
+
+            var from_name_setting = $("#check-email-from_name").parent().parent();
+            var from_email_setting = $("#check-email-from_email").parent().parent();
+            if (!$('#check-email-overdide-from').is(":checked")) {
+                from_name_setting.hide();
+                from_email_setting.hide();
+            }
+            
+            $('#check-email-overdide-from').on('click', function() {
+                if ($(this).is(":checked")) {
+                    from_name_setting.show();
+                    from_email_setting.show();
+                } else {
+                    from_name_setting.hide();
+                    from_email_setting.hide();
+                }
+            });
 	} );
+
 } )(jQuery);
