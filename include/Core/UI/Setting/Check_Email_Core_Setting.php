@@ -8,39 +8,55 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 class Check_Email_Core_Setting extends Check_Email_Setting {
 
 	protected function initialize() {
-		$this->section->id          = 'check-email-log-core';
-		$this->section->title       = esc_html__( 'Core Check Email Log Settings', 'check-email' );
-		$this->section->option_name = 'check-email-log-core';
 
-		$this->section->field_labels = array(
-			'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
-			'enable_logs'             => esc_html__( 'Enable Logs', 'check-email' ),
-			'enable_dashboard_widget' => esc_html__( 'Enable Dashboard Widget', 'check-email' ),
-			'db_size_notification'    => esc_html__( 'Database Size Notification', 'check-email' ),
-			'remove_on_uninstall'     => esc_html__( 'Remove Data on Uninstall?', 'check-email' ),
-			'override_emails_from'    => esc_html__( 'Override Emails From', 'check-email' ),
-			'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
-			'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
-		);
+		if( !isset( $_GET['tab'] ) ){
+			$this->section->page_slug   = 'check-email-settings';
+			$this->section->id          = 'check-email-log-core';
+			$this->section->title       = esc_html__( 'Core Check Email Log Settings', 'check-email' );
+			$this->section->option_name = 'check-email-log-core';
 
-		$this->section->default_value = array(
-			'allowed_user_roles'      => array(),
-			'enable_logs'             => false,
-			'enable_dashboard_widget' => false,
-			'db_size_notification'    => array(
-				'notify'                    => false,
-				'admin_email'               => '',
-				'logs_threshold'            => '',
-				'log_threshold_met'         => false,
-				'threshold_email_last_sent' => false,
-			),
-			'remove_on_uninstall'     => '',
-			'email_from_name'         => '',
-			'email_from_email'        => '',
-			'override_emails_from'    => false,
-		);
+			$this->section->field_labels = array(
+				'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
+				'remove_on_uninstall'     => esc_html__( 'Remove Data on Uninstall?', 'check-email' ),
+				'override_emails_from'    => esc_html__( 'Override Emails From', 'check-email' ),
+				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
+				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
+			);
+
+			$this->section->default_value = array(
+				'allowed_user_roles'      => array(),
+				'remove_on_uninstall'     => '',
+				'email_from_name'         => '',
+				'email_from_email'        => '',
+				'override_emails_from'    => false,
+			);
+		}elseif( isset( $_GET['tab'] ) && 'logging' == $_GET['tab'] ){
+			$this->section->page_slug   = 'check-email-logging-settings';
+			$this->section->id          = 'check-email-logging';
+			$this->section->title       = esc_html__( 'Check Email Logging Settings', 'check-email' );
+			$this->section->option_name = 'check-email-logging';
+
+			$this->section->field_labels = array(
+				'enable_logs'             => esc_html__( 'Enable Logs', 'check-email' ),
+				'enable_dashboard_widget' => esc_html__( 'Enable Dashboard Widget', 'check-email' ),
+				'db_size_notification'    => esc_html__( 'Database Size Notification', 'check-email' ),
+			);
+
+			$this->section->default_value = array(
+				'enable_logs'             => false,
+				'enable_dashboard_widget' => false,
+				'db_size_notification'    => array(
+					'notify'                    => false,
+					'admin_email'               => '',
+					'logs_threshold'            => '',
+					'log_threshold_met'         => false,
+					'threshold_email_last_sent' => false,
+				),
+			);
+		}
 
 		$this->load();
+	
 	}
 
 	public function load() {

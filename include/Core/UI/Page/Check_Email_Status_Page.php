@@ -150,5 +150,14 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		wp_enqueue_style( 'checkemail-css', $plugin_dir_url . 'assets/css/admin/checkemail.css', array(), $check_email->get_version() );
 		wp_enqueue_script( 'checkemail', $plugin_dir_url . 'assets/js/admin/checkemail.js', array(), $check_email->get_version(), true );
+
+        wp_localize_script(
+            'checkemail',
+            'ch_em_ajax_url',
+            array(
+                'ajax_url'  => admin_url( 'admin-ajax.php' ),
+                'ch_em_nonce' => wp_create_nonce( 'updates' ),
+            )
+        );
 	}
 }

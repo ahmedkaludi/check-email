@@ -25,7 +25,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	}
         
 	public function register_page() {
-                $option = get_option( 'check-email-log-core' );
+                $option = get_option( 'check-email-logging' );
                 
                 if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {             
                     $this->page = add_submenu_page(
@@ -47,7 +47,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
-                $option = get_option( 'check-email-log-core' );
+                $option = get_option( 'check-email-logging' );
                 if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {
                     add_thickbox();
 

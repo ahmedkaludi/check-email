@@ -21,7 +21,7 @@ class Check_Email_Logger implements Loadie {
 	 * Logs email to database.
 	 */
 	public function log_email( $original_mail_info ) {
-        $option = get_option( 'check-email-log-core' );
+        $option = get_option( 'check-email-logging' );
         
         if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {
             $original_mail_info = apply_filters( 'check_email_wp_mail_log', $original_mail_info );
