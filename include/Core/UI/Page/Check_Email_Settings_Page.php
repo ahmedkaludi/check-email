@@ -112,21 +112,29 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 
 	public function render_page() {
 
-			$tab = isset( $_GET['tab']) ? $_GET['tab'] : '';
+			$tab = isset( $_GET['tab']) ? $_GET['tab'] : 'general';
 			
 		?>
 		<div class="wrap">
 
 			<nav class="nav-tab-wrapper">
-				<a href="?page=check-email-settings" class="nav-tab <?php if( '' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
+				<a href="?page=check-email-settings" class="nav-tab <?php if( 'general' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=logging" class="nav-tab <?php if( 'logging' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Logging', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
 				<a href="https://docs.google.com/forms/d/e/1FAIpQLSdhHrYons-oMg_9oEDVvx8VTvzdeCQpT4PnG6KLCjYPiyQfXg/viewform" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
 			</nav>
 			
-			<div class="tab-content">
+			<div class="tab-content ce_tab_<?php echo $tab; ?>">
 
-			<?php if( '' == $tab || 'logging' == $tab ): ?>
+			<?php if( 'general' == $tab ): ?>
+				<h2><?php esc_html_e( 'Core Check Email Log Settings', 'check-email' ); ?></h2>
+			<?php elseif( 'logging' == $tab ): ?>
+				<h2><?php esc_html_e( 'Logging', 'check-email' ); ?></h2>
+			<?php elseif( 'smtp' == $tab ): ?>
+				<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
+			<?php endif; ?>
+
+			<?php if( 'smtp' !== $tab ): ?>
 				<?php $submit_url = ( '' != $tab ) ? add_query_arg( 'tab', $tab, admin_url( 'options.php' ) ) : 'options.php'; ?>
 				<form method="post" action="<?php echo esc_url( $submit_url ); ?>">
 					<?php
@@ -136,33 +144,28 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					submit_button( esc_html__( 'Save', 'check-email' ) );
 					?>
 				</form>
-				<?php elseif( '' != $tab || 'smtp' == $tab ): ?>
-					<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
-					<table class="form-table" role="presentation">
-						<tbody>
-							<tr>
-								<th scope="row"><?php esc_html_e( 'Install WP SMTP', 'check-email' ); ?></th>
-								<?php if( !$this->is_smtp_installed() ): ?> 
+			<?php elseif( 'smtp' == $tab ): ?>
+				<table class="form-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Install WP SMTP', 'check-email' ); ?></th>
+							<?php if( !$this->is_smtp_installed() ): ?> 
+							<td>
+								<div class="install_plugin_wrap">
+									<a id="install_wp_smtp" class="button" href="http://wp-smtp?ch_em_action=ch_em_oneclick_smtp_install&ch_em_nonce=<?php echo wp_create_nonce( 'updates' ); ?>"><?php esc_html_e( 'Install & Activate SMTP', 'check-email' ); ?></a>
+									<div id="install_wp_smtp_info"> <p><?php esc_html_e( 'Click to auto install and activate WP SMTP', 'check-email' ); ?> </p></div>
+								</div>
+								
+							</td>
+							<?php else: ?>
 								<td>
-									<div class="install_plugin_wrap">
-										<a id="install_wp_smtp" class="button" href="http://wp-smtp?ch_em_action=ch_em_oneclick_smtp_install&ch_em_nonce=<?php echo wp_create_nonce( 'updates' ); ?>"><?php esc_html_e( 'Install & Activate SMTP', 'check-email' ); ?></a>
-										<div id="install_wp_smtp_info"> <p><?php esc_html_e( 'Click to auto install and activate WP SMTP', 'check-email' ); ?> </p></div>
-									</div>
-									
-								</td>
-								<?php else: ?>
-									<td>
-									<div class="install_wp_smtp_wrap"> <?php esc_html_e( 'WP SMTP is allready installed.', 'check-email' ); ?></div>
-								</td>
-								<?php endif; ?>
-							</tr>
+								<div class="install_wp_smtp_wrap"> <?php esc_html_e( 'WP SMTP is allready installed.', 'check-email' ); ?></div>
+							</td>
+							<?php endif; ?>
+						</tr>
 
-						</tbody>
-					</table>
-
-				<?php elseif( '' != $tab || 'suggest_feature' == $tab ): ?>
-					<div><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></div>
-
+					</tbody>
+				</table>
 			<?php endif; ?>
 			</div>
 		</div>

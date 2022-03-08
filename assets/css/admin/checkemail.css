@@ -37,3 +37,11 @@
     border: 1px solid #CCC; 
     padding: 10px 15px; 
 }
+
+.tab-content.ce_tab_general .form-table tr:nth-child(n+6) {
+    display: none;
+}
+
+.tab-content.ce_tab_logging .form-table tr:nth-child(-n+5) {
+    display: none;
+}
