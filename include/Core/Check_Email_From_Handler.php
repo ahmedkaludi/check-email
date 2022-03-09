@@ -11,7 +11,24 @@ class Check_Email_From_Handler {
         $this->options = get_option('check-email-log-core', false);
         
         add_filter( 'wp_mail', array( $this, 'override_values'), 15 );
-        
+        add_filter( 'wp_mail_from', array($this, 'set_wp_mail_from' ), 99 );
+        add_filter( 'wp_mail_from_name', array($this, 'set_wp_mail_from_name' ), 99 );
+    }
+
+    public function set_wp_mail_from( $email ){
+        if( $this->override_enabled() && isset( $this->options['email_from_email'] ) && '' != $this->options['email_from_email']){
+            return $this->options['email_from_email'];
+        }
+    
+        return $email;
+    }
+
+    public function set_wp_mail_from_name( $name ){
+        if( $this->override_enabled() && isset( $this->options['email_from_name'] ) && '' != $this->options['email_from_name']){
+            return $this->options['email_from_name'];
+        }
+
+        return $name;
     }
 
     public function override_enabled(){
