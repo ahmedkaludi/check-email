@@ -69,7 +69,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		);
 
 	}
-
+   /**
+    * Checks if SMTP plugin is installed
+    *
+    * @since 1.0.5
+    */
 	public function is_smtp_installed() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -82,6 +86,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		}
 	}
 
+   /**
+    * Checks if plugin slug is posted and installs the plugin
+    *
+    * @since 1.0.5
+    */
 	public function install_plugin() {
 
 		if ( ! isset( $_POST['slug'] ) || empty( $_POST['slug'] ) ) {
@@ -91,6 +100,12 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		wp_ajax_install_plugin();
 		
 	}
+
+   /**
+    * Activates a plugn
+    *
+    * @since 1.0.5
+    */
 
 	public function activate_plugin() {
 
@@ -110,6 +125,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		
 	}
 
+   /**
+    * Renders the plugin settings page HTML
+    *
+    * @since 1.0.5
+    */
 	public function render_page() {
 
 			$tab = isset( $_GET['tab']) ? $_GET['tab'] : 'general';
