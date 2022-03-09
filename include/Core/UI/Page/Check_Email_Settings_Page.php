@@ -121,7 +121,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<a href="?page=check-email-settings" class="nav-tab <?php if( 'general' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=logging" class="nav-tab <?php if( 'logging' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Logging', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
-				<a href="https://docs.google.com/forms/d/e/1FAIpQLSdhHrYons-oMg_9oEDVvx8VTvzdeCQpT4PnG6KLCjYPiyQfXg/viewform" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
+				<a href="https://docs.google.com/forms/d/e/1FAIpQLSdhHrYons-oMg_9oEDVvx8VTvzdeCQpT4PnG6KLCjYPiyQfXg/viewform" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
 			</nav>
 			
 			<div class="tab-content ce_tab_<?php echo $tab; ?>">
