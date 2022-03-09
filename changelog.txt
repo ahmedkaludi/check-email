@@ -1,8 +1,9 @@
 == Changelog ==
 
 = v1.0.5 - TBA =
-- Fixed: Replaced deprecated jQuery code (https://github.com/WPChill/check-email/issues/32)
-- Fixed: HTML code was being shown in dashboard widget (https://github.com/WPChill/check-email/issues/33)
+- Fixed: Replaced deprecated jQuery code ( https://github.com/WPChill/check-email/issues/32 )
+- Fixed: HTML code was being shown in dashboard widget ( https://github.com/WPChill/check-email/issues/33 )
+- Added: Tabs and grouped settings by tabs ( https://github.com/WPChill/check-email/issues/37 )
 
 = v1.0.4 - 28/10/2021 =
 - Fixed: URL got too long when bulk deleting email logs. (https://github.com/WPChill/check-email/issues/30)
