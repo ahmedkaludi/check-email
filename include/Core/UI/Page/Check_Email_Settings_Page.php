@@ -155,7 +155,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 							<td>
 								<div class="install_plugin_wrap">
 									<button id="install_wp_smtp" class="button"  data-slug="wp-smtp" data-action="<?php echo ( 'install' == $smtp_status ? 'install' : 'activate' ); ?>" data-activation_url="<?php echo $activate_url; ?>"><?php echo sprintf( esc_html__( '%s SMTP', 'check-email' ),  ( 'install' == $smtp_status ? 'Install' : 'Activate' ) ); ?></button>
-									<div id="install_wp_smtp_info"> <p><?php esc_html_e( 'Click to install WP SMTP', 'check-email' ); ?> </p></div>
+									<div id="install_wp_smtp_info"> <p><?php echo sprintf( esc_html__( 'Click to %s WP SMTP', 'check-email' ), ( 'install' == $smtp_status ? 'install' : 'activate' ) ) ; ?> </p></div>
 								</div>
 								
 							</td>
