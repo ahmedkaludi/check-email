@@ -53,78 +53,51 @@
       }
     });
 
-    //oneclick install wp-smtp
-    var elm = jQuery("#install_wp_smtp");
-    elm.on("click", (e) => {
-      e.preventDefault();
-
-      elm.addClass("updating-message");
-      elm.html("Installing plugin");
-
-      plugin_link = elm.attr("href");
-      jQuery.ajax({
-        method: "POST",
-        url: ch_em_ajax_url.ajax_url,
-        data: {
-          action: "oneclick_smtp_install",
-          _ajax_nonce: ch_em_ajax_url.ch_em_nonce,
-          slug: plugin_link.substring(
-            plugin_link.indexOf("//") + 2,
-            plugin_link.indexOf("?")
-          ),
-        },
-        success: function (res) {
-          if (res["success"]) {
-            elm.html("Activating plugin");
-            activate_plugin(
-              plugin_link.substring(
-                plugin_link.indexOf("//") + 2,
-                plugin_link.indexOf("?")
-              )
-            );
-          }
-          if ( false == res["success"] ) {
-            elm.html("Install & Activate");
-            elm.removeClass("updating-message");
-            jQuery("#install_wp_smtp_info p").html(res['data']["errorMessage"]);
-            jQuery("#install_wp_smtp_info").addClass("notice-error notice");
-          }
-          if (res["error"]) {
-            elm.html("Install & Activate");
-            elm.removeClass("updating-message");
-            jQuery("#install_wp_smtp_info p").html($res["data"]["errorMessage"]);
-            jQuery("#install_wp_smtp_info").addClass("notice-error notice");
-          }
-        },
-      });
-    });
-
-    //oneclick activate wp-smtp
-    function activate_plugin(slug) {
-      jQuery.ajax({
-        method: "POST",
-        url: ch_em_ajax_url.ajax_url,
-        data: {
-          action: "oneclick_smtp_activate",
-          _ajax_nonce: ch_em_ajax_url.ch_em_nonce,
-          slug: slug,
-        },
-        success: function (res) {
-          if (res["success"]) {
-            elm.html("Plugin installed & active");
-            elm.removeClass("updating-message").addClass("button-disabled");
-            jQuery("#install_wp_smtp_info p").html(res['data']["message"]);
-            jQuery("#install_wp_smtp_info").addClass("notice-success notice");
-          }
-
-          if (false == res["success"]) {
-            elm.html("Install & Activate");
-            elm.removeClass("updating-message");
-            jQuery("#install_wp_smtp_info p").html(res["data"]["errorMessage"]);
-            jQuery("#install_wp_smtp_info").addClass("notice-error notice");
-          }
+    function activatePlugin(url) {
+      $.ajax({
+        async: true,
+        type: "GET",
+        dataType: "html",
+        url: url,
+        success: function () {
+          location.reload();
         },
       });
     }
+
+    // Install plugins actions
+    $("#install_wp_smtp").on("click", (event) => {
+      event.preventDefault();
+      const current = $(event.currentTarget);
+      const plugin_slug = current.data("slug");
+      const plugin_action = current.data("action");
+      const activate_url = current.data("activation_url");
+
+      // Now let's disable the button and show the action text
+      current.attr("disabled", true);
+
+      if ("install" === plugin_action) {
+        current.addClass("updating-message");
+
+        const args = {
+          slug: plugin_slug,
+          success: (response) => {
+            current.html("Activating plugin");
+
+            activatePlugin(response.activateUrl);
+          },
+          error: (response) => {
+            current.removeClass("updating-message");
+            jQuery("#install_wp_smtp_info p").html(response.errorMessage);
+            jQuery("#install_wp_smtp_info").addClass("notice-error notice");
+          },
+        };
+
+        wp.updates.installPlugin(args);
+      } else if ("activate" === plugin_action) {
+        activatePlugin(activate_url);
+      }
+    });
+
   });
 })(jQuery);

@@ -69,64 +69,61 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		);
 
 	}
-
+   /**
+    * Checks if SMTP plugin is installed and/or active
+    * @return string 
+    * @since 1.0.5
+    */
 	public function is_smtp_installed() {
 		if ( ! function_exists( 'get_plugins' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
+
 		$all_plugins = get_plugins();
-		if ( !empty( $all_plugins['wp-smtp/wp-smtp.php'] ) ) {
-		return true;
-		} else {
-		return false;
+
+		if ( empty( $all_plugins['wp-smtp/wp-smtp.php'] ) ) {
+
+			return 'install';
+		}else{
+			if( !is_plugin_active( 'wp-smtp/wp-smtp.php' ) ){
+
+				return 'activate';
+			}else{
+				return 'false';
+			}
 		}
 	}
 
-	public function install_plugin() {
-
-		if ( ! isset( $_POST['slug'] ) || empty( $_POST['slug'] ) ) {
-			$error = array( 'errorMessage' => 'Plugin not found.' );
-			wp_send_json_error( $error );
-		}
-		wp_ajax_install_plugin();
-		
-	}
-
-	public function activate_plugin() {
-
-		if ( ! isset( $_POST['slug'] ) || empty( $_POST['slug'] ) ) {
-			wp_send_json_error( array( 'errorMessage' => 'Plugin activation slug missing.' ) );
-			
-		}
-		$activate = activate_plugin( $_POST['slug']. '/' . $_POST['slug'] . '.php' );
-
-		if ( is_wp_error( $activate ) ) {
-			wp_send_json_error( array( 'errorMessage' => $activate->get_error_message() ) );
-			die;
-		}
-		$error = array( 'message' => esc_html__( 'Plugin installed and activated successfully.', 'check-email' ) );
-		wp_send_json_success($error);
-		die;
-		
-	}
-
+   /**
+    * Renders the plugin settings page HTML
+    *
+    * @since 1.0.5
+    */
 	public function render_page() {
 
-			$tab = isset( $_GET['tab']) ? $_GET['tab'] : '';
+			$tab = isset( $_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 			
 		?>
 		<div class="wrap">
 
 			<nav class="nav-tab-wrapper">
-				<a href="?page=check-email-settings" class="nav-tab <?php if( '' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
+				<a href="?page=check-email-settings" class="nav-tab <?php if( 'general' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=logging" class="nav-tab <?php if( 'logging' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Logging', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
-				<a href="https://docs.google.com/forms/d/e/1FAIpQLSdhHrYons-oMg_9oEDVvx8VTvzdeCQpT4PnG6KLCjYPiyQfXg/viewform" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
+				<a href="https://docs.google.com/forms/d/e/1FAIpQLSdhHrYons-oMg_9oEDVvx8VTvzdeCQpT4PnG6KLCjYPiyQfXg/viewform" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
 			</nav>
 			
-			<div class="tab-content">
+			<div class="tab-content ce_tab_<?php echo esc_attr( $tab ); ?>">
 
-			<?php if( '' == $tab || 'logging' == $tab ): ?>
+			<?php if( 'general' == $tab ): ?>
+				<h2><?php esc_html_e( 'Core Check Email Log Settings', 'check-email' ); ?></h2>
+			<?php elseif( 'logging' == $tab ): ?>
+				<h2><?php esc_html_e( 'Logging', 'check-email' ); ?></h2>
+			<?php elseif( 'smtp' == $tab ): ?>
+				<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
+			<?php endif; ?>
+
+			<?php if( 'smtp' !== $tab ): ?>
 				<?php $submit_url = ( '' != $tab ) ? add_query_arg( 'tab', $tab, admin_url( 'options.php' ) ) : 'options.php'; ?>
 				<form method="post" action="<?php echo esc_url( $submit_url ); ?>">
 					<?php
@@ -136,33 +133,40 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					submit_button( esc_html__( 'Save', 'check-email' ) );
 					?>
 				</form>
-				<?php elseif( '' != $tab || 'smtp' == $tab ): ?>
-					<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
-					<table class="form-table" role="presentation">
-						<tbody>
-							<tr>
-								<th scope="row"><?php esc_html_e( 'Install WP SMTP', 'check-email' ); ?></th>
-								<?php if( !$this->is_smtp_installed() ): ?> 
+			<?php elseif( 'smtp' == $tab ): ?>
+				<table class="form-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Install WP SMTP', 'check-email' ); ?></th>
+							<?php $smtp_status = $this->is_smtp_installed(); ?>
+							<?php if( 'false' != $smtp_status ): ?> 
+							<?php
+								$activate_url = add_query_arg(
+									array(
+										'action'        => 'activate',
+										'plugin'        => rawurlencode( 'wp-smtp/wp-smtp.php' ),
+										'plugin_status' => 'all',
+										'paged'         => '1',
+										'_wpnonce'      => wp_create_nonce( 'activate-plugin_wp-smtp/wp-smtp.php' ),
+									),
+									admin_url( 'plugins.php' )
+								);	
+							?>
+							<td>
+								<div class="install_plugin_wrap">
+									<button id="install_wp_smtp" class="button"  data-slug="wp-smtp" data-action="<?php echo ( 'install' == $smtp_status ? 'install' : 'activate' ); ?>" data-activation_url="<?php echo esc_url( $activate_url ); ?>"><?php echo sprintf( esc_html__( '%s SMTP', 'check-email' ),  ( 'install' == $smtp_status ? 'Install' : 'Activate' ) ); ?></button>
+									<div id="install_wp_smtp_info"> <p><?php echo sprintf( esc_html__( 'Click to %s WP SMTP', 'check-email' ), ( 'install' == $smtp_status ? 'install' : 'activate' ) ) ; ?> </p></div>
+								</div>
+								
+							</td>
+							<?php else: ?>
 								<td>
-									<div class="install_plugin_wrap">
-										<a id="install_wp_smtp" class="button" href="http://wp-smtp?ch_em_action=ch_em_oneclick_smtp_install&ch_em_nonce=<?php echo wp_create_nonce( 'updates' ); ?>"><?php esc_html_e( 'Install & Activate SMTP', 'check-email' ); ?></a>
-										<div id="install_wp_smtp_info"> <p><?php esc_html_e( 'Click to auto install and activate WP SMTP', 'check-email' ); ?> </p></div>
-									</div>
-									
-								</td>
-								<?php else: ?>
-									<td>
-									<div class="install_wp_smtp_wrap"> <?php esc_html_e( 'WP SMTP is allready installed.', 'check-email' ); ?></div>
-								</td>
-								<?php endif; ?>
-							</tr>
-
-						</tbody>
-					</table>
-
-				<?php elseif( '' != $tab || 'suggest_feature' == $tab ): ?>
-					<div><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></div>
-
+								<div class="install_wp_smtp_wrap"> <?php esc_html_e( 'WP SMTP is allready installed and activated.', 'check-email' ); ?></div>
+							</td>
+							<?php endif; ?>
+						</tr>
+					</tbody>
+				</table>
 			<?php endif; ?>
 			</div>
 		</div>
