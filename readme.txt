@@ -14,11 +14,10 @@ This WordPress plugin helps you store sent emails for auditing purposes, as well
 
 Some of its features include:
 
-Check email - if you’re not sure whether WordPress is sending emails, you can use Check & Log to find out. The process is very simple: you need to choose an address that will receive a simple test email. You can even override the custom header with your own values, to avoid any other issues.
-
-Viewing logged emails - they can be viewed from the admin interface, as they are stored in a separate table. You get the option to filter them based on subject, email, date, etc.
-
-Deleting logged emails - you can delete them by going to the admin interface. You can either delete them in bulk or  selectively - by date, email, or subject. 
+- Test email sending - if you’re not sure whether WordPress is sending emails, you can use this plugin to find out. The process is very simple: you need to choose an address that will receive a simple test email. You can even override the custom header with your own values, to avoid any other issues.
+- Viewing logged emails - they can be viewed from the admin interface, as they are stored in a separate table. You get the option to filter them based on subject, email, date, etc.
+- Deleting logged emails - you can delete them by going to the admin interface. You can either delete them in bulk or  selectively - by date, email, or subject. 
+- Ability to change the "mail from" email address, "mail from name" and override default email WordPress addresses. 
 
 == Installation ==
 
