@@ -41,7 +41,7 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
-= v1.0.7 - 07/03/2022 =
+= v1.0.7 - 08/03/2022 =
 - Fixed: Incompatibility with Post SMTP ( [#51]( https://github.com/WPChill/check-email/issues/51) )
 
 = v1.0.6 - 02/05/2022 =
