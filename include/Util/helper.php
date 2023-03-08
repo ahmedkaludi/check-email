@@ -71,8 +71,8 @@ function wp_chill_check_email_stringify( $may_be_array, $delimiter = ',' ) {
 	if ( ! is_array( $may_be_array ) ) {
 		return (string) $may_be_array;
 	}else{
-		if( is_object( $may_be_array[0] ) && is_a( $may_be_array[0], 'PostmanEmailAddress' ) ){
-			return (string) $may_be_array->email;
+		if( isset(  $may_be_array[0] ) && is_object( $may_be_array[0] ) && is_a( $may_be_array[0], 'PostmanEmailAddress' ) ){
+			return (string) $may_be_array[0]->getEmail();
 		}
 	}
 
