@@ -4,7 +4,7 @@ Tags: check, test, email, smtp, delivery
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 5.6.20
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -28,7 +28,7 @@ Some of its features include:
 We try our best to provide support on WordPress.org forums. However, We have a special [community support](https://check-email.tech/contact/) where you can ask us questions and get help about your Check & Log Email related questions. Delivering a good user experience means a lot to us and so we try our best to reply each and every question that gets asked.
 
 <strong>Bug Reports</strong><br>
-Bug reports for Check & Log Email are [welcomed on GitHub](https://github.com/ahmedkaludi/check-email). Please note GitHub is _not_ a support forum, and issues that aren't properly qualified as bugs will be closed.
+Bug reports for Check & Log Email are [welcomed on GitHub](https://github.com/ahmedkaludi/check-email). Please note GitHub is not a support forum, and issues that aren't properly qualified as bugs will be closed.
 
 == Frequently Asked Questions ==
 
@@ -68,6 +68,10 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
+= v1.0.9 - 07/03/2024 =
+- Fixed: php8.2 deprecation warning #53
+- Enhancement: Added Support Form #56
+
 = v1.0.8 - 16/10/2023 =
 - Updated: Plugin author to reflect ownership changes. 
 
@@ -82,9 +86,5 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 - Fixed: HTML code was being shown in dashboard widget ( https://github.com/WPChill/check-email/issues/33 )
 - Added: Tabs and grouped settings by tabs ( https://github.com/WPChill/check-email/issues/37 )
 - Added: Quick install WP SMTP plugin from settings ( https://github.com/WPChill/check-email/issues/37 )
-
-= v1.0.4 - 28/10/2021 =
-- Fixed: URL got too long when bulk deleting email logs. (https://github.com/WPChill/check-email/issues/30)
-- Fixed: Sanitization and Escaping
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/check-email/trunk/changelog.txt)
