@@ -251,11 +251,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 
 		        if($sent){
 
-		             echo json_encode(array('status'=>'t'));  
+		             echo wp_json_encode(array('status'=>'t'));  
 
 		        }else{
 
-		            echo json_encode(array('status'=>'f'));            
+		            echo wp_json_encode(array('status'=>'f'));            
 
 		        }
 		        
