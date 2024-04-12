@@ -118,3 +118,23 @@ function wpchill_check_email() {
 }
 
 check_email_log( __FILE__ );
+
+
+/**
+ * Add settings link to plugin actions
+ *
+ * @param  array  $plugin_actions
+ * @param  string $plugin_file
+ * @since  1.0
+ * @return array
+ */
+function add_plugin_link( $links ) {
+
+   $url = add_query_arg( 'page', 'check-email-settings', self_admin_url( 'admin.php' ) );
+		    $setting_link = '<a href="' . esc_url( $url ) . '">' . __( 'Settings', 'check-email' ) . '</a> |';
+		 	$setting_link .= '<a href="https://check-email.tech/contact/" target="_blank">' . __( ' Support', 'check-email' ) . '</a>';
+		    array_push( $links, $setting_link );
+		    return $links;
+}
+add_filter( 'plugin_action_links', 'add_plugin_link', 10, 2 );
+
