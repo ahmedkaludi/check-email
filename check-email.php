@@ -36,6 +36,17 @@
 */
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
+define( 'CK_MAIL_TOC_DIR_NAME', plugin_basename( dirname( __FILE__ ) ) );
+define( 'CK_MAIL_TOC_BASE_NAME', plugin_basename( __FILE__ ) );
+define( 'CK_MAIL_PATH', dirname( __FILE__ ) );
+define( 'CK_MAIL_URL', plugin_dir_url( __FILE__ ) );
+
+if ( is_admin() ) {
+
+	require_once(CK_MAIL_PATH. "/include/helper-function.php" );
+}
+
+
 if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
 	function check_email_compatibility_notice() {
 		?>
@@ -138,3 +149,15 @@ function add_plugin_link( $links ) {
 }
 add_filter( 'plugin_action_links', 'add_plugin_link', 10, 2 );
 
+function checkMail_is_plugins_page() {
+
+    if(function_exists('get_current_screen')){
+        $screen = get_current_screen();
+            if(is_object($screen)){
+                if($screen->id == 'plugins' || $screen->id == 'plugins-network'){
+                    return true;
+                }
+            }
+    }
+    return false;
+}
