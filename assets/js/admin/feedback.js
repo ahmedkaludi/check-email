@@ -10,7 +10,6 @@ jQuery(document).ready(function ($) {
 
     ck_mail_deactivate_link.click(function (e) {
         e.preventDefault();
-        alert('mustak');
         // only show feedback form once per 30 days
         var c_value = ck_mail_admin_get_cookie("ck_mail_hide_deactivate_feedback");
 
