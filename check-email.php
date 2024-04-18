@@ -136,10 +136,10 @@ check_email_log( __FILE__ );
  *
  * @param  array  $plugin_actions
  * @param  string $plugin_file
- * @since  1.0
+ * @since  1.0.11
  * @return array
  */
-function add_plugin_link( $links ) {
+function check_email_add_plugin_link( $links ) {
 
    $url = add_query_arg( 'page', 'check-email-settings', self_admin_url( 'admin.php' ) );
 		    $setting_link = '<a href="' . esc_url( $url ) . '">' . __( 'Settings', 'check-email' ) . '</a> |';
@@ -147,7 +147,7 @@ function add_plugin_link( $links ) {
 		    array_push( $links, $setting_link );
 		    return $links;
 }
-add_filter( 'plugin_action_links', 'add_plugin_link', 10, 2 );
+add_filter( 'plugin_action_links', 'check_email_add_plugin_link', 10, 2 );
 
 function checkMail_is_plugins_page() {
 
