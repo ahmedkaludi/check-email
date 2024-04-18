@@ -72,7 +72,7 @@ function ck_mail_send_feedback() {
     
     $text = '';
     if( isset( $form['ck_mail_disable_text'] ) ) {
-        $text = implode( "\n\r", $form['ck_mail_disable_text'] );
+        $text = implode( " ", $form['ck_mail_disable_text'] );
     }
 
     $headers = array();
@@ -99,6 +99,8 @@ function ck_mail_send_feedback() {
             $text = 'no description: '.$text;
           }
       
+    }else{
+        $subject = 'Check & Log Email';
     }
 
     $success = wp_mail( 'team@magazine3.in', $subject, $text, $headers );
