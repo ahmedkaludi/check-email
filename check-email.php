@@ -40,10 +40,12 @@ define( 'CK_MAIL_TOC_DIR_NAME', plugin_basename( dirname( __FILE__ ) ) );
 define( 'CK_MAIL_TOC_BASE_NAME', plugin_basename( __FILE__ ) );
 define( 'CK_MAIL_PATH', dirname( __FILE__ ) );
 define( 'CK_MAIL_URL', plugin_dir_url( __FILE__ ) );
+define( 'CK_MAIL_VERSION', '1.0.10' );
 
 if ( is_admin() ) {
 
 	require_once(CK_MAIL_PATH. "/include/helper-function.php" );
+	require_once(CK_MAIL_PATH. "/include/class-check-email-newsletter.php" );
 }
 
 
