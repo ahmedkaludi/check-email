@@ -216,6 +216,9 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			<input type="search" id="<?php echo esc_attr( $input_date_id ); ?>" name="d" value="<?php echo esc_attr( $input_date_val ); ?>" placeholder="<?php esc_attr_e( 'Search by date', 'check-email' ); ?>" />
 			<input type="search" id="<?php echo esc_attr( $input_text_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php esc_attr_e( 'Search by term', 'check-email' ); ?>" />
 			<?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>
+
+			<?php $export_url = wp_nonce_url(admin_url('admin-ajax.php?action=ck_mail_export_logs_to_csv'), '_wpnonce') ?>
+			<a href="<?php echo esc_url($export_url); ?>"><button type="button" class="button-primary button" id="ck-mail-export-logs"> <?php echo esc_html__('Export Logs', 'check-email'); ?> </button></a>
 		</p>
 		<?php
 	}

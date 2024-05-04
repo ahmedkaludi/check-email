@@ -105,6 +105,7 @@ function check_email_log( $plugin_file ) {
 
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Logger() );
         $check_email->add_loadie( new \CheckEmail\Core\Check_Email_Review() );
+        $check_email->add_loadie( new \CheckEmail\Core\Check_Email_Export_Log() );
 	$check_email->add_loadie( new \CheckEmail\Core\UI\Check_Email_UI_Loader() );
 
 	$check_email->add_loadie( new \CheckEmail\Core\Request\Check_Email_Nonce_Checker() );
