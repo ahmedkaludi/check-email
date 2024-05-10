@@ -136,9 +136,9 @@ class Check_Email_Export_Log {
 			}
 		}else if($status == 'Success' && $export_date == 'all'){
 			if(!empty($export_recipient)){
-				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE error_message = %s AND to_email = %s", $status, $export_recipient);
+				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE (error_message = %s OR error_message IS NULL) AND to_email = %s", $status, $export_recipient);
 			}else{
-				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE error_message = %s", $status);
+				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE error_message = %s OR error_message IS NULL", $status);
 			}
 		}else if($status == 'Fail' && $export_date == 'all'){
 			if(!empty($export_recipient)){
@@ -154,9 +154,9 @@ class Check_Email_Export_Log {
 			}
 		}else if($status == 'Success' && $export_date == 'custom'){
 			if(!empty($export_recipient)){
-				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE error_message = %s AND to_email = %s AND sent_date BETWEEN %s AND %s", $status, $export_recipient, $from_date, $to_date);
+				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE (error_message = %s OR error_message IS NULL) AND to_email = %s AND sent_date BETWEEN %s AND %s", $status, $export_recipient, $from_date, $to_date);
 			}else{
-				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE error_message = %s AND sent_date BETWEEN %s AND %s", $status, $from_date, $to_date);
+				$query = $wpdb->prepare("SELECT * FROM $table_name WHERE (error_message = %s OR error_message IS NULL) AND sent_date BETWEEN %s AND %s", $status, $from_date, $to_date);
 			}
 		}else if($status == 'Fail' && $export_date == 'custom'){
 			if(!empty($export_recipient)){
@@ -246,7 +246,6 @@ class Check_Email_Export_Log {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			wp_die( -1 );
 		}
-		// echo "<pre>admin===== "; print_r(admin_url('admin-post.php')); die;
 		?>
 
 		<div id="ck-mail-elog-options">
@@ -294,7 +293,7 @@ class Check_Email_Export_Log {
 					<div class="ck-mail-exp-col">
 						<div id="ck-mail-export-common-info">
 							<div class="ck-mail-logs-heading-wrapper">
-								<h2 class="ck-mail-export-h2"> <?php esc_html_e('Fields Selection', 'check-email'); ?> </h2>
+								<h2 class="ck-mail-export-h2"> <?php esc_html_e('Fields', 'check-email'); ?> </h2>
 								<p class="ck-mail-exp-error ck-mail-d-none" id="ck-mail-fields-error" style="color: red;"></p>
 							</div>
 
