@@ -22,6 +22,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'enable_logs'             => esc_html__( 'Enable Logs', 'check-email' ),
 				'enable_dashboard_widget' => esc_html__( 'Enable Dashboard Widget', 'check-email' ),
 				'db_size_notification'    => esc_html__( 'Database Size Notification', 'check-email' ),
+				'trigger_data'    		  => esc_html__( 'Trigger Data', 'check-email' ),
 			);
 
 			$this->section->default_value = array(
@@ -38,7 +39,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'logs_threshold'            => '',
 					'log_threshold_met'         => false,
 					'threshold_email_last_sent' => false,
-				)
+				),
+				'trigger_data' 					=> true,
 			);
 
 		$this->load();
@@ -415,5 +417,28 @@ EOT;
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 		);
+	}
+	
+	/**
+	 * Add option for Trigger Data
+	 * @since 1.0.12
+	 * */
+	public function render_trigger_data_settings( $args ) {
+		$option                  = $this->get_value();
+		$trigger_data 			 = $option[ $args['id'] ];
+
+		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
+
+		if(!defined('CK_MAIL_PRO_VERSION')){
+		?>
+			<input id="check-email-trigger-data" type="checkbox" />
+			<span id="check-email-trigger-data-free-note" style="display: none;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/" target="_blank"><span style="color: #F6AE4F; font-weight: bold; text-decoration: inherit;"><?php esc_html_e('Premium Version'); ?><span></a> </span>
+		<?php
+		}else{
+		?>
+			<input id="check-email-trigger-data" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $trigger_data ); ?>>
+			<?php esc_html_e( 'Check this box if you would like to enable trigger data.', 'check-email' ); ?>
+		<?php
+		}
 	}
 }

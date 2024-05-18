@@ -113,7 +113,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
 				<a href="https://check-email.tech/contact/" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=tools" class="nav-tab <?php if( 'tools' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Tools', 'check-email' ); ?></a>
+				<?php do_action('ck_mail_add_license_tab'); ?>
 				<a href="?page=check-email-settings&tab=support" class="nav-tab <?php if( 'support' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Help & Support', 'check-email' ); ?></a>
+				<?php if(!defined('CK_MAIL_PRO_VERSION')){ ?>
+					<a href="https://check-email.tech/" class="nav-tab <?php if( 'pro' == $tab ):?>nav-tab-active<?php endif; ?>" style="background-color: #F6AE4F; color: #fff; font-weight: 500; border: 1px solid #F6AE4F;" target="_blank"><?php esc_html_e( 'Upgrade to Pro', 'check-email' ); ?></a>
+				<?php } ?>
 			</nav>
 			
 			<div class="tab-content ce_tab_<?php echo esc_attr( $tab ); ?>">
@@ -126,7 +130,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
 			<?php endif; ?>
 
-			<?php if( 'smtp' !== $tab && 'support' !== $tab && 'tools' !== $tab ): ?>
+			<?php if( 'smtp' !== $tab && 'support' !== $tab && 'tools' !== $tab && 'license' !== $tab ): ?>
 				<?php $submit_url = ( '' != $tab ) ? add_query_arg( 'tab', $tab, admin_url( 'options.php' ) ) : 'options.php'; ?>
 				<form method="post" action="<?php echo esc_url( $submit_url ); ?>">
 					<?php
@@ -208,6 +212,8 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				elseif('tools' == $tab):
 					global $check_email;
 					$check_email->add_loadie( new \CheckEmail\Core\UI\Setting\Check_Email_Tools_Tab() );
+				elseif('license' == $tab):
+					do_action('ck_mail_add_license_tab_content', );
 				?>	
 
 				<?php endif; ?>

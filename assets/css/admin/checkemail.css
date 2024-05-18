@@ -40,6 +40,7 @@
 
 .tab-content.ce_tab_general .check_email_enable_logs,
 .tab-content.ce_tab_general .check_email_enable_dashboard_widget,
+.tab-content.ce_tab_general .check_email_trigger_data,
 .tab-content.ce_tab_general .check_email_db_size_notification {
     display: none;
 }
@@ -79,4 +80,8 @@
 
 .ce-query-error{
   color: #FF0000;
+}
+
+.check-email-d-none{
+    display: none;
 }
