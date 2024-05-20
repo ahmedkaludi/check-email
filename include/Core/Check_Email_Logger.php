@@ -46,6 +46,7 @@ class Check_Email_Logger implements Loadie {
                 'to_email'        => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['to'] ),
                 'subject'         => esc_html($mail_info['subject']),
                 'message'         => wp_kses_post($mail_info['message']),
+                'backtrace_segment'=> json_encode($this->ck_mail_get_backtrace()),
                 'headers'         => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['headers'], "\n" ),
                 'attachment_name' => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['attachments'] ),
                 'sent_date'       => current_time( 'mysql' ),
@@ -69,6 +70,26 @@ class Check_Email_Logger implements Loadie {
         
         return $original_mail_info;
 	}
+	
+	/**
+     * Get the details of the method that originally triggered wp_mail
+     *
+     * @return array a single element of the debug_backtrace function
+     * @since 1.0.12
+     */
+    private function ck_mail_get_backtrace($functionName = 'wp_mail'): ?array
+    {
+        $backtraceSegment = null;
+        $backtrace = debug_backtrace();
+
+        foreach ($backtrace as $segment) {
+            if ($segment['function'] == $functionName) {
+                $backtraceSegment = $segment;
+            }
+        }
+
+        return $backtraceSegment;
+    }
 
 	public function on_email_failed( $wp_error ) {
 		if ( ! is_wp_error( $wp_error ) ) {
