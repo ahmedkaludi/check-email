@@ -150,7 +150,7 @@ function check_email_add_plugin_link( $links ) {
 		    array_push( $links, $setting_link );
 		    return $links;
 }
-add_filter( 'plugin_action_links', 'check_email_add_plugin_link', 10, 2 );
+add_filter( 'plugin_action_links_'.plugin_basename(__FILE__), 'check_email_add_plugin_link', 10, 2 );
 
 function checkMail_is_plugins_page() {
 
