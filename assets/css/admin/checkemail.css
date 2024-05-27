@@ -54,7 +54,7 @@
 }
 
 .ce-support-container *{
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .ce-support-label{
@@ -62,6 +62,7 @@
   float: left;
   width: 70px;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .ce-star-mark{
@@ -84,4 +85,37 @@
 
 .check-email-d-none{
     display: none;
+}
+
+.check-email-bg-color{
+    background-color: #f47f16;
+}
+
+.check-email-pro-btn{
+    color: #fff; 
+    font-weight: 500; 
+    border: 1px solid #F6AE4F;
+}
+
+#check-email-trigger-data-free-note{
+    padding: 5px;
+    background-color: #f47f16;
+    width: 300px;
+    margin-top: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 500;
+}
+
+#check-email-trigger-data-free-note span{
+    color: #fff;
+    text-decoration: inherit;
+}
+
+.check-mail-std-color{
+    color: #f47f16 !important;
+}
+
+.check-email-opt-labels{
+    cursor: pointer;
 }

@@ -74,7 +74,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                     <img draggable="false" role="img" class="emoji" alt="👈" src="https://s.w.org/images/core/emoji/13.0.1/svg/1f448.svg">
                 </h2>
                 <p><?php esc_html_e('Help us build the next set of features for Check & Log Email. Tell us what you think and we will make it happen!', 'check-email') ?></p>
-                <a target="_blank" rel="noreferrer noopener" href="https://bit.ly/33QzqBU" class="button button-primary button-hero"><?php esc_html_e('Click here', 'check-email') ?></a>
+                <a target="_blank" rel="noreferrer noopener" href="https://check-email.tech/contact/" class="button button-primary button-hero"><?php esc_html_e('Click here', 'check-email') ?></a>
             </div>
 
             <?php require_once 'partials/check-email-admin-status-display.php'; ?>

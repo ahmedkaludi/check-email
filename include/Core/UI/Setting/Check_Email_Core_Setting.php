@@ -15,14 +15,14 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 			$this->section->field_labels = array(
 				'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
-				'remove_on_uninstall'     => esc_html__( 'Remove Data on Uninstall?', 'check-email' ),
-				'override_emails_from'    => esc_html__( 'Override Emails From', 'check-email' ),
+				'remove_on_uninstall'     => '<label for="check-email-remove-on-uninstall" class="check-email-opt-labels">'.esc_html__( 'Remove Data on Uninstall?', 'check-email' ).'</label>',
+				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',
 				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
 				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
-				'enable_logs'             => esc_html__( 'Enable Logs', 'check-email' ),
-				'enable_dashboard_widget' => esc_html__( 'Enable Dashboard Widget', 'check-email' ),
-				'db_size_notification'    => esc_html__( 'Database Size Notification', 'check-email' ),
-				'trigger_data'    		  => esc_html__( 'Trigger Data', 'check-email' ),
+				'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',
+				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
+				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
+				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Trigger Data', 'check-email' ).'</label>',
 			);
 
 			$this->section->default_value = array(
@@ -121,7 +121,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
 
-		<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $remove_data ); ?>>
+		<input id="check-email-remove-on-uninstall" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $remove_data ); ?>>
 		<?php esc_html_e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ); ?>
 
 		<?php
@@ -432,12 +432,13 @@ EOT;
 		if(!defined('CK_MAIL_PRO_VERSION')){
 		?>
 			<input id="check-email-trigger-data" type="checkbox" />
-			<span id="check-email-trigger-data-free-note" style="display: none;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/" target="_blank"><span style="color: #F6AE4F; font-weight: bold; text-decoration: inherit;"><?php esc_html_e('Premium Version'); ?><span></a> </span>
+			<span><?php esc_html_e( 'Trigger helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank" class="check-mail-std-color"><?php esc_html_e(' Learn More'); ?></a></span>
+			<p id="check-email-trigger-data-free-note" style="display: none;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank"><span><?php esc_html_e('Premium Version'); ?><span></a> </p>
 		<?php
 		}else{
 		?>
 			<input id="check-email-trigger-data" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $trigger_data ); ?>>
-			<?php esc_html_e( 'Check this box if you would like to enable trigger data.', 'check-email' ); ?>
+			<span><?php esc_html_e( 'Trigger helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank" class="check-mail-std-color"><?php esc_html_e(' Learn More'); ?></a></span>
 		<?php
 		}
 	}
