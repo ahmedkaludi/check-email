@@ -140,41 +140,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					submit_button( esc_html__( 'Save', 'check-email' ) );
 					?>
 				</form>
-			<?php elseif( 'smtp' == $tab ): ?>
-				<table class="form-table" role="presentation">
-					<tbody>
-						<tr>
-							<th scope="row"><?php esc_html_e( 'Install WP SMTP', 'check-email' ); ?></th>
-							<?php $smtp_status = $this->is_smtp_installed(); ?>
-							<?php if( 'false' != $smtp_status ): ?> 
-							<?php
-								$activate_url = add_query_arg(
-									array(
-										'action'        => 'activate',
-										'plugin'        => rawurlencode( 'wp-smtp/wp-smtp.php' ),
-										'plugin_status' => 'all',
-										'paged'         => '1',
-										'_wpnonce'      => wp_create_nonce( 'activate-plugin_wp-smtp/wp-smtp.php' ),
-									),
-									admin_url( 'plugins.php' )
-								);	
-							?>
-							<td>
-								<div class="install_plugin_wrap">
-									<button id="install_wp_smtp" class="button"  data-slug="wp-smtp" data-action="<?php echo ( 'install' == $smtp_status ? 'install' : 'activate' ); ?>" data-activation_url="<?php echo esc_url( $activate_url ); ?>"><?php echo sprintf( esc_html__( '%s SMTP', 'check-email' ),  ( 'install' == $smtp_status ? 'Install' : 'Activate' ) ); ?></button>
-									<div id="install_wp_smtp_info"> <p><?php echo sprintf( esc_html__( 'Click to %s WP SMTP', 'check-email' ), ( 'install' == $smtp_status ? 'install' : 'activate' ) ) ; ?> </p></div>
-								</div>
-								
-							</td>
-							<?php else: ?>
-								<td>
-								<div class="install_wp_smtp_wrap"> <?php esc_html_e( 'WP SMTP is allready installed and activated.', 'check-email' ); ?></div>
-							</td>
-							<?php endif; ?>
-						</tr>
-					</tbody>
-				</table>
-			<?php elseif('support' == $tab): 
+			<?php elseif( 'smtp' == $tab ):
+
+					do_action('check_mail_smtp_form');
+
+				  elseif('support' == $tab): 
 					$main_params = array(
 						'ajax_url'                   => admin_url( 'admin-ajax.php' ),
 						'support_nonce'  => wp_create_nonce( 'support-localization' ),

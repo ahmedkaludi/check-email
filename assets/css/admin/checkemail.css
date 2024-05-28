@@ -41,7 +41,14 @@
 .tab-content.ce_tab_general .check_email_enable_logs,
 .tab-content.ce_tab_general .check_email_enable_dashboard_widget,
 .tab-content.ce_tab_general .check_email_trigger_data,
-.tab-content.ce_tab_general .check_email_db_size_notification {
+.tab-content.ce_tab_general .check_email_db_size_notification,
+.tab-content.ce_tab_general .check_email_smtp_from, 
+.tab-content.ce_tab_general .check_email_smtp_from_name,
+.tab-content.ce_tab_general .check_email_smtp_secure,
+.tab-content.ce_tab_general .check_email_smtp_host,
+.tab-content.ce_tab_general .check_email_smtp_port,
+.tab-content.ce_tab_general .check_email_smtp_username,
+.tab-content.ce_tab_general .check_email_smtp_auth {
     display: none;
 }
 
@@ -49,7 +56,26 @@
 .tab-content.ce_tab_logging .check_email_remove_on_uninstall,
 .tab-content.ce_tab_logging .check_email_override_emails_from,
 .tab-content.ce_tab_logging .check_email_email_from_name,
-.tab-content.ce_tab_logging .check_email_email_from_email  {
+.tab-content.ce_tab_logging .check_email_email_from_email,
+.tab-content.ce_tab_logging .check_email_smtp_from,
+.tab-content.ce_tab_logging .check_email_smtp_from_name,
+.tab-content.ce_tab_logging .check_email_smtp_secure,
+.tab-content.ce_tab_logging .check_email_smtp_port,
+.tab-content.ce_tab_logging .check_email_smtp_host,
+.tab-content.ce_tab_logging .check_email_smtp_username,
+.tab-content.ce_tab_logging .check_email_smtp_auth  {
+    display: none;
+}
+
+.tab-content.ce_tab_smtp .check_email_enable_logs,
+.tab-content.ce_tab_smtp .check_email_enable_dashboard_widget,
+.tab-content.ce_tab_smtp .check_email_trigger_data,
+.tab-content.ce_tab_smtp .check_email_db_size_notification,
+.tab-content.ce_tab_smtp .check_email_allowed_user_roles,
+.tab-content.ce_tab_smtp .check_email_remove_on_uninstall,
+.tab-content.ce_tab_smtp .check_email_override_emails_from,
+.tab-content.ce_tab_smtp .check_email_email_from_name,
+.tab-content.ce_tab_smtp .check_email_email_from_email{
     display: none;
 }
 
@@ -97,6 +123,11 @@
     border: 1px solid #F6AE4F;
 }
 
+.check-email-pro-btn:hover{
+    background-color: #f47f16;
+    color: #fff;
+}
+
 #check-email-trigger-data-free-note{
     padding: 5px;
     background-color: #f47f16;
@@ -118,4 +149,8 @@
 
 .check-email-opt-labels{
     cursor: pointer;
+}
+
+.check-mail-smtp-secure-label{
+    margin-right: 15px;
 }

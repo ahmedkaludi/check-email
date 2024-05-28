@@ -110,6 +110,14 @@
         $('#check-email-trigger-data-free-note').hide();
       }
     });
+    
+    $(document).on('click', '#check-email-enable-smtp', function(e){
+      if($(this).is(':checked')){
+        $('#check-email-smtp-form').show();
+      }else{
+        $('#check-email-smtp-form').hide();
+      }
+    });
 
   });
 })(jQuery);

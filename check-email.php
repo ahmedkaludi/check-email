@@ -164,3 +164,5 @@ function checkMail_is_plugins_page() {
     }
     return false;
 }
+
+require_once 'Check_Email_SMTP_Tab.php';
