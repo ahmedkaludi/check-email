@@ -114,7 +114,7 @@ class Check_Email_Newsletter {
                     echo $response;
 
                 }else{
-                        echo esc_html('Email id required');                        
+                        echo esc_html('Email id required', 'check-email');                        
                 }                        
 
                 wp_die();
