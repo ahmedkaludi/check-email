@@ -33,7 +33,7 @@ class Check_Email_HelpSupport_Page extends Check_Email_BasePage {
 	}
 
 	public function render_page() {
-		wp_redirect( 'https://check-email.tech/contact/' );
+		wp_redirect( admin_url('admin.php?page=check-email-settings&tab=support') );
     	exit;
 	}
 }

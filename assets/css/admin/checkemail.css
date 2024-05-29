@@ -141,7 +141,11 @@
 .check-mail-premium-text{
     color: #2271b1;
     text-decoration: inherit;
-    font-weight: normal;
+}
+
+#check-email-trigger-data-free-note a:focus{
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .check-mail-std-color{
