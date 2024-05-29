@@ -14,21 +14,21 @@ class Check_Email_Export_Log {
 
 		$this->separator = ',';
 
-		add_action('wp_ajax_ck_mail_export_logs_to_csv', array($this, 'ck_mail_export_logs_to_csv'));
-		add_action('wp_ajax_ck_email_export_log_options', array($this, 'ck_email_export_log_options'));
+		add_action('wp_ajax_ck_mail_export_logs', array($this, 'ck_mail_export_logs'));
+		add_action('wp_ajax_ck_email_export_filter_popup', array($this, 'ck_email_export_filter_popup'));
 	}
 
 	/**
 	 * Export email logs to csv file
 	 * @since 1.0.11
 	 * */
-	public function ck_mail_export_logs_to_csv(){
+	public function ck_mail_export_logs(){
 
 		if(!isset($_GET['ck_mail_export_nonce'])){
 	    	wp_die( -1 );
 	    }
 
-	    if ( !wp_verify_nonce( $_GET['ck_mail_export_nonce'], 'ck_mail_export_nonce' ) ){
+	    if ( !wp_verify_nonce( $_GET['ck_mail_export_nonce'], 'ck_mail_ajax_check_nonce' ) ){
        		wp_die( -1 );  
     	}
 
@@ -218,7 +218,7 @@ class Check_Email_Export_Log {
 
 					if(in_array("Message", $csv_headings)){
 						$message    = str_replace(',', '', $l_value['message']);
-						$message    = preg_replace('~[\r\n]+~', '', $message);
+						$message    = preg_replace('~[\r\n\t]+~', '', $message);
 						$logs_data .= $message.$this->separator;
 					} 
 
@@ -242,10 +242,18 @@ class Check_Email_Export_Log {
 	 * Template for email log options
 	 * @since 1.0.11
 	 * */
-	public function ck_email_export_log_options(){
+	public function ck_email_export_filter_popup(){
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			wp_die( -1 );
 		}
+
+		if ( ! isset( $_GET['ck_mail_security_nonce'] ) ){
+            wp_die( '-1' ); 
+        }
+
+        if ( !wp_verify_nonce( $_GET['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+           wp_die( '-1' );  
+        }
 		?>
 
 		<div id="ck-mail-elog-options">
@@ -427,8 +435,8 @@ class Check_Email_Export_Log {
 					</div>
 				</div> <!-- ck-mail-exp-row div end -->
 				<div style="clear: both;"></div>
-				<input type="hidden" name="ck_mail_export_nonce" value="<?php echo wp_create_nonce('ck_mail_export_nonce');    ?>">
-				<input type="hidden" name="action" value="ck_mail_export_logs_to_csv">
+				<input type="hidden" name="ck_mail_export_nonce" value="<?php echo wp_create_nonce('ck_mail_ajax_check_nonce');    ?>">
+				<input type="hidden" name="action" value="ck_mail_export_logs">
 				<button type="button" class="button-primary button" id="ck-mail-export-logs-btn"> <?php esc_html_e('Export Logs', 'check-email'); ?> </button>
 			</form>
 		</div>

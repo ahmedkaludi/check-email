@@ -35,9 +35,10 @@ class Check_Email_Tools_Tab {
 							<?php 
 							$logs_ajax_url = add_query_arg(
 								array(
-									'action' => 'ck_email_export_log_options',
+									'action' => 'ck_email_export_filter_popup',
 									'width'  => '800',
-									'height' => '550'
+									'height' => '550',
+									'ck_mail_security_nonce' => wp_create_nonce( 'ck_mail_ajax_check_nonce' )
 								),
 								'admin-ajax.php'
 							);
