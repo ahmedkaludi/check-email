@@ -116,7 +116,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<?php do_action('ck_mail_add_license_tab'); ?>
 				<a href="?page=check-email-settings&tab=support" class="nav-tab <?php if( 'support' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Help & Support', 'check-email' ); ?></a>
 				<?php if(!defined('CK_MAIL_PRO_VERSION')){ ?>
-					<a href="https://check-email.tech/" class="nav-tab check-email-bg-color check-email-pro-btn <?php if( 'pro' == $tab ):?>nav-tab-active<?php endif; ?>" target="_blank"><?php esc_html_e( 'Upgrade to Pro', 'check-email' ); ?></a>
+					<a href="https://check-email.tech/pricing/#pricings" class="nav-tab check-email-bg-color check-email-pro-btn <?php if( 'pro' == $tab ):?>nav-tab-active<?php endif; ?>" target="_blank"><?php esc_html_e( 'Upgrade to Pro', 'check-email' ); ?></a>
 				<?php } ?>
 			</nav>
 			
