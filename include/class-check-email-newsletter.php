@@ -32,7 +32,7 @@ class Check_Email_Newsletter {
                         'do_you_want'       => esc_html__( 'Do you want the latest updates on ', 'check-email'  ),
                         'ck_mail_update'        => esc_html__( 'Check & Log Email update', 'check-email'  ),
                         'before_others'     => esc_html__( ' before others and some best resources on monetization in a single email? - Free just for users of Check & Log Email!', 'check-email'  ),
-                        'ck_mail_security_nonce'    => wp_create_nonce( 'ck_mail_security_nonce' ),
+                        'ck_mail_security_nonce'    => wp_create_nonce( 'ck_mail_ajax_check_nonce' ),
                         'ajax_url'              => admin_url( 'admin-ajax.php' )
                 );
 
@@ -90,7 +90,7 @@ class Check_Email_Newsletter {
                 if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
                     die( '-1' ); 
                 }
-                if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_security_nonce' ) ){
+                if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
                    die( '-1' );  
                 }
                                 
@@ -114,7 +114,7 @@ class Check_Email_Newsletter {
                     echo $response;
 
                 }else{
-                        echo saswp_t_string('Email id required');                        
+                        echo esc_html('Email id required');                        
                 }                        
 
                 wp_die();
