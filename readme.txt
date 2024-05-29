@@ -73,10 +73,10 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 == Changelog ==
 
 = v1.0.12 - 29/05/2024 =
-- Enhancement: Feature to export logs #49
-- Enhancement: Added feedback form on plugin deactivation #61
+- Feature: Feature to export logs #49
+- Feature: Added feedback form on plugin deactivation #61
 - Enhancement: Added settings link on plugin dashboard #62
-- Enhancement: Added Newsletter Form #64
+- Feature: Added Newsletter Form #64
 - Feature: Added Trigger Data (Premium) #65
 - Feature: Added SMTP feature to configure email #66
 
