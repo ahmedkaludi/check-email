@@ -129,18 +129,19 @@
 }
 
 #check-email-trigger-data-free-note{
-    padding: 5px;
+    padding: 5px 10px !important;
     background-color: #f47f16;
-    width: 300px;
+    width: 275px;
     margin-top: 10px;
-    border-radius: 10px;
+    border-radius: 15px;
     color: #fff;
     font-weight: 500;
 }
 
-#check-email-trigger-data-free-note span{
-    color: #fff;
+.check-mail-premium-text{
+    color: #2271b1;
     text-decoration: inherit;
+    font-weight: normal;
 }
 
 .check-mail-std-color{

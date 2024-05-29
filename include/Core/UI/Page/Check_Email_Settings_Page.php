@@ -127,7 +127,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 			<?php elseif( 'logging' == $tab ): ?>
 				<h2><?php esc_html_e( 'Logging', 'check-email' ); ?></h2>
 			<?php elseif( 'smtp' == $tab ): ?>
-				<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
+				<h2><?php esc_html_e( 'SMTP Configuration', 'check-email' ); ?></h2>
 			<?php endif; ?>
 
 			<?php if( 'smtp' !== $tab && 'support' !== $tab && 'tools' !== $tab && 'license' !== $tab ): ?>

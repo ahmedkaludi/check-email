@@ -22,7 +22,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
-				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Trigger Data', 'check-email' ).'</label>',
+				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 			);
 
 			$this->section->default_value = array(
@@ -432,13 +432,13 @@ EOT;
 		if(!defined('CK_MAIL_PRO_VERSION')){
 		?>
 			<input id="check-email-trigger-data" type="checkbox" />
-			<span><?php esc_html_e( 'Trigger helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank" class="check-mail-std-color"><?php esc_html_e(' Learn More'); ?></a></span>
-			<p id="check-email-trigger-data-free-note" style="display: none;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank"><span><?php esc_html_e('Premium Version'); ?><span></a> </p>
+			<span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span>
+			<p id="check-email-trigger-data-free-note" style="display: none;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank"><span class="check-mail-premium-text"><?php esc_html_e('Premium Version'); ?><span></a> </p>
 		<?php
 		}else{
 		?>
 			<input id="check-email-trigger-data" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $trigger_data ); ?>>
-			<span><?php esc_html_e( 'Trigger helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank" class="check-mail-std-color"><?php esc_html_e(' Learn More'); ?></a></span>
+			<span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span>
 		<?php
 		}
 	}

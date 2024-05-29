@@ -160,10 +160,10 @@ class Check_Email_SMTP_Tab {
 				<table class="form-table" role="presentation">
 					<tbody>
 						<tr class="check_email_enable_smtp">
-						    <th scope="row"><label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e( 'Enable SMTP', 'check-email' ); ?></label></th>
+						    <th scope="row"><label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e( 'SMTP', 'check-email' ); ?></label></th>
 						    <td>
 						        <input id="check-email-enable-smtp" type="checkbox" name="check-email-smtp-options[enable_smtp]" <?php echo esc_attr($smtp_checked); ?>>
-						        <?php esc_html_e('Check this box if you would like to enable SMTP feature.','check-email'); ?>
+						        <?php esc_html_e('SMTP helps you to send emails via SMTP instead of the PHP mail()','check-email'); ?>
 						    </td>
 						</tr>
 					</tbody>
