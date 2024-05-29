@@ -172,19 +172,19 @@ class Check_Email_SMTP_Tab {
 						<tr class="check_email_smtp_from">
 						    <th scope="row"><?php esc_html_e('From', 'check-email'); ?></th>
 						    <td>
-						        <input id="check-email-smtp-from" type="text" name="check-email-smtp-options[smtp_from]" value="<?php echo isset($this->smtp_options['smtp_from'])?$this->smtp_options['smtp_from']:"" ?>" size="35">
+						        <input id="check-email-smtp-from" type="text" name="check-email-smtp-options[smtp_from]" value="<?php echo isset($this->smtp_options['smtp_from'])?esc_attr($this->smtp_options['smtp_from']):"" ?>" size="35">
 						    </td>
 						</tr>
 						<tr class="check_email_smtp_from_name">
 						    <th scope="row"><?php esc_html_e('From Name', 'check-email'); ?></th>
 						    <td>
-						        <input id="check-email-smtp-from-name" type="text" name="check-email-smtp-options[smtp_from_name]" size="35" value="<?php echo isset($this->smtp_options['smtp_from_name'])?$this->smtp_options['smtp_from_name']:"" ?>">
+						        <input id="check-email-smtp-from-name" type="text" name="check-email-smtp-options[smtp_from_name]" size="35" value="<?php echo isset($this->smtp_options['smtp_from_name'])?esc_attr($this->smtp_options['smtp_from_name']):"" ?>">
 						    </td>
 						</tr>
 						<tr class="check_email_smtp_host">
 						    <th scope="row"><?php esc_html_e('SMTP Host', 'check-email'); ?></th>
 						    <td>
-						        <input id="check-email-smtp-host" type="text" name="check-email-smtp-options[smtp_host]" value="<?php echo isset($this->smtp_options['smtp_host'])?$this->smtp_options['smtp_host']:"" ?>" size="35">
+						        <input id="check-email-smtp-host" type="text" name="check-email-smtp-options[smtp_host]" value="<?php echo isset($this->smtp_options['smtp_host'])?esc_attr($this->smtp_options['smtp_host']):"" ?>" size="35">
 						    </td>
 						</tr>
 						<tr class="check_email_smtp_secure">
@@ -301,6 +301,8 @@ class Check_Email_SMTP_Tab {
 
 			delete_option( 'check_email_smtp_status' );
 			do_action( 'check_mail_smtp_admin_update' );
+
+			wp_redirect(admin_url('admin.php?page=check-email-settings&tab=smtp'));
 		}
 	}	
 	
@@ -320,8 +322,8 @@ class Check_Email_SMTP_Tab {
 
 		?>
 		<div class="notice notice-error is-dismissible">
-			<h3><?php echo esc_html__( 'Check Mail SMTP connection error', 'wp-smtp' ); ?></h3>
-			<p><?php echo esc_html__( 'Seems like there are some problems with the enterd information. Please re-check & re-enter it and hit the "Save changes" button.', 'wp-smtp' ); ?></p>
+			<h3><?php esc_html_e( 'Check Mail SMTP connection error', 'check-email' ); ?></h3>
+			<p><?php esc_html_e( 'Seems like there are some problems with the enterd information. Please re-check & re-enter it and hit the "Save changes" button.', 'check-email' ); ?></p>
 		</div>
 		<?php
 	}
