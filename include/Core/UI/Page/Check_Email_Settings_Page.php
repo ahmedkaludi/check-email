@@ -111,8 +111,13 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<a href="?page=check-email-settings" class="nav-tab <?php if( 'general' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=logging" class="nav-tab <?php if( 'logging' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Logging', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
-				<a href="https://docs.google.com/forms/d/e/1FAIpQLSdhHrYons-oMg_9oEDVvx8VTvzdeCQpT4PnG6KLCjYPiyQfXg/viewform" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
+				<a href="https://check-email.tech/contact/" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
+				<a href="?page=check-email-settings&tab=tools" class="nav-tab <?php if( 'tools' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Tools', 'check-email' ); ?></a>
+				<?php do_action('ck_mail_add_license_tab'); ?>
 				<a href="?page=check-email-settings&tab=support" class="nav-tab <?php if( 'support' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Help & Support', 'check-email' ); ?></a>
+				<?php if(!defined('CK_MAIL_PRO_VERSION')){ ?>
+					<a href="https://check-email.tech/pricing/#pricings" class="nav-tab check-email-bg-color check-email-pro-btn <?php if( 'pro' == $tab ):?>nav-tab-active<?php endif; ?>" target="_blank"><?php esc_html_e( 'Upgrade to Pro', 'check-email' ); ?></a>
+				<?php } ?>
 			</nav>
 			
 			<div class="tab-content ce_tab_<?php echo esc_attr( $tab ); ?>">
@@ -122,10 +127,10 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 			<?php elseif( 'logging' == $tab ): ?>
 				<h2><?php esc_html_e( 'Logging', 'check-email' ); ?></h2>
 			<?php elseif( 'smtp' == $tab ): ?>
-				<h2><?php esc_html_e( 'WP SMTP Installer', 'check-email' ); ?></h2>
+				<h2><?php esc_html_e( 'SMTP Configuration', 'check-email' ); ?></h2>
 			<?php endif; ?>
 
-			<?php if( 'smtp' !== $tab && 'support' !== $tab ): ?>
+			<?php if( 'smtp' !== $tab && 'support' !== $tab && 'tools' !== $tab && 'license' !== $tab ): ?>
 				<?php $submit_url = ( '' != $tab ) ? add_query_arg( 'tab', $tab, admin_url( 'options.php' ) ) : 'options.php'; ?>
 				<form method="post" action="<?php echo esc_url( $submit_url ); ?>">
 					<?php
@@ -135,41 +140,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					submit_button( esc_html__( 'Save', 'check-email' ) );
 					?>
 				</form>
-			<?php elseif( 'smtp' == $tab ): ?>
-				<table class="form-table" role="presentation">
-					<tbody>
-						<tr>
-							<th scope="row"><?php esc_html_e( 'Install WP SMTP', 'check-email' ); ?></th>
-							<?php $smtp_status = $this->is_smtp_installed(); ?>
-							<?php if( 'false' != $smtp_status ): ?> 
-							<?php
-								$activate_url = add_query_arg(
-									array(
-										'action'        => 'activate',
-										'plugin'        => rawurlencode( 'wp-smtp/wp-smtp.php' ),
-										'plugin_status' => 'all',
-										'paged'         => '1',
-										'_wpnonce'      => wp_create_nonce( 'activate-plugin_wp-smtp/wp-smtp.php' ),
-									),
-									admin_url( 'plugins.php' )
-								);	
-							?>
-							<td>
-								<div class="install_plugin_wrap">
-									<button id="install_wp_smtp" class="button"  data-slug="wp-smtp" data-action="<?php echo ( 'install' == $smtp_status ? 'install' : 'activate' ); ?>" data-activation_url="<?php echo esc_url( $activate_url ); ?>"><?php echo sprintf( esc_html__( '%s SMTP', 'check-email' ),  ( 'install' == $smtp_status ? 'Install' : 'Activate' ) ); ?></button>
-									<div id="install_wp_smtp_info"> <p><?php echo sprintf( esc_html__( 'Click to %s WP SMTP', 'check-email' ), ( 'install' == $smtp_status ? 'install' : 'activate' ) ) ; ?> </p></div>
-								</div>
-								
-							</td>
-							<?php else: ?>
-								<td>
-								<div class="install_wp_smtp_wrap"> <?php esc_html_e( 'WP SMTP is allready installed and activated.', 'check-email' ); ?></div>
-							</td>
-							<?php endif; ?>
-						</tr>
-					</tbody>
-				</table>
-			<?php elseif('support' == $tab): 
+			<?php elseif( 'smtp' == $tab ):
+
+					do_action('check_mail_smtp_form');
+
+				  elseif('support' == $tab): 
 					$main_params = array(
 						'ajax_url'                   => admin_url( 'admin-ajax.php' ),
 						'support_nonce'  => wp_create_nonce( 'support-localization' ),
@@ -203,7 +178,15 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 			                <span class="ce-query-error ce-hide"><?php echo esc_html_e('Message not sent. please check your network connection', 'check-email') ?></span>
 				        </div>
 					</div>
-			<?php endif; ?>
+				<?php  
+				elseif('tools' == $tab):
+					global $check_email;
+					$check_email->add_loadie( new \CheckEmail\Core\UI\Setting\Check_Email_Tools_Tab() );
+				elseif('license' == $tab):
+					do_action('ck_mail_add_license_tab_content', );
+				?>	
+
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php

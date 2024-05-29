@@ -29,6 +29,8 @@ class Check_Email_Table_Manager implements Loadie {
 		add_action( 'wpmu_new_blog', array( $this, 'create_table_for_new_blog' ) );
 
 		add_filter( 'wpmu_drop_tables', array( $this, 'delete_table_from_deleted_blog' ) );
+		
+		add_filter( 'admin_init', array( $this, 'add_backtrace_segment_field' ) );
 
 		// Do any DB upgrades.
 		$this->update_table_if_needed();
@@ -371,6 +373,7 @@ class Check_Email_Table_Manager implements Loadie {
 				to_email VARCHAR(500) NOT NULL,
 				subject VARCHAR(500) NOT NULL,
 				message TEXT NOT NULL,
+				backtrace_segment TEXT NOT NULL,
 				headers TEXT NOT NULL,
 				attachments TEXT NOT NULL,
 				sent_date timestamp NOT NULL,
@@ -424,6 +427,31 @@ class Check_Email_Table_Manager implements Loadie {
 			$query = $query . $query_cond;
 
 			return $wpdb->get_results( $query );
+		}
+	}
+	
+	/**
+	 * Add new backtrace_segment field to check_email_log table
+	 * @since 1.0.12
+	 * */
+	public function add_backtrace_segment_field(){
+		global $wpdb;
+		$table_name = $this->get_log_table_name();
+
+		// Field to check
+		$field_name = 'backtrace_segment';
+
+		// Query to check if the field exists in the table
+		$field_exists = $wpdb->get_results(
+		    $wpdb->prepare(
+		        "SHOW COLUMNS FROM $table_name LIKE %s",
+		        $field_name
+		    )
+		);
+
+		if(empty($field_exists)){
+			$query = "ALTER TABLE $table_name ADD backtrace_segment TEXT NULL DEFAULT NULL AFTER message";
+			$wpdb->query($query);
 		}
 	}
 }
