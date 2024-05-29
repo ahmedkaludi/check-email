@@ -42,11 +42,19 @@ class Check_Email_Logger implements Loadie {
             	$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
             }
 
+            $backtrace_segment = array();
+            $backtrace_segment = $this->ck_mail_get_backtrace();
+            if(!empty($backtrace_segment) && is_array($backtrace_segment)){
+            	$backtrace_segment = json_encode($backtrace_segment);
+            }else{
+            	$backtrace_segment = null;
+            }
+
             $log = array(
                 'to_email'        => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['to'] ),
                 'subject'         => esc_html($mail_info['subject']),
                 'message'         => wp_kses_post($mail_info['message']),
-                'backtrace_segment'=> json_encode($this->ck_mail_get_backtrace()),
+                'backtrace_segment'=> $backtrace_segment,
                 'headers'         => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['headers'], "\n" ),
                 'attachment_name' => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['attachments'] ),
                 'sent_date'       => current_time( 'mysql' ),
@@ -77,7 +85,7 @@ class Check_Email_Logger implements Loadie {
      * @return array a single element of the debug_backtrace function
      * @since 1.0.12
      */
-    private function ck_mail_get_backtrace($functionName = 'wp_mail'): ?array
+    private function ck_mail_get_backtrace($functionName = 'wp_mail')
     {
         $backtraceSegment = null;
         $backtrace = debug_backtrace();

@@ -373,6 +373,7 @@ class Check_Email_Table_Manager implements Loadie {
 				to_email VARCHAR(500) NOT NULL,
 				subject VARCHAR(500) NOT NULL,
 				message TEXT NOT NULL,
+				backtrace_segment TEXT NOT NULL,
 				headers TEXT NOT NULL,
 				attachments TEXT NOT NULL,
 				sent_date timestamp NOT NULL,
