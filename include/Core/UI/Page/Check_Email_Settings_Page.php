@@ -183,7 +183,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					global $check_email;
 					$check_email->add_loadie( new \CheckEmail\Core\UI\Setting\Check_Email_Tools_Tab() );
 				elseif('license' == $tab):
-					do_action('ck_mail_add_license_tab_content', );
+					do_action('ck_mail_add_license_tab_content');
 				?>	
 
 				<?php endif; ?>
