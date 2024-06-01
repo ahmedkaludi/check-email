@@ -87,7 +87,7 @@ class Check_Email_Log_List_Action implements Loadie {
 					if(!defined('CK_MAIL_PRO_VERSION')){
 					?>
 						<p><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></p>
-						<p id="check-email-trigger-data-free-note" style="font-weight: 600;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank"><span class="check-mail-premium-text"><?php esc_html_e('Premium Version'); ?><span></a> </p>
+						<p id="check-email-trigger-data-free-note"> <?php esc_html_e( 'This Feature requires the Premium Version', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank" class="check-mail-premium-btn"><span><?php esc_html_e('Upgrade Now', 'check-email'); ?><span></a> </p>
 					<?php
 					}else{
 						do_action('check_email_pro_log_tabs_content', $id);

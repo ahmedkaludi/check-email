@@ -72,12 +72,14 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			<input type="checkbox" checked disabled><?php esc_html_e( 'Administrator', 'check-email' ); ?>
 		</p>
 
-		<?php foreach ( $available_roles as $role_id => $role ) : ?>
+		<?php foreach ( $available_roles as $role_id => $role ) : 
+			$role_chk_id = 'check-email-role-'.$role_id;
+			?>
 			<p>
-				<input type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $role_id ); ?>"
+				<input type="checkbox" id="<?php echo esc_attr($role_chk_id); ?>" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $role_id ); ?>"
 					<?php \CheckEmail\Util\wp_chill_check_email_array_checked( $selected_roles, $role_id ); ?>>
 
-				<?php echo esc_html( translate_user_role( $role['name'] ) ); ?>
+				<label for="<?php echo esc_attr($role_chk_id); ?>" class="check-email-opt-labels"><?php echo esc_html( translate_user_role( $role['name'] ) ); ?></label>
 			</p>
 		<?php endforeach; ?>
 
@@ -106,7 +108,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
             <input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
-            <?php esc_html_e( 'Check this box if you would like to log your emails.', 'check-email' ) ?>
+            <label for="check-email-enable-logs" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like to log your emails.', 'check-email' ) ?></label>
             <?php
 	}
 
@@ -122,7 +124,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		?>
 
 		<input id="check-email-remove-on-uninstall" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $remove_data ); ?>>
-		<?php esc_html_e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ); ?>
+		<label for="check-email-remove-on-uninstall" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'check-email' ); ?></label>
 
 		<?php
 	}
@@ -163,7 +165,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		?>
 
 		<input id="check-email-enable-widget" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_dashboard_widget ); ?>>
-		<?php esc_html_e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ); ?>
+		<label for="check-email-enable-widget" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ); ?></label>
 
 		<?php
 	}
@@ -386,7 +388,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
             <input id="check-email-overdide-from" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-            <?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?>
+            <label for="check-email-overdide-from" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?></label>
 		<?php
 
 	}
@@ -431,14 +433,14 @@ EOT;
 
 		if(!defined('CK_MAIL_PRO_VERSION')){
 		?>
-			<input id="check-email-trigger-data" type="checkbox" />
-			<span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span>
-			<p id="check-email-trigger-data-free-note" style="display: none;"> <?php esc_html_e( 'This Feature requires the ', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank"><span class="check-mail-premium-text"><?php esc_html_e('Premium Version'); ?><span></a> </p>
+			<input id="check-email-trigger-data" type="checkbox" disabled />
+			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span></label>
+			<p id="check-email-trigger-data-free-note"> <?php esc_html_e( 'This Feature requires the Premium Version', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank" class="check-mail-premium-btn"><span><?php esc_html_e('Upgrade Now', 'check-email'); ?><span></a> </p>
 		<?php
 		}else{
 		?>
 			<input id="check-email-trigger-data" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $trigger_data ); ?>>
-			<span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span>
+			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span></label>
 		<?php
 		}
 	}

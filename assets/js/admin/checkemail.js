@@ -103,14 +103,7 @@
      * On click of Trigger Data option display link to upgrade to pro
      * @since 1.0.11
      * */
-    $(document).on('click', '#check-email-trigger-data', function(e){
-      if($(this).is(':checked')){
-        $('#check-email-trigger-data-free-note').show();
-      }else{
-        $('#check-email-trigger-data-free-note').hide();
-      }
-    });
-    
+         
     $(document).on('click', '#check-email-enable-smtp', function(e){
       if($(this).is(':checked')){
         $('#check-email-smtp-form').show();
