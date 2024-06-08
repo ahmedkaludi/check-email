@@ -19,10 +19,10 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',
 				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
 				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
-				'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',
-				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',
+				'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
-				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',				
+				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
+				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -33,8 +33,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_name'         => '',
 				'email_from_email'        => '',
 				'override_emails_from'    => false,
-				'enable_logs'             => false,
-				'display_host_id' 		  => false,
+				'enable_logs'             => false,				
 				'enable_dashboard_widget' => false,
 				'db_size_notification'    => array(
 					'notify'                    => false,
@@ -42,8 +41,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'logs_threshold'            => '',
 					'log_threshold_met'         => false,
 					'threshold_email_last_sent' => false,
-				),				
-				'trigger_data' 					=> true,
+				),
+				'display_host_id' 		  => false,			
+				'trigger_data' 			  => true,
 			);
 
 		$this->load();
