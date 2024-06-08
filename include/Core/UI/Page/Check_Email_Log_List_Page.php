@@ -27,7 +27,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	public function register_page() {
                 $option = get_option( 'check-email-log-core' );
                 
-                if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {             
+                // if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {             
                     $this->page = add_submenu_page(
                             Check_Email_Status_Page::PAGE_SLUG,
                             esc_html__( 'View Logs', 'check-email'),
@@ -39,7 +39,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
                     
                     add_action( "load-{$this->page}", array( $this, 'load_page' ) );
                     do_action( 'check_email_load_log_list_page', $this->page );
-                } 
+                // } 
 
 	}
 
@@ -49,7 +49,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
 		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
-                if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {
+                // if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {
                     add_thickbox();
 
                     $this->log_list_table->prepare_items();
@@ -70,7 +70,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
                             </form>
                     </div>
 		<?php
-                }
+                // }
 	}
 
 	public function load_page() {

@@ -19,7 +19,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',
 				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
 				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
-				'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
+				// 'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
 				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',			
@@ -33,7 +33,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_name'         => '',
 				'email_from_email'        => '',
 				'override_emails_from'    => false,
-				'enable_logs'             => false,				
+				// 'enable_logs'             => false,				
 				'enable_dashboard_widget' => false,
 				'db_size_notification'    => array(
 					'notify'                    => false,
@@ -103,7 +103,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		return array_map( 'sanitize_text_field', $roles );
 	}
-
+	/*
 	public function render_enable_logs_settings( $args ) {
 		$option      = $this->get_value();
 		$enable_logs = $option[ $args['id'] ];
@@ -117,7 +117,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
     public function sanitize_enable_logs( $value ) {
 		return sanitize_text_field( $value );
-	}
+	} */
 
 	public function render_remove_on_uninstall_settings( $args ) {
 		$option      = $this->get_value();
