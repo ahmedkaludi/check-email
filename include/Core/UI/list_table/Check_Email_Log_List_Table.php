@@ -30,8 +30,15 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 		);
+		$other_columns = array( 'sent_date', 'result', 'to_email', 'from_email', 'subject' );
 
-		foreach ( array( 'sent_date', 'result', 'to_email', 'from_email', 'subject' ) as $column ) {
+		$option = get_option( 'check-email-log-core' );
+		if ( is_array( $option ) && array_key_exists( 'display_host_id', $option ) &&
+			'true' === strtolower( $option['display_host_id'] ) ) {
+				$other_columns[]='ip_address';
+		}
+
+		foreach ($other_columns  as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
 		}
 
@@ -52,6 +59,10 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	protected function column_default( $item, $column_name ) {
 
 		do_action( 'check_email_display_log_columns', $column_name, $item );
+	}
+
+	protected function column_ip_address( $item ) {
+		return esc_html( $item->ip_address );
 	}
 
 	protected function column_sent_date( $item ) {
@@ -132,6 +143,8 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	protected function column_subject( $item ) {
 		return esc_html( $item->subject );
 	}
+
+	
 
 	protected function column_cb( $item ) {
 		return sprintf(

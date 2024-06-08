@@ -20,9 +20,11 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
 				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
 				'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',
+				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
-				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
+				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',				
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
+				
 			);
 
 			$this->section->default_value = array(
@@ -32,6 +34,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_email'        => '',
 				'override_emails_from'    => false,
 				'enable_logs'             => false,
+				'display_host_id' 		  => false,
 				'enable_dashboard_widget' => false,
 				'db_size_notification'    => array(
 					'notify'                    => false,
@@ -39,7 +42,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'logs_threshold'            => '',
 					'log_threshold_met'         => false,
 					'threshold_email_last_sent' => false,
-				),
+				),				
 				'trigger_data' 					=> true,
 			);
 
@@ -112,7 +115,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
             <?php
 	}
 
-        public function sanitize_enable_logs( $value ) {
+    public function sanitize_enable_logs( $value ) {
 		return sanitize_text_field( $value );
 	}
 
@@ -420,6 +423,8 @@ EOT;
 			esc_attr( $field_value )
 		);
 	}
+
+	
 	
 	/**
 	 * Add option for Trigger Data
@@ -443,5 +448,20 @@ EOT;
 			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span></label>
 		<?php
 		}
+	}
+
+	public function render_display_host_id_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		?>
+			<input id="check-email-display-host-id" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<label for="check-email-display-host-id" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display host in log list.', 'check-email' ) ?></label>
+		<?php
+	}
+
+	public function sanitize_display_host_id( $value ) {
+		return sanitize_text_field( $value );
 	}
 }
