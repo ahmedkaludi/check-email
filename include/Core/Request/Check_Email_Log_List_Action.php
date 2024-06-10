@@ -87,6 +87,21 @@ class Check_Email_Log_List_Action implements Loadie {
 
 				<div id="tabs-preview">
 					<?php echo wp_kses( $log_item['message'], $this->check_email_kses_allowed_html( 'post' ) ); ?>
+					<?php
+					if (!empty($log_item['attachment_name'])) {
+						$attachments = explode(',',$log_item['attachment_name']);
+						if ($attachments) {
+							?>
+							<h4>Attachments</h4>
+							<?php
+							foreach ($attachments as $key => $attachment) {
+								?>
+								<img src="<?php echo $attachment ?>" height="100px" width="100px" />
+								<?php
+							}
+						}
+					}
+					?>
 				</div>
 				
 				<div id="tabs-trigger-data">
