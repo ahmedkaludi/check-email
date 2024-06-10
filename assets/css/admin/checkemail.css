@@ -40,6 +40,8 @@
 
 .tab-content.ce_tab_general .check_email_enable_logs,
 .tab-content.ce_tab_general .check_email_display_host_id,
+.tab-content.ce_tab_general .check_email_cc,
+.tab-content.ce_tab_general .check_email_bcc,
 .tab-content.ce_tab_general .check_email_enable_dashboard_widget,
 .tab-content.ce_tab_general .check_email_db_size_notification,
 .tab-content.ce_tab_general .check_email_smtp_from, 
@@ -70,6 +72,8 @@
 
 .tab-content.ce_tab_smtp .check_email_enable_logs,
 .tab-content.ce_tab_smtp .check_email_display_host_id,
+.tab-content.ce_tab_smtp .check_email_cc,
+.tab-content.ce_tab_smtp .check_email_bcc,
 .tab-content.ce_tab_smtp .check_email_enable_dashboard_widget,
 .tab-content.ce_tab_smtp .check_email_trigger_data,
 .tab-content.ce_tab_smtp .check_email_db_size_notification,

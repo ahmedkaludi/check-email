@@ -33,6 +33,7 @@ class Check_Email_Logger implements Loadie {
                             'subject'     => '',
                             'message'     => '',
                             'headers'     => '',
+                            'cc'     => '',
                             'attachments' => array(),
                     )
             );

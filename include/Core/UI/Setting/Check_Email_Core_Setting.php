@@ -23,6 +23,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
 				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',			
+				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'CC', 'check-email' ).'</label>',			
+				'bcc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'BCC', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -43,6 +45,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'threshold_email_last_sent' => false,
 				),
 				'display_host_id' 		  => false,			
+				'cc' 		  => false,			
+				'bcc' 		  => false,			
 				'trigger_data' 			  => true,
 			);
 
@@ -460,8 +464,34 @@ EOT;
 			<label for="check-email-display-host-id" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display host in log list.', 'check-email' ) ?></label>
 		<?php
 	}
+	public function render_cc_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		?>
+			<input id="check-email-cc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<label for="check-email-cc" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display cc in log list.', 'check-email' ) ?></label>
+		<?php
+	}
+	public function render_bcc_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		?>
+			<input id="check-email-bcc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<label for="check-email-bcc" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display bcc in log list.', 'check-email' ) ?></label>
+		<?php
+	}
 
 	public function sanitize_display_host_id( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_cc( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_bcc( $value ) {
 		return sanitize_text_field( $value );
 	}
 }
