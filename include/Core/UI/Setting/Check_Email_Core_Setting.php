@@ -23,8 +23,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
 				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',			
-				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'CC', 'check-email' ).'</label>',			
-				'bcc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'BCC', 'check-email' ).'</label>',			
+				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
+				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
