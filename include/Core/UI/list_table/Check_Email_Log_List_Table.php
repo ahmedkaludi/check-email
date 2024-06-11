@@ -243,6 +243,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	}
 
 	public function search_box( $text, $input_id ) {
+		$this->views();
 		$input_text_id  = $input_id . '-search-input';
 		$input_date_id  = $input_id . '-search-date-input';
 		$input_date_val = ( ! empty( $_REQUEST['d'] ) ) ? sanitize_text_field( wp_unslash($_REQUEST['d']) ) : '';
@@ -287,4 +288,59 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			esc_html__( 'Export Logs', 'check-email' )
 		);
 	}
+
+	public function views() {
+        $views = $this->get_views(); 
+        $views = apply_filters( "views_{$this->screen->id}", $views );
+
+        if ( empty( $views ) )
+            return;
+
+        echo "<ul class='subsubsub'>\n";
+        foreach ( $views as $class => $view ) {
+            $views[ $class ] = "\t<li class='$class'>$view";
+        }
+        echo implode( " |</li>\n", $views ) . "</li>\n";
+        echo "</ul>";
+    }
+
+	public function get_views() {
+        $views = [];
+
+        // Get base url.
+        $email_log_page_url = $this->get_page_base_url();
+
+        foreach ( $this->get_statuses() as $status => $label ) {
+            $views[ $status ] = sprintf(
+                '<a href="%1$s" %2$s>%3$s <span class="count">(%4$d)</span></a>',
+                esc_url( add_query_arg( 'status', $status, $email_log_page_url ) ),
+                $this->get_current_status() == $status ? 'class="current"' : '',
+                esc_html( $label ),
+                absint( $this->get_status_count($status))
+            );
+        }
+
+        return $views;
+    }
+
+	public function get_statuses() {
+
+        return [
+            'all'        => __( 'All', 'check-email' ),
+            'complete' => __( 'Delivered', 'check-email' ),
+            'failed'     => __( 'Failed', 'check-email' ),
+        ];
+    }
+
+	public function get_status_count($status ='all') {
+		$current_page_no = $this->get_pagenum();
+		$per_page        = $this->page->get_per_page();
+
+		$total_items = $this->page->get_table_manager()->fetch_log_count_by_status( $_GET, $per_page, $current_page_no,$status);
+		if (empty($total_items)) {
+			$total_items = 0;
+		}
+		return $total_items;
+    }
+	
 }
