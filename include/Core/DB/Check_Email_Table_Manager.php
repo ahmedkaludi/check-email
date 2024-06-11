@@ -32,6 +32,9 @@ class Check_Email_Table_Manager implements Loadie {
 		
 		add_filter( 'admin_init', array( $this, 'add_backtrace_segment_field' ) );
 
+		add_action('admin_init',  array( $this, 'check_mail_cron_schedule' ));
+		add_action('check_mail_cron_hook',  array( $this, 'check_mail_cron_execute' ));
+
 		// Do any DB upgrades.
 		$this->update_table_if_needed();
 	}
@@ -594,4 +597,43 @@ class Check_Email_Table_Manager implements Loadie {
 		$total_items = $wpdb->get_var( $count_query );
 		return $total_items;
 	}
+
+	public function deleteLogOlderThan($timeInterval = null)
+    {
+		$option = get_option( 'check-email-log-core' );
+		if (isset($option['log_retention_period']) && !empty($option['log_retention_period'])) {
+			$periods = array( '1_day' =>86400,
+						'1_week' =>604800,
+						'1_month' =>2419200,
+						'6_month' =>15780000,
+						'1_year' =>31560000
+					);
+			$time_interval = $periods[$option['log_retention_period']];
+			$timestamp = time() - $time_interval;
+
+			global $wpdb;
+			$table_name = $this->get_log_table_name();
+			$sql = "DELETE FROM " . $table_name . " WHERE Unix_timestamp(sent_date) <= %d";
+			$sql = $wpdb->prepare($sql, $timestamp);
+			$wpdb->query($sql);
+		}
+    }
+
+	function check_mail_cron_schedule() {
+		if (!wp_next_scheduled('check_mail_cron_hook')) {
+			wp_schedule_event(time(), 'daily', 'check_mail_cron_hook');
+		}
+	}
+
+	function check_mail_cron_execute() {
+		$this->deleteLogOlderThan();
+		error_log('Cron job executed at' . date('Y-m-d H:i:s'));
+	}
+	
+
+	
+	
+	
+	
+	
 }

@@ -25,6 +25,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',			
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
+				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -47,6 +48,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'display_host_id' 		  => false,			
 				'cc' 		  => false,			
 				'bcc' 		  => false,			
+				'log_retention_period' 		  => array(),			
 				'trigger_data' 			  => true,
 			);
 
@@ -482,6 +484,29 @@ EOT;
 		?>
 			<input id="check-email-bcc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
 			<label for="check-email-bcc" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display bcc in log list.', 'check-email' ) ?></label>
+		<?php
+	}
+	public function render_log_retention_period_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$periods = array( '1_day' =>'1 Day',
+						'1_week' =>'1 Week',
+						'1_month' =>'1 Month',
+						'6_month' =>'6 Month',
+						'1_year' =>'1 Year');
+		?>
+			<select id="check-email-log_retention_period" name="<?php echo esc_attr( $field_name ); ?>">
+				<option value=""><?php esc_html_e( 'Forever', 'check-email' ) ?></option>
+				<?php
+				foreach ($periods as $key => $value) {
+					?>
+						<option value="<?php echo $key; ?>" <?php selected($field_value,$key); ?>><?php esc_html_e( $value, 'check-email' ) ?></option>
+					<?php
+				}
+				?>
+			</select>
 		<?php
 	}
 
