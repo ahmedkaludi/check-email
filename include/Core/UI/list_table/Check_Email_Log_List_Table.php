@@ -121,6 +121,22 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			esc_html__( 'View Content', 'check-email' )
 		);
 
+		$resend_ajax_url = add_query_arg(
+			array(
+				'action' => 'check-email-log-list-view-resend-message',
+				'log_id' => $item->id,
+				'width'  => '800',
+				'height' => '550',
+			),
+			'admin-ajax.php'
+		);
+
+		$actions['resend-content'] = sprintf( '<a href="%1$s" class="thickbox" title="%2$s">%3$s</a>',
+			esc_url( $resend_ajax_url ),
+			esc_html__( 'Resend Email', 'check-email' ),
+			esc_html__( 'Resend Email', 'check-email' )
+		);
+
 		$delete_url = add_query_arg(
 			array(
 				'page'                   => ( isset( $_REQUEST['page'] ) ) ? sanitize_text_field( wp_unslash($_REQUEST['page']) ) : '',

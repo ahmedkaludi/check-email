@@ -111,6 +111,27 @@
         $('#check-email-smtp-form').hide();
       }
     });
+    $(document).on('click', '#check_mail_resend_btn', function(e){
+      jQuery('.js_error').html('');
+      jQuery('.js_success').html('');
+      var ajaxurl = jQuery('#cm_ajax_url').val();
+      var data = jQuery("#check-mail-resend-form" ).serialize();
+      jQuery.ajax({
+        url:ajaxurl,
+        method:'post',
+        dataType: "json",
+        data:data,
+        success:function(response){
+          if (response.status != 200) {
+            jQuery('.js_error').html(response.message);
+          }else{
+            jQuery('.js_success').html(response.message);
+            location.reload();
+          }
+            
+        }                
+      });
+    });
 
   });
 })(jQuery);

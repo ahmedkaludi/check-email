@@ -10,6 +10,8 @@ class Check_Email_Log_List_Action implements Loadie {
 
 	public function load() {
 		add_action( 'wp_ajax_check-email-log-list-view-message', array( $this, 'view_log_message' ) );
+		add_action( 'wp_ajax_check-email-log-list-view-resend-message', array( $this, 'view_resend_message' ) );
+		add_action( 'wp_ajax_check_mail_resend_submit', array( $this, 'submit_resend_message' ) );
 
 		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
@@ -214,5 +216,158 @@ class Check_Email_Log_List_Action implements Loadie {
 		);
 
 		return $allowed_tags;
+	}
+
+	public function view_resend_message() {
+		if ( ! current_user_can( 'manage_check_email' ) ) {
+			wp_die();
+		}
+
+		$id = isset( $_GET['log_id'] ) ? absint( $_GET['log_id'] ) : 0 ;
+
+		if ( $id <= 0 ) {
+			wp_die();
+		}
+
+		$log_items = $this->get_table_manager()->fetch_log_items_by_id( array( $id ) );
+		if ( count( $log_items ) > 0 ) {
+			$log_item = $log_items[0];
+
+			$headers = array();
+			if ( ! empty( $log_item['headers'] ) ) {
+				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
+				$headers = $parser->parse_headers( $log_item['headers'] );
+			}
+
+			?>
+			<form name="check-mail-resend-form" id="check-mail-resend-form" >
+			<?php wp_nonce_field('check_mail_smtp_nonce','check_mail_smtp_nonce'); ?>
+			<input type="hidden" name="action" value="check_mail_resend_submit" />
+			<input type="hidden" name="ck_mail_security_nonce" value="<?php echo wp_create_nonce( 'ck_mail_ajax_check_nonce' ) ?>" />
+			<input type="hidden" id="cm_ajax_url" value="<?php echo admin_url( 'admin-ajax.php' ); ?>" />
+			<table style="width: 100%;">
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'To', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
+					<td style="padding: 5px;">
+						<input type="email" id="ckm_to" name="ckm_to" class="regular-text" value="<?php echo esc_attr( $log_item['to_email'] ); ?>" />
+					</td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Subject', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
+					<td style="padding: 5px;">
+						<input type="text" id="ckm_subject" name="ckm_subject" class="regular-text" value="<?php echo esc_attr( $log_item['subject'] ); ?>" />
+					</td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Message', 'check-email' ); ?></b></td>
+					<td style="padding: 5px;">
+						<textarea id="ckm_message" name="ckm_message" class="regular-text" rows="4" cols="4"> <?php echo esc_attr( $log_item['message'] ); ?></textarea>
+					</td>
+				</tr>
+			</table>
+			<h3>Additional Details</h3>
+			<table style="width: 100%;">
+                <tr style="background: #eee;">
+					<td style="padding: 5px; width"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><input type="email" name="ckm_from" id="ckm_from" class="regular-text" value="<?php  echo isset( $headers['from'] ) ?  $headers['from'] : '' ?>" /></td>
+				</tr>
+				
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'CC', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  $headers['cc'] : '' ?>" /><small>Use "," for multiple emails</small></td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'BCC', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  $headers['bcc'] : '' ?>" /><small>Use "," for multiple emails</small></td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px; width:110px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><input type="text" name="ckm_reply_to" id="ckm_reply_to" class="regular-text" value="<?php echo ( isset( $headers['reply_to'] )) ?  $headers['reply_to'] : '' ?>" /></td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Content Type', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><input type="text" name="ckm_content_type" id="ckm_content_type" class="regular-text" value="<?php echo ( isset( $headers['content_type'] )) ?  $headers['content_type'] : '' ?>" /></td>
+				</tr>
+
+				
+			</table>
+			<?php
+				if (!empty($log_item['attachment_name'])) {
+					$attachments = explode(',',$log_item['attachment_name']);
+					if ($attachments) {
+						?>
+						<h4>Attachments</h4>
+						<?php
+						foreach ($attachments as $key => $attachment) {
+							?>
+							<img src="<?php echo $attachment ?>" height="100px" width="100px" />
+							<?php
+						}
+					}
+				}
+			?>
+			<span class="js_error" style="color:red;"></span>
+			<span class="js_success" style="color:green;"></span>
+			<div id="view-message-footer">
+				<a href="#" class="button action" id="thickbox-footer-close"><?php esc_html_e( 'Close', 'check-email' ); ?></a>
+				<bitton type="button" class="button button-primary" id="check_mail_resend_btn" style="margin-top: 10px;"><?php esc_html_e( 'Resend', 'check-email' ); ?></a>
+			</div>
+			</form>
+			<?php
+		}
+
+		wp_die(); // this is required to return a proper result.
+	}
+
+	public function submit_resend_message() {
+		if ( ! current_user_can( 'manage_check_email' ) ) {
+			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
+			wp_die();
+		}
+		$to = sanitize_text_field($_POST['ckm_to']);
+		$from = sanitize_text_field($_POST['ckm_from']);
+		$cc = sanitize_text_field($_POST['ckm_cc']);
+		$bcc = sanitize_text_field($_POST['ckm_bcc']);
+		$content_type = sanitize_text_field($_POST['ckm_content_type']);
+		$reply_to = sanitize_text_field($_POST['ckm_reply_to']);
+
+		$subject = sanitize_text_field($_POST['ckm_subject']);
+		$message = sanitize_text_field($_POST['ckm_message']);
+		$headers = array(
+		);
+		
+		if ( !empty( $from ) ){
+			$headers[] ='From: '.$from;
+		}
+		if ( !empty( $reply_to ) ){
+			$headers[] ='Reply-To: '.$reply_to;
+		}
+		if ( !empty( $cc ) ){
+			$headers[] ='CC: '.$cc;
+		}
+		if ( !empty( $bcc ) ){
+			$headers[] ='BCC: '.$bcc;
+		}
+		if ( !empty( $bcc ) ){
+			$headers[] ='Content-Type: '.$content_type;
+		}
+		if ( empty( $to ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Please fill all required fields','check-mail')));
+			wp_die();
+		}
+		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			wp_die();
+		}
+		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			wp_die();
+		}
+		
+
+		wp_mail( $to, $subject, $message, $headers, $attachments=array() );
+
+		echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Email Sent.','check-mail')));
+			die;
 	}
 }
