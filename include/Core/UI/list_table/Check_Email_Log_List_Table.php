@@ -330,7 +330,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
             $views[ $status ] = sprintf(
                 '<a href="%1$s" %2$s>%3$s <span class="count">(%4$d)</span></a>',
                 esc_url( add_query_arg( 'status', $status, $email_log_page_url ) ),
-                $this->get_current_status() == $status ? 'class="current"' : '',
+                $this->get_current_page_status() == $status ? 'class="current"' : '',
                 esc_html( $label ),
                 absint( $this->get_status_count($status))
             );
@@ -339,11 +339,18 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
         return $views;
     }
 
-	public function get_statuses() {
+	public function get_current_page_status(){
+		$status ="";
+		if (isset($_GET['status'])) {
+			$status = $_GET['status'];
+		}
+		return $status;
+	}
 
+	public function get_statuses() {
         return [
             'all'        => __( 'All', 'check-email' ),
-            'complete' => __( 'Delivered', 'check-email' ),
+            'complete' => __( 'Complete', 'check-email' ),
             'failed'     => __( 'Failed', 'check-email' ),
         ];
     }
