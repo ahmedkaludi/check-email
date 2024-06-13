@@ -23,6 +23,25 @@ class Check_Email_Tools_Tab {
 
 		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
 
+		$migration_plugins = array(
+			[
+				'data_id' => 'email_log',
+				'title' => 'Email Log'
+			],
+			[
+				'data_id' => 'mail_logging_wp_mail_catcher',
+				'title' => 'Mail logging - WP Mail Catcher'
+			],
+			[
+				'data_id' => 'wp_mail_logging',
+				'title' => 'WP Mail Logging'
+			],
+			[
+				'data_id' => 'wp_mail_log',
+				'title' => 'WP Mail Log'
+			],
+		);
+
 	?>
 		<div class="ck-mail-tools-tab-wrapper">
 			<h2><?php esc_html_e('Tools', 'check-email'); ?></h2>
@@ -53,6 +72,34 @@ class Check_Email_Tools_Tab {
 				</tbody>
 			</table>
 		</div>
+		<hr/>
+		<h3>Migration</h3>
+		<div class="row">
+			<span id="cm_security_nonce" data="<?php echo wp_create_nonce( 'ck_mail_ajax_check_nonce' ) ?>" ></span>
+			<span id="cm_ajax_url" data="<?php echo admin_url( 'admin-ajax.php' ); ?>" ></span>
+			<?php
+				foreach ($migration_plugins as $key => $value) {
+					?>
+					<div class="js_migration" >
+						<div style="display:inline-flex;">
+							<H4 style="min-width:250px;"><?php echo $value['title'] ?></H4>
+							<div class="">
+								<button type="button" data-id="<?php echo $value['data_id'] ?>" class="button check-mail-import-plugins">Import</button>
+							</div>
+							<div class="submit inline-edit-save">
+								<span class="spinner"></span>
+							</div>
+							<span class="js_error" style="color:red; margin-top:15px;"></span>
+							<span class="js_success" style="color:green;margin-top:15px;"></span>
+						</div>
+						
+					</div>
+					<?php
+				}
+			?>
+		</div>
+		
+
 	<?php
 	}
 

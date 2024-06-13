@@ -133,5 +133,44 @@
       });
     });
 
+    function import_data_in_chunks(ajaxurl,data,t){
+      jQuery.ajax({
+        url:ajaxurl,
+        method:'post',
+        dataType: "json",
+        data:data,
+        beforeSend: function(response){
+          t.parents('.js_migration').find(".spinner").addClass('is-active');;
+          t.prop('disabled',true);
+        },
+        success:function(response){
+          console.log(response)
+          if (response.status != 200) {
+            t.parents('.js_migration').find('.js_error').html(response.message);
+          }else{
+            t.parents('.js_migration').find('.js_success').html(response.message);
+          }
+        },
+        complete:function(response){
+          t.parents('.js_migration').find(".spinner").removeClass('is-active');;
+          t.prop('disabled',false);
+        }
+
+      });
+    }
+
+    $(".check-mail-import-plugins").on("click", function(e){
+      e.preventDefault();
+      jQuery('.js_error').html('');
+      jQuery('.js_success').html('');
+      var t = $(this);
+      var plugin_name = $(this).attr('data-id');
+      var ajaxurl = jQuery('#cm_ajax_url').attr('data');                    
+      var ck_mail_security_nonce = jQuery('#cm_security_nonce').attr('data');                    
+      data = { action:"check_mail_import_plugin_data", plugin_name:plugin_name, ck_mail_security_nonce:ck_mail_security_nonce};
+      import_data_in_chunks(ajaxurl,data,t);
+    });
+  
+
   });
 })(jQuery);

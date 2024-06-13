@@ -12,6 +12,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		add_action( 'wp_ajax_check-email-log-list-view-message', array( $this, 'view_log_message' ) );
 		add_action( 'wp_ajax_check-email-log-list-view-resend-message', array( $this, 'view_resend_message' ) );
 		add_action( 'wp_ajax_check_mail_resend_submit', array( $this, 'submit_resend_message' ) );
+		add_action('wp_ajax_check_mail_import_plugin_data', array( $this, 'check_mail_import_plugin_data' ));
 
 		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
@@ -241,7 +242,6 @@ class Check_Email_Log_List_Action implements Loadie {
 
 			?>
 			<form name="check-mail-resend-form" id="check-mail-resend-form" >
-			<?php wp_nonce_field('check_mail_smtp_nonce','check_mail_smtp_nonce'); ?>
 			<input type="hidden" name="action" value="check_mail_resend_submit" />
 			<input type="hidden" name="ck_mail_security_nonce" value="<?php echo wp_create_nonce( 'ck_mail_ajax_check_nonce' ) ?>" />
 			<input type="hidden" id="cm_ajax_url" value="<?php echo admin_url( 'admin-ajax.php' ); ?>" />
@@ -370,4 +370,157 @@ class Check_Email_Log_List_Action implements Loadie {
 		echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Email Sent.','check-mail')));
 			die;
 	}
+
+	function check_mail_import_plugin_data(){                  
+    
+        if ( ! current_user_can( 'manage_check_email' ) ) {
+			return;
+        }
+        
+        if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			wp_die();
+		}
+		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			wp_die();
+		}
+		set_time_limit(300);  
+        
+        $plugin_name   = isset($_POST['plugin_name'])?sanitize_text_field($_POST['plugin_name']):'';          
+        $is_plugin_active = false;
+        
+        switch ($plugin_name) {
+            
+            case 'email_log':
+                if ( is_plugin_active('email-log/email-log.php')) {
+					$plugin_table_name = 'email_log';
+					$is_plugin_active =  true;
+                }                
+                break;
+            case 'mail_logging_wp_mail_catcher':
+                if ( is_plugin_active('wp-mail-catcher/WpMailCatcher.php')) {
+					$plugin_table_name = 'mail_catcher_logs';
+                    $is_plugin_active =  true;      
+                }                
+                break;
+            case 'wp_mail_logging':
+                if ( is_plugin_active('wp-mail-logging/wp-mail-logging.php')) {
+					$plugin_table_name = 'wpml_mails';
+					$is_plugin_active =  true;
+                }                
+                break;
+            case 'wp_mail_log':
+                if ( is_plugin_active('wp-mail-log/wp-mail-log.php')) {
+					$plugin_table_name = 'wml_entries';
+					$is_plugin_active =  true;
+                }                
+                break;
+            default:
+                break;
+        }                             
+        if($is_plugin_active){
+			$result = $this->check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name);
+			echo wp_json_encode($result);
+        }else{
+            echo wp_json_encode(array('status'=>503, 'message'=>esc_html__( "Plugin data is not available or it is not activated",'check-mail'))); 
+        }        
+           wp_die();           
+	}
+
+	function check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name){
+        global $wpdb;
+		$offset = 0;
+		$chunk_size=100;
+		$wpdb->query('START TRANSACTION');
+		$response = array('status'=>503,'total_row'=>0);
+		try {
+			$plugin_table_name = $wpdb->prefix . $plugin_table_name;
+			$my_table = $wpdb->prefix . 'check_email_log';
+
+			// Count the total number of rows in table A
+			$total_rows = $wpdb->get_var("SELECT COUNT(*) FROM $plugin_table_name");
+
+			if ($total_rows === null) {
+				  $result = esc_html__( "Failed to count rows.",'check-mail');
+				  return $response;
+			}
+
+    		$result =  esc_html__( "Total ".$total_rows." rows successfully moved: ",'check-mail');
+
+			while ($offset < $total_rows) {
+				// Retrieve data in chunks from table A
+				$rows = $wpdb->get_results($wpdb->prepare("SELECT * FROM $plugin_table_name LIMIT %d OFFSET %d", $chunk_size, $offset), ARRAY_A);
+
+				if ($rows) {
+					// Insert data into table B
+					foreach ($rows as $row) {
+						$data_to_insert = array();
+						unset($row['id']);
+						switch ($plugin_name) {
+							case 'email_log':
+								$data_to_insert = $row;
+								break;
+							case 'mail_logging_wp_mail_catcher':
+								$data_to_insert = array(
+									'to_email' => $row['email_to'],
+									'subject' => $row['subject'],
+									'message' => $row['message'],
+									'backtrace_segment' => $row['backtrace_segment'],
+									'headers' => $row['additional_headers'],
+									'attachments' => $row['attachments'],
+									'sent_date' => (!empty($row['time'])) ? date('Y-m-d H:i:s', $row['time']) : NULL,
+									'result' => $row['status'],
+									'error_message' => $row['error'],
+								);
+								break;
+							case 'wp_mail_logging':
+								$data_to_insert = array(
+									'to_email' => $row['receiver'],
+									'subject' => $row['subject'],
+									'message' => $row['message'],
+									'headers' => $row['headers'],
+									'attachments' => $row['attachments'],
+									'sent_date' => $row['timestamp'],
+									'ip_address' => $row['host'],
+									'error_message' => $row['error'],
+								);
+							case 'wp_mail_log':
+								$data_to_insert = array(
+									'to_email' => $row['to_email'],
+									'subject' => $row['subject'],
+									'message' => $row['message'],
+									'headers' => $row['headers'],
+									'attachments' => $row['attachments_file'],
+									'sent_date' => $row['sent_date']
+								);
+								
+							default:
+								break;
+						}
+						if(!empty($data_to_insert)){
+							$wpdb->insert($my_table, $data_to_insert);
+						}
+					}
+				}
+
+				$offset += $chunk_size;
+			}
+			$wpdb->query('COMMIT');
+			$response['status'] = 200;
+			$response['total_row'] = $total_rows;
+			$response['plugin_name'] = $plugin_name;
+			$response['message'] = $result;
+			return $response; 
+		} catch (\Throwable $th) {
+			$wpdb->query('ROLLBACK');
+			$response['status'] = 503;
+			$response['total_row'] = $total_rows;
+			$response['plugin_name'] = $plugin_name;
+			$response['message'] = esc_html__( "Something went wrong no data migrated",'check-mail');
+			return false;
+		}                    
+    }
+
+
 }
