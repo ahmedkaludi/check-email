@@ -265,7 +265,7 @@ class Check_Email_Log_List_Action implements Loadie {
 					</td>
 				</tr>
 			</table>
-			<h3>Additional Details</h3>
+			<h3><?php esc_html_e( 'Additional Details', 'check-email' ); ?></h3>
 			<table style="width: 100%;">
                 <tr style="background: #eee;">
 					<td style="padding: 5px; width"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
@@ -274,11 +274,11 @@ class Check_Email_Log_List_Action implements Loadie {
 				
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'CC', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  $headers['cc'] : '' ?>" /><small>Use "," for multiple emails</small></td>
+					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  $headers['cc'] : '' ?>" /><small><?php esc_html_e( 'Use "," for multiple emails', 'check-email' ); ?></small></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'BCC', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  $headers['bcc'] : '' ?>" /><small>Use "," for multiple emails</small></td>
+					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  $headers['bcc'] : '' ?>" /><small><?php esc_html_e( 'Use "," for multiple emails', 'check-email' ); ?></small></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px; width:110px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
@@ -296,7 +296,7 @@ class Check_Email_Log_List_Action implements Loadie {
 					$attachments = explode(',',$log_item['attachment_name']);
 					if ($attachments) {
 						?>
-						<h4>Attachments</h4>
+						<h4><?php esc_html_e( 'Attachments', 'check-email' ); ?></h4>
 						<?php
 						foreach ($attachments as $key => $attachment) {
 							?>
@@ -306,8 +306,8 @@ class Check_Email_Log_List_Action implements Loadie {
 					}
 				}
 			?>
-			<span class="js_error" style="color:red;"></span>
-			<span class="js_success" style="color:green;"></span>
+			<span class="cm_js_error" style="color:red;"></span>
+			<span class="cm_js_success" style="color:green;"></span>
 			<div id="view-message-footer">
 				<a href="#" class="button action" id="thickbox-footer-close"><?php esc_html_e( 'Close', 'check-email' ); ?></a>
 				<bitton type="button" class="button button-primary" id="check_mail_resend_btn" style="margin-top: 10px;"><?php esc_html_e( 'Resend', 'check-email' ); ?></a>
@@ -446,7 +446,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				  return $response;
 			}
 
-    		$result =  esc_html__( "Total ".$total_rows." rows successfully moved: ",'check-mail');
+    		$result =  esc_html__( "Total ",'check-mail').$total_rows.esc_html__( " rows successfully imported: ",'check-mail');
 
 			while ($offset < $total_rows) {
 				// Retrieve data in chunks from table A
@@ -484,6 +484,7 @@ class Check_Email_Log_List_Action implements Loadie {
 									'sent_date' => $row['timestamp'],
 									'ip_address' => $row['host'],
 									'error_message' => $row['error'],
+									'result' => empty($row['error'])? 1:0,
 								);
 								break;
 							case 'wp_mail_log':
@@ -493,7 +494,7 @@ class Check_Email_Log_List_Action implements Loadie {
 									'message' => $row['message'],
 									'headers' => $row['headers'],
 									'attachments' => $row['attachments_file'],
-									'sent_date' => $row['sent_date']
+									'sent_date' => $row['sent_date'],
 								);
 								break;
 								

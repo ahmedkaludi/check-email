@@ -39,7 +39,7 @@
 }
 
 .tab-content.ce_tab_general .check_email_enable_logs,
-.tab-content.ce_tab_general .check_email_display_host_id,
+.tab-content.ce_tab_general .check_email_display_host_ip,
 .tab-content.ce_tab_general .check_email_cc,
 .tab-content.ce_tab_general .check_email_bcc,
 .tab-content.ce_tab_general .check_email_log_retention_period,
@@ -72,7 +72,7 @@
 }
 
 .tab-content.ce_tab_smtp .check_email_enable_logs,
-.tab-content.ce_tab_smtp .check_email_display_host_id,
+.tab-content.ce_tab_smtp .check_email_display_host_ip,
 .tab-content.ce_tab_smtp .check_email_cc,
 .tab-content.ce_tab_smtp .check_email_bcc,
 .tab-content.ce_tab_smtp .check_email_log_retention_period,

@@ -73,24 +73,24 @@ class Check_Email_Tools_Tab {
 			</table>
 		</div>
 		<hr/>
-		<h3>Migration</h3>
+		<h3><?php esc_html_e('Migration', 'check-email'); ?></h3>
 		<div class="row">
 			<span id="cm_security_nonce" data="<?php echo wp_create_nonce( 'ck_mail_ajax_check_nonce' ) ?>" ></span>
 			<span id="cm_ajax_url" data="<?php echo admin_url( 'admin-ajax.php' ); ?>" ></span>
 			<?php
 				foreach ($migration_plugins as $key => $value) {
 					?>
-					<div class="js_migration" >
+					<div class="cm_js_migration" >
 						<div style="display:inline-flex;">
-							<H4 style="min-width:250px;"><?php echo $value['title'] ?></H4>
+							<H4 style="min-width:250px;"><?php esc_html_e($value['title'], 'check-email');  ?></H4>
 							<div class="">
-								<button type="button" data-id="<?php echo $value['data_id'] ?>" class="button check-mail-import-plugins">Import</button>
+								<button type="button" data-id="<?php echo $value['data_id'] ?>" class="button check-mail-import-plugins"><?php esc_html_e('Import', 'check-email'); ?></button>
 							</div>
 							<div class="submit inline-edit-save">
 								<span class="spinner"></span>
 							</div>
-							<span class="js_error" style="color:red; margin-top:15px;"></span>
-							<span class="js_success" style="color:green;margin-top:15px;"></span>
+							<span class="cm_js_error" style="color:red; margin-top:15px;"></span>
+							<span class="cm_js_success" style="color:green;margin-top:15px;"></span>
 						</div>
 						
 					</div>

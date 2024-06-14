@@ -33,8 +33,8 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$other_columns = array( 'sent_date', 'result', 'to_email', 'from_email', 'subject' );
 
 		$option = get_option( 'check-email-log-core' );
-		if ( is_array( $option ) && array_key_exists( 'display_host_id', $option ) &&
-			'true' === strtolower( $option['display_host_id'] ) ) {
+		if ( is_array( $option ) && array_key_exists( 'display_host_ip', $option ) &&
+			'true' === strtolower( $option['display_host_ip'] ) ) {
 				$other_columns[]='ip_address';
 		}
 		if ( is_array( $option ) && array_key_exists( 'cc', $option ) &&
@@ -350,7 +350,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	public function get_statuses() {
         return [
             'all'        => __( 'All', 'check-email' ),
-            'complete' => __( 'Complete', 'check-email' ),
+            'complete' => __( 'Completed', 'check-email' ),
             'failed'     => __( 'Failed', 'check-email' ),
         ];
     }

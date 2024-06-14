@@ -22,7 +22,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				// 'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
-				'display_host_id'    => '<label for="check-email-display-host-id" class="check-email-opt-labels">'.esc_html__( 'Display Host Id', 'check-email' ).'</label>',			
+				'display_host_ip'    => '<label for="check-email-display-host-ip" class="check-email-opt-labels">'.esc_html__( 'Display Host IP', 'check-email' ).'</label>',			
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
 				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',			
@@ -45,7 +45,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'log_threshold_met'         => false,
 					'threshold_email_last_sent' => false,
 				),
-				'display_host_id' 		  => false,			
+				'display_host_ip' 		  => false,			
 				'cc' 		  => false,			
 				'bcc' 		  => false,			
 				'log_retention_period' 		  => '',			
@@ -456,14 +456,14 @@ EOT;
 		}
 	}
 
-	public function render_display_host_id_settings( $args ){
+	public function render_display_host_ip_settings( $args ){
 
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
-			<input id="check-email-display-host-id" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-display-host-id" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display host in log list.', 'check-email' ) ?></label>
+			<input id="check-email-display-host-ip" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<label for="check-email-display-host-ip" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display host in log list.', 'check-email' ) ?></label>
 		<?php
 	}
 	public function render_cc_settings( $args ){
@@ -510,7 +510,7 @@ EOT;
 		<?php
 	}
 
-	public function sanitize_display_host_id( $value ) {
+	public function sanitize_display_host_ip( $value ) {
 		return sanitize_text_field( $value );
 	}
 	public function sanitize_cc( $value ) {
