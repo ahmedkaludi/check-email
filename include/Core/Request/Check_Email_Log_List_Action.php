@@ -485,6 +485,7 @@ class Check_Email_Log_List_Action implements Loadie {
 									'ip_address' => $row['host'],
 									'error_message' => $row['error'],
 								);
+								break;
 							case 'wp_mail_log':
 								$data_to_insert = array(
 									'to_email' => $row['to_email'],
