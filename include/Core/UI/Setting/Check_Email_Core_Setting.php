@@ -48,7 +48,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'display_host_id' 		  => false,			
 				'cc' 		  => false,			
 				'bcc' 		  => false,			
-				'log_retention_period' 		  => array(),			
+				'log_retention_period' 		  => '',			
 				'trigger_data' 			  => true,
 			);
 
