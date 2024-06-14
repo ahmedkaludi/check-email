@@ -495,6 +495,7 @@ class Check_Email_Log_List_Action implements Loadie {
 									'attachments' => $row['attachments_file'],
 									'sent_date' => $row['sent_date']
 								);
+								break;
 								
 							default:
 								break;
