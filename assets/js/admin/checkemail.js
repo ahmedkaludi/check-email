@@ -112,6 +112,7 @@
       }
     });
     $(document).on('click', '#check_mail_resend_btn', function(e){
+      t = jQuery(this);
       jQuery('.cm_js_error').html('');
       jQuery('.cm_js_success').html('');
       var ajaxurl = jQuery('#cm_ajax_url').val();
@@ -121,6 +122,10 @@
         method:'post',
         dataType: "json",
         data:data,
+        beforeSend: function(response){
+          t.html('Resend<span class="spinner is-active"></span>');
+          t.prop('disabled',true);
+        },
         success:function(response){
           if (response.status != 200) {
             jQuery('.cm_js_error').html(response.message);
@@ -128,8 +133,11 @@
             jQuery('.cm_js_success').html(response.message);
             location.reload();
           }
-            
-        }                
+        },
+        complete:function(response){
+          t.html('Resend');
+          t.prop('disabled',false);
+        }               
       });
     });
 
@@ -140,7 +148,7 @@
         dataType: "json",
         data:data,
         beforeSend: function(response){
-          t.parents('.cm_js_migration').find(".spinner").addClass('is-active');;
+          t.html('Import<span class="spinner is-active"></span>');
           t.prop('disabled',true);
         },
         success:function(response){
@@ -152,7 +160,7 @@
           }
         },
         complete:function(response){
-          t.parents('.cm_js_migration').find(".spinner").removeClass('is-active');;
+          t.html('Import');
           t.prop('disabled',false);
         }
 

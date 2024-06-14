@@ -310,7 +310,8 @@ class Check_Email_Log_List_Action implements Loadie {
 			<span class="cm_js_success" style="color:green;"></span>
 			<div id="view-message-footer">
 				<a href="#" class="button action" id="thickbox-footer-close"><?php esc_html_e( 'Close', 'check-email' ); ?></a>
-				<bitton type="button" class="button button-primary" id="check_mail_resend_btn" style="margin-top: 10px;"><?php esc_html_e( 'Resend', 'check-email' ); ?></a>
+				<button type="button" class="button " id="check_mail_resend_btn" style="margin-top: 10px;"><?php esc_html_e( 'Resend', 'check-email' ); ?>
+			</button>
 			</div>
 			</form>
 			<?php
@@ -324,6 +325,14 @@ class Check_Email_Log_List_Action implements Loadie {
 			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
 			wp_die();
 		}
+		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			wp_die();
+		}
+		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			wp_die();
+		}
 		$to = sanitize_text_field($_POST['ckm_to']);
 		$from = sanitize_text_field($_POST['ckm_from']);
 		$cc = sanitize_text_field($_POST['ckm_cc']);
@@ -332,7 +341,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		$reply_to = sanitize_text_field($_POST['ckm_reply_to']);
 
 		$subject = sanitize_text_field($_POST['ckm_subject']);
-		$message = sanitize_text_field($_POST['ckm_message']);
+		$message = sanitize_textarea_field($_POST['ckm_message']);
 		$headers = array(
 		);
 		
@@ -351,18 +360,33 @@ class Check_Email_Log_List_Action implements Loadie {
 		if ( !empty( $bcc ) ){
 			$headers[] ='Content-Type: '.$content_type;
 		}
-		if ( empty( $to ) ){
+		if ( empty( $to )  || empty( $subject )){
 			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Please fill all required fields','check-mail')));
 			wp_die();
 		}
-		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+		$emailErr = false;
+		if ( !empty( $to )){
+			$to_exp = explode(',',$to);
+			if (is_array($to_exp)) {
+				foreach ($to_exp as $key => $to_email) {
+					if (!filter_var($to_email, FILTER_VALIDATE_EMAIL)) {
+						$emailErr = true;
+					}
+				}
+			}else{
+				if (!filter_var($to_exp, FILTER_VALIDATE_EMAIL)) {
+					$emailErr = true;
+				}
+			}
+		}
+
+		if ( $emailErr){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Invalid email address in to','check-mail')));
 			wp_die();
 		}
-		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
-			wp_die();
-		}
+
+		
+		
 		
 
 		wp_mail( $to, $subject, $message, $headers, $attachments=array() );

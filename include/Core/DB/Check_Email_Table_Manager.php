@@ -561,12 +561,13 @@ class Check_Email_Table_Manager implements Loadie {
 			$status = trim( esc_sql( $status ) );
 			if ($status != 'all') {
 				if ( empty($request['d'])  && empty($request['s']) ) {
-					
-						$query_cond .= " WHERE ";
+					$query_cond .= " WHERE ";
 				}else{
 					$query_cond .= " AND ";
 				}
 			}
+
+			// print_r($query_cond);die;
 			
 			switch( $status ) {
 				case 'failed':
@@ -591,6 +592,7 @@ class Check_Email_Table_Manager implements Loadie {
 		if ( ! empty( $orderby ) & ! empty( $order ) ) {
 			$query_cond .= ' ORDER BY ' . $orderby . ' ' . $order;
 		}
+		// print_r($query_cond);die;
 
 		// Find total number of items.
 		$count_query = $count_query . $query_cond;

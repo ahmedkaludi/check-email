@@ -57,7 +57,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$sortable_columns = array(
 			'sent_date' => array( 'sent_date', true ), // true means it's already sorted.
 			'to_email'  => array( 'to_email', false ),
-			'from_email'=> array( 'from_email', false ),
+			// 'from_email'=> array( 'from_email', false ),
 			'subject'   => array( 'subject', false ),
 		);
 
