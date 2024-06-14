@@ -149,13 +149,13 @@ class Check_Email_Table_Manager implements Loadie {
 		$query       = 'SELECT * FROM ' . $table_name;
 		$count_query = 'SELECT count(*) FROM ' . $table_name;
 		$query_cond  = '';
-
+		
 		if ( isset( $request['s'] ) && is_string( $request['s'] ) && $request['s'] !== '' ) {
 			$search_term = trim( esc_sql( $request['s'] ) );
-
+			
 			if ( Util\wp_chill_check_email_advanced_search_term( $search_term ) ) {
 				$predicates = Util\wp_chill_check_email_get_advanced_search_term_predicates( $search_term );
-
+				
 				foreach ( $predicates as $column => $email ) {
 					switch ( $column ) {
 						case 'id':
@@ -215,8 +215,8 @@ class Check_Email_Table_Manager implements Loadie {
 							break;
 					}
 				}
-			} else {
-				$query_cond .= " WHERE ( to_email LIKE '%$search_term%' OR subject LIKE '%$search_term%' ) ";
+			} else {				
+				$query_cond .= " WHERE ( to_email LIKE '%$search_term%' OR subject LIKE '%$search_term%'  OR message LIKE '%$search_term%' ) ";
 			}
 		}
 
