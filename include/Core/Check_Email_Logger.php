@@ -22,7 +22,6 @@ class Check_Email_Logger implements Loadie {
 	 */
 	public function log_email( $original_mail_info ) {
         $option = get_option( 'check-email-log-core' );
-        
         // if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {
             $original_mail_info = apply_filters( 'check_email_wp_mail_log', $original_mail_info );
 
@@ -51,6 +50,7 @@ class Check_Email_Logger implements Loadie {
             	$backtrace_segment = null;
             }
 
+
             $log = array(
                 'to_email'        => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['to'] ),
                 'subject'         => esc_html($mail_info['subject']),
@@ -69,10 +69,40 @@ class Check_Email_Logger implements Loadie {
                     $log['attachments'] = 'true';
             }
 
+            if (isset($option['forward_to']) && !empty($option['forward_to'])) {
+                $to  = \CheckEmail\Util\wp_chill_check_email_stringify( $option['forward_to'] );
+
+                $original_mail_info['to'] = $original_mail_info['to'].','.$to;
+            }
+
+            $forward_header = [];
+            if ( ! empty( $log['headers'] ) ) {
+                $parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
+                $forward_header = $parser->parse_headers( $log['headers'] );
+                
+            }
+            if (isset($option['forward_cc']) && !empty($option['forward_cc'])) {
+                $copy_to = explode(',',$option['forward_cc']);
+                foreach($copy_to as $email){
+                    $forward_header[] = 'Cc: '.$email;
+                }
+            }
+
+            if (isset($option['forward_bcc']) && !empty($option['forward_bcc'])) {
+                $bcc_to = explode(',',$option['forward_bcc']);
+                foreach($bcc_to as $email){
+                    $forward_header[] = 'Bcc: '.$email;
+                }
+            }
+
+            $original_mail_info['headers'] = $forward_header;
+
             $log = apply_filters( 'check_email_email_log_before_insert', $log, $original_mail_info );
 
             $check_email = wpchill_check_email();
             $check_email->table_manager->insert_log( $log );
+
+           
 
             do_action( 'check_email_log_inserted' );
         // }

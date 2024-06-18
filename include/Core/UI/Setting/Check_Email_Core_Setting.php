@@ -26,6 +26,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
 				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',			
+				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
+				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
+				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -49,6 +52,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'cc' 		  => false,			
 				'bcc' 		  => false,			
 				'log_retention_period' 		  => '',			
+				'forward_to' 		  => '',			
+				'forward_cc' 		  => '',			
+				'forward_bcc' 		  => '',			
 				'trigger_data' 			  => true,
 			);
 
@@ -518,5 +524,45 @@ EOT;
 	}
 	public function sanitize_bcc( $value ) {
 		return sanitize_text_field( $value );
+	}
+
+	public function render_forward_to_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		
+		echo sprintf(
+		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Froward To Email', 'check-email' ).'" type="email" name="%s" value="%s"  />',
+		esc_attr( $field_name ),
+		esc_attr( $field_value )
+		);
+		
+	}
+	public function render_forward_cc_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		
+		echo sprintf(
+		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Froward To Cc Email', 'check-email' ).'" type="email" name="%s" value="%s"  />',
+		esc_attr( $field_name ),
+		esc_attr( $field_value )
+		);
+		
+	}
+	public function render_forward_bcc_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		
+		echo sprintf(
+		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Froward To Bcc Email', 'check-email' ).'" type="email" name="%s" value="%s"  />',
+		esc_attr( $field_name ),
+		esc_attr( $field_value )
+		);
+		
 	}
 }
