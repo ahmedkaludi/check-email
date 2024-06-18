@@ -1,3 +1,4 @@
+
 ( function( $ ) {
 
 	$( document ).ready(function() {
@@ -82,15 +83,10 @@ function printLog()
 	tabs.style.borderColor = "#000";
 	tabs.style.borderStyle = "solid";
 
-
-	var newWin=window.open('','Print-Window');
-
-	newWin.document.open();
-
-	newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
-
-	newWin.document.close();
-
-	setTimeout(function(){newWin.close();},10);
+	var pdf = new jsPDF('p', 'pt');
+	pdf.canvas.height = 72 * 11;
+	pdf.canvas.width = 72 * 8.5;
+  
+	pdf.fromHTML('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
 	jQuery('.tb-close-icon').click();
 }
