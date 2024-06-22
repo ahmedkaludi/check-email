@@ -45,6 +45,10 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 			'true' === strtolower( $option['bcc'] ) ) {
 				$other_columns[]='bcc';
 		}
+		if ( is_array( $option ) && array_key_exists( 'reply_to', $option ) &&
+			'true' === strtolower( $option['reply_to'] ) ) {
+				$other_columns[]='reply_to';
+		}
 
 		foreach ($other_columns  as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
@@ -95,6 +99,18 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 				$bcc = $headers['bcc'];
 			}
 		return esc_html( $bcc );
+	}
+	protected function column_reply_to( $item ) {
+		$headers = array();
+			if ( ! empty( $item->headers ) ) {
+				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
+				$headers = $parser->parse_headers( $item->headers );
+			}
+			$reply_to = "";
+			if (isset($headers['reply_to'])) {
+				$reply_to = $headers['reply_to'];
+			}
+		return esc_html( $reply_to );
 	}
 
 	protected function column_sent_date( $item ) {
