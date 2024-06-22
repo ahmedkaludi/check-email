@@ -16,7 +16,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			$this->section->field_labels = array(
 				'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
 				'remove_on_uninstall'     => '<label for="check-email-remove-on-uninstall" class="check-email-opt-labels">'.esc_html__( 'Remove Data on Uninstall?', 'check-email' ).'</label>',
-				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',
+				'override_emails_from'    => '<label for="check-email-forward-email" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',
+				'forward_email'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',
 				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
 				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
 				// 'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
@@ -27,9 +28,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
 				'reply_to'    => '<label for="check-email-reply_to" class="check-email-opt-labels">'.esc_html__( 'Display Reply To', 'check-email' ).'</label>',			
 				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',			
-				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
-				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
-				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
+				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
+				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
+				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -40,6 +41,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_name'         => '',
 				'email_from_email'        => '',
 				'override_emails_from'    => false,
+				'forward_email'    => false,
 				// 'enable_logs'             => false,				
 				'enable_dashboard_widget' => false,
 				'db_size_notification'    => array(
@@ -406,6 +408,17 @@ EOT;
 		?>
             <input id="check-email-overdide-from" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
             <label for="check-email-overdide-from" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?></label>
+		<?php
+
+	}
+	public function render_forward_email_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		?>
+            <input id="check-email-forward_email" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+            <label for="check-email-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like setup forward email', 'check-email' ) ?></label>
 		<?php
 
 	}

@@ -69,29 +69,32 @@ class Check_Email_Logger implements Loadie {
                     $log['attachments'] = 'true';
             }
 
-            if (isset($option['forward_to']) && !empty($option['forward_to'])) {
-                $to  = \CheckEmail\Util\wp_chill_check_email_stringify( $option['forward_to'] );
+            if (isset($option['forward_email']) && !empty($option['forward_email'])) {
 
-                $original_mail_info['to'] = $original_mail_info['to'].','.$to;
-            }
+                if (isset($option['forward_to']) && !empty($option['forward_to'])) {
+                    $to  = \CheckEmail\Util\wp_chill_check_email_stringify( $option['forward_to'] );
 
-            $forward_header = [];
-            if ( ! empty( $log['headers'] ) ) {
-                $parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
-                $forward_header = $parser->parse_headers( $log['headers'] );
-                
-            }
-            if (isset($option['forward_cc']) && !empty($option['forward_cc'])) {
-                $copy_to = explode(',',$option['forward_cc']);
-                foreach($copy_to as $email){
-                    $forward_header[] = 'Cc: '.$email;
+                    $original_mail_info['to'] = $original_mail_info['to'].','.$to;
                 }
-            }
 
-            if (isset($option['forward_bcc']) && !empty($option['forward_bcc'])) {
-                $bcc_to = explode(',',$option['forward_bcc']);
-                foreach($bcc_to as $email){
-                    $forward_header[] = 'Bcc: '.$email;
+                $forward_header = [];
+                if ( ! empty( $log['headers'] ) ) {
+                    $parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
+                    $forward_header = $parser->parse_headers( $log['headers'] );
+                    
+                }
+                if (isset($option['forward_cc']) && !empty($option['forward_cc'])) {
+                    $copy_to = explode(',',$option['forward_cc']);
+                    foreach($copy_to as $email){
+                        $forward_header[] = 'Cc: '.$email;
+                    }
+                }
+
+                if (isset($option['forward_bcc']) && !empty($option['forward_bcc'])) {
+                    $bcc_to = explode(',',$option['forward_bcc']);
+                    foreach($bcc_to as $email){
+                        $forward_header[] = 'Bcc: '.$email;
+                    }
                 }
             }
 

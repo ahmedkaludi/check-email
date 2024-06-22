@@ -178,6 +178,27 @@
       data = { action:"check_mail_import_plugin_data", plugin_name:plugin_name, ck_mail_security_nonce:ck_mail_security_nonce};
       cm_import_data_in_chunks(ajaxurl,data,t);
     });
+
+    var forward_email_to = $(".check_email_forward_to");
+    var forward_email_cc = $(".check_email_forward_cc");
+    var forward_email_bcc = $(".check_email_forward_bcc");
+    if (!$("#check-email-forward_email").is(":checked")) {
+      forward_email_to.hide();
+      forward_email_cc.hide();
+      forward_email_bcc.hide();
+    }
+
+    $("#check-email-forward_email").on("click", function () {
+      if ($(this).is(":checked")) {
+        forward_email_to.show();
+        forward_email_cc.show();
+        forward_email_bcc.show();
+      } else {
+        forward_email_to.hide();
+        forward_email_cc.hide();
+        forward_email_bcc.hide();
+      }
+    });
   
 
   });
