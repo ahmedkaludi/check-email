@@ -340,7 +340,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
     }
 
 	public function get_current_page_status(){
-		$status ="";
+		$status ="all";
 		if (isset($_GET['status'])) {
 			$status = $_GET['status'];
 		}
