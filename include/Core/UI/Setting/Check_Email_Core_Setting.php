@@ -500,7 +500,7 @@ EOT;
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
-			<input id="check-email-bcc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<input id="check-email-reply_to" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
 			<label for="check-email-reply_to" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display reply to in log list.', 'check-email' ) ?></label>
 		<?php
 	}
