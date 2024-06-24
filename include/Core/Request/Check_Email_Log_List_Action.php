@@ -247,7 +247,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			<input type="hidden" id="cm_ajax_url" value="<?php echo admin_url( 'admin-ajax.php' ); ?>" />
 			<table style="width: 100%;">
 				<tr style="background: #eee;">
-					<td style="padding: 5px;"><b><?php esc_html_e( 'To', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
+					<td style="padding: 5px; width:113px;"><b><?php esc_html_e( 'To', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
 					<td style="padding: 5px;">
 						<input type="email" id="ckm_to" name="ckm_to" class="regular-text" value="<?php echo esc_attr( $log_item['to_email'] ); ?>" />
 						<small>&nbsp;<?php echo esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ); ?></small>

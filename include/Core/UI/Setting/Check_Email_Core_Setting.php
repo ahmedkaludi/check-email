@@ -30,7 +30,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'forward_email'    => '<label for="check-email-forward_email" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',			
 				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
 				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
-				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" >'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
+				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -484,7 +484,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
 			<input id="check-email-display-host-ip" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-display-host-ip" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display host in log list.', 'check-email' ) ?></label>
+			<label for="check-email-display-host-ip" class="check-email-opt-labels"><?php esc_html_e( 'Display the IP Addresses of the WordPress Host.', 'check-email' ) ?></label>
 		<?php
 	}
 	public function render_cc_settings( $args ){
@@ -494,7 +494,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
 			<input id="check-email-cc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-cc" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display cc in log list.', 'check-email' ) ?></label>
+			<label for="check-email-cc" class="check-email-opt-labels"><?php esc_html_e( 'Display the Cc of emails.', 'check-email' ) ?></label>
 		<?php
 	}
 	public function render_bcc_settings( $args ){
@@ -504,7 +504,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
 			<input id="check-email-bcc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-bcc" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display bcc in log list.', 'check-email' ) ?></label>
+			<label for="check-email-bcc" class="check-email-opt-labels"><?php esc_html_e( 'Display the Bcc of emails.', 'check-email' ) ?></label>
 		<?php
 	}
 	public function render_reply_to_settings( $args ){
@@ -514,7 +514,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
 			<input id="check-email-reply_to" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-reply_to" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like display reply to in log list.', 'check-email' ) ?></label>
+			<label for="check-email-reply_to" class="check-email-opt-labels"><?php esc_html_e( 'Display the Reply to of emails.', 'check-email' ) ?></label>
 		<?php
 	}
 	public function render_log_retention_period_settings( $args ){
