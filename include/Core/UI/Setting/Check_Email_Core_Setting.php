@@ -558,7 +558,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Froward To Email', 'check-email' ).'" type="text" name="%s" value="%s"  class="regular-text" /><small>'.esc_html__( 'use "," for multiple email', 'check-email' ).'</small>',
+		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Froward To Email', 'check-email' ).'" type="text" name="%s" value="%s"  class="regular-text" /><small>'.esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
@@ -571,7 +571,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Froward To Cc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>'.esc_html__( 'use "," for multiple email', 'check-email' ).'</small>',
+		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Froward To Cc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>'.esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
@@ -584,7 +584,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Froward To Bcc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>'.esc_html__( 'use "," for multiple email', 'check-email' ).'</small>',
+		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Froward To Bcc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>'.esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
