@@ -61,17 +61,17 @@ function printLog()
 
 	var divToPrint=document.getElementById('TB_window');
 
-	my_table = document.getElementById('my_table')
+	email_log_table = document.getElementById('email_log_table')
 
-	my_table.querySelectorAll('tr').forEach(function(tr) {
+	email_log_table.querySelectorAll('tr').forEach(function(tr) {
 		tr.style.background  = '#eee';
 	});
 	
 
-	my_table.style.border = "1px solid #000"
-	my_table.style.borderWidth = "1px";
-	my_table.style.borderColor = "#000";
-	my_table.style.borderStyle = "solid";
+	email_log_table.style.border = "1px solid #000"
+	email_log_table.style.borderWidth = "1px";
+	email_log_table.style.borderColor = "#000";
+	email_log_table.style.borderStyle = "solid";
 
 	tabs = document.getElementById('tabs')
 

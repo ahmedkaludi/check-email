@@ -34,6 +34,9 @@ We try our best to provide support on WordPress.org forums. However, We have a s
 <strong>Bug Reports</strong><br>
 Bug reports for Check & Log Email are [welcomed on GitHub](https://github.com/ahmedkaludi/check-email). Please note GitHub is not a support forum, and issues that aren't properly qualified as bugs will be closed.
 
+<strong>Credits</strong><br>
+* jsPDF used https://github.com/parallax/jsPDF - License URI: https://github.com/parallax/jsPDF/blob/master/LICENSE
+
 == Frequently Asked Questions ==
 
 = How do I use it? =

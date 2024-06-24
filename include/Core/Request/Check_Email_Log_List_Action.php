@@ -47,7 +47,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			}
 
 			?>
-			<table style="width: 100%;" id="my_table">
+			<table style="width: 100%;" id="email_log_table">
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Sent at', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['sent_date'] ); ?></td>
@@ -460,7 +460,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		$response = array('status'=>503,'total_row'=>0);
 		try {
 			$plugin_table_name = $wpdb->prefix . $plugin_table_name;
-			$my_table = $wpdb->prefix . 'check_email_log';
+			$ce_table = $wpdb->prefix . 'check_email_log';
 
 			// Count the total number of rows in table A
 			$total_rows = $wpdb->get_var("SELECT COUNT(*) FROM $plugin_table_name");
@@ -526,7 +526,7 @@ class Check_Email_Log_List_Action implements Loadie {
 								break;
 						}
 						if(!empty($data_to_insert)){
-							$wpdb->insert($my_table, $data_to_insert);
+							$wpdb->insert($ce_table, $data_to_insert);
 						}
 					}
 				}
