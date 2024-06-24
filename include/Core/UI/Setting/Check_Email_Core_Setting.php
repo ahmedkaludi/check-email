@@ -430,7 +430,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 
 		echo sprintf(
-			'<input id="check-email-from_name" type="text" name="%s" value="%s" size="35" />',
+			'<input id="check-email-from_name" class="regular-text" type="text" name="%s" value="%s" size="35" />',
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 		);
@@ -445,7 +445,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 
 		echo sprintf(
-			'<input id="check-email-from_email" type="email" name="%s" value="%s" size="35" />',
+			'<input id="check-email-from_email" class="regular-text" type="email" name="%s" value="%s" size="35" />',
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 		);
