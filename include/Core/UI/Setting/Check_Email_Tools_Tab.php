@@ -61,7 +61,7 @@ class Check_Email_Tools_Tab {
 								),
 								'admin-ajax.php'
 							);
-							echo sprintf( '<a id="ck-mail-log-btn" href="%1$s" class="thickbox" title="%2$s"><button type="button" class="button-primary button" id="ck-mail-export-logs">%3$s</button></a>',
+							echo sprintf( '<a id="ck-mail-log-btn" href="%1$s" class="thickbox" title="%2$s"><button type="button" class="button button" id="ck-mail-export-logs">%3$s</button></a>',
 								esc_url( $logs_ajax_url ),
 								esc_html__( 'Export Log Options', 'check-email' ),
 								esc_html__( 'Export', 'check-email' )

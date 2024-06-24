@@ -16,10 +16,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			$this->section->field_labels = array(
 				'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
 				'remove_on_uninstall'     => '<label for="check-email-remove-on-uninstall" class="check-email-opt-labels">'.esc_html__( 'Remove Data on Uninstall?', 'check-email' ).'</label>',
-				'override_emails_from'    => '<label for="check-email-forward-email" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',
-				'forward_email'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',
-				'email_from_name'         => esc_html__( 'Change the "from" name.', 'check-email' ),
-				'email_from_email'        => esc_html__( 'Change the "from" email.', 'check-email' ),
+				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',				
+				'email_from_name'         => '<label for="check-email-from_name" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Change the "from" name.', 'check-email' ).'</label>',
+				'email_from_email'        => '<label for="check-email-from_email" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Change the "from" email.', 'check-email' ).'</label>',
 				// 'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
@@ -27,10 +26,11 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
 				'reply_to'    => '<label for="check-email-reply_to" class="check-email-opt-labels">'.esc_html__( 'Display Reply To', 'check-email' ).'</label>',			
-				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',			
+				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',
+				'forward_email'    => '<label for="check-email-forward_email" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',			
 				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
 				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
-				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
+				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" >'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
 				
 			);
@@ -418,7 +418,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
             <input id="check-email-forward_email" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-            <label for="check-email-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like setup forward email', 'check-email' ) ?></label>
+            <label for="check-email-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?><a href="https://check-email.tech/docs/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></label>
 		<?php
 
 	}
@@ -533,7 +533,7 @@ EOT;
 				<?php
 				foreach ($periods as $key => $value) {
 					?>
-						<option value="<?php echo $key; ?>" <?php selected($field_value,$key); ?>><?php esc_html_e( $value, 'check-email' ) ?></option>
+						<option value="<?php echo esc_attr($key); ?>" <?php selected($field_value,$key); ?>><?php esc_html_e( $value, 'check-email' ) ?></option>
 					<?php
 				}
 				?>
@@ -558,7 +558,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Froward To Email', 'check-email' ).'" type="text" name="%s" value="%s"  class="regular-text" /><small>use "," for multiple email</small>',
+		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Froward To Email', 'check-email' ).'" type="text" name="%s" value="%s"  class="regular-text" /><small>'.esc_html__( 'use "," for multiple email', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
@@ -571,7 +571,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Froward To Cc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>use "," for multiple email</small>',
+		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Froward To Cc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>'.esc_html__( 'use "," for multiple email', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
@@ -584,7 +584,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Froward To Bcc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>use "," for multiple email</small>',
+		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Froward To Bcc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>'.esc_html__( 'use "," for multiple email', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
