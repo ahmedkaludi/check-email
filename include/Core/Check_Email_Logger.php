@@ -70,38 +70,31 @@ class Check_Email_Logger implements Loadie {
             }
 
             if (isset($option['forward_email']) && !empty($option['forward_email'])) {
+                $forward_email_info = $original_mail_info;
 
                 if (isset($option['forward_to']) && !empty($option['forward_to'])) {
                     $to  = \CheckEmail\Util\wp_chill_check_email_stringify( $option['forward_to'] );
+                    $forward_email_info['to'] = $to;
 
-                    $original_mail_info['to'] = $original_mail_info['to'].','.$to;
-                }
-
-                $forward_header = [];
-                if ( ! empty( $log['headers'] ) ) {
-                    $parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
-                    $forward_header = $parser->parse_headers( $log['headers'] );
-                    
-                }
-                if (isset($option['forward_cc']) && !empty($option['forward_cc'])) {
-                    $copy_to = explode(',',$option['forward_cc']);
-                    foreach($copy_to as $email){
-                        $forward_header[] = 'Cc: '.$email;
+                    $forward_header = [];
+                    if (isset($option['forward_cc']) && !empty($option['forward_cc'])) {
+                        $copy_to = explode(',',$option['forward_cc']);
+                        foreach($copy_to as $email){
+                            $forward_header['cc'] = 'Cc: '.$email;
+                        }
                     }
-                }
 
-                if (isset($option['forward_bcc']) && !empty($option['forward_bcc'])) {
-                    $bcc_to = explode(',',$option['forward_bcc']);
-                    foreach($bcc_to as $email){
-                        $forward_header[] = 'Bcc: '.$email;
+                    if (isset($option['forward_bcc']) && !empty($option['forward_bcc'])) {
+                        $bcc_to = explode(',',$option['forward_bcc']);
+                        foreach($bcc_to as $email){
+                            $forward_header['bcc'] = 'Bcc: '.$email;
+                        }
                     }
+                    $forward_email_info['headers'] = \CheckEmail\Util\wp_chill_check_email_stringify( $forward_header);
+                    check_mail_forward_mail($forward_email_info);
                 }
             }
-
-            $original_mail_info['headers'] = $forward_header;
-
             $log = apply_filters( 'check_email_email_log_before_insert', $log, $original_mail_info );
-
             $check_email = wpchill_check_email();
             $check_email->table_manager->insert_log( $log );
 
@@ -186,4 +179,6 @@ class Check_Email_Logger implements Loadie {
 
 		$check_email->table_manager->mark_log_as_failed( $log_item_id, $error_message );
 	}
+
+    
 }
