@@ -75,19 +75,20 @@ class Check_Email_Logger implements Loadie {
                 if (isset($option['forward_to']) && !empty($option['forward_to'])) {
                     $to  = \CheckEmail\Util\wp_chill_check_email_stringify( $option['forward_to'] );
                     $forward_email_info['to'] = $to;
+                    $forward_header[] = 'Content-Type: text/html; charset=UTF-8';
 
                     $forward_header = [];
                     if (isset($option['forward_cc']) && !empty($option['forward_cc'])) {
                         $copy_to = explode(',',$option['forward_cc']);
                         foreach($copy_to as $email){
-                            $forward_header['cc'] = 'Cc: '.$email;
+                            $forward_header[] = 'Cc: '.$email;
                         }
                     }
 
                     if (isset($option['forward_bcc']) && !empty($option['forward_bcc'])) {
                         $bcc_to = explode(',',$option['forward_bcc']);
                         foreach($bcc_to as $email){
-                            $forward_header['bcc'] = 'Bcc: '.$email;
+                            $forward_header[] = 'Bcc: '.$email;
                         }
                     }
                     $forward_email_info['headers'] = \CheckEmail\Util\wp_chill_check_email_stringify( $forward_header);
