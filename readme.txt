@@ -1,6 +1,6 @@
 === Check & Log Email ===
 Contributors: checkemail
-Tags: check, test, email, smtp, delivery
+Tags: check, email, email log, smtp, log
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 5.6.20
