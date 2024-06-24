@@ -250,6 +250,7 @@ class Check_Email_Log_List_Action implements Loadie {
 					<td style="padding: 5px;"><b><?php esc_html_e( 'To', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
 					<td style="padding: 5px;">
 						<input type="email" id="ckm_to" name="ckm_to" class="regular-text" value="<?php echo esc_attr( $log_item['to_email'] ); ?>" />
+						<small>&nbsp;<?php echo esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ); ?></small>
 					</td>
 				</tr>
 				<tr style="background: #eee;">
@@ -268,17 +269,17 @@ class Check_Email_Log_List_Action implements Loadie {
 			<h3><?php esc_html_e( 'Additional Details', 'check-email' ); ?></h3>
 			<table style="width: 100%;">
                 <tr style="background: #eee;">
-					<td style="padding: 5px; width"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><input type="email" name="ckm_from" id="ckm_from" class="regular-text" value="<?php  echo isset( $headers['from'] ) ?  $headers['from'] : '' ?>" /></td>
 				</tr>
 				
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'CC', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  $headers['cc'] : '' ?>" /><small><?php esc_html_e( 'Use "," for multiple emails', 'check-email' ); ?></small></td>
+					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  $headers['cc'] : '' ?>" /><small>&nbsp;<?php esc_html_e( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'BCC', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  $headers['bcc'] : '' ?>" /><small><?php esc_html_e( 'Use "," for multiple emails', 'check-email' ); ?></small></td>
+					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  $headers['bcc'] : '' ?>" /><small>&nbsp;<?php esc_html_e( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px; width:110px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
