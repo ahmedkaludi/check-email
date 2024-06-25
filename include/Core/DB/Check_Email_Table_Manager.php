@@ -605,23 +605,23 @@ class Check_Email_Table_Manager implements Loadie {
 		$table_name = $this->get_log_table_name();
 		$option = get_option( 'check-email-log-core' );
 		if (isset($option['is_retention_amount_enable']) && isset($option['retention_amount']) &&  $option['is_retention_amount_enable']) {
-			$limit= $option['retention_amount'];
 			if(!empty($limit)){
 				$count_query = 'SELECT count(*) FROM ' . $table_name;
 				$total_items = $wpdb->get_var( $count_query );
+
+				print_r($total_items);
 	
 				if ($total_items > $limit) {
 					$data_to_delete = $total_items - $limit;
-					$old_posts = $wpdb->get_col( "
+					$old_posts = $wpdb->get_col( $wpdb->prepare("
 						SELECT ID FROM $table_name
 						ORDER BY ID ASC 
-						LIMIT $data_to_delete
-					" );
+						LIMIT %d",$data_to_delete) );
 			
 					// Delete the logs
 					foreach ($old_posts as $column_value) {
 						$sql = $wpdb->prepare(
-							"DELETE FROM $table_name WHERE ID = %s",
+							"DELETE FROM $table_name WHERE ID = %d",
 							$column_value
 						);
 						$wpdb->query($sql);
@@ -630,10 +630,10 @@ class Check_Email_Table_Manager implements Loadie {
 
 			}
 		}
-		if (isset($option['is_retention_period_enable']) && !empty($option['is_retention_period_enable'])) {
+		if (isset($option['is_retention_period_enable']) && $option['is_retention_period_enable']) {
 
 			if ($option['log_retention_period'] == 'custom_in_days') {
-				$custom_in_days = empty($option['log_retention_period_in_days']) ? 1 : $option['log_retention_period_in_days'];
+				$custom_in_days = empty($option['log_retention_period_in_days']) ? 1 : intval($option['log_retention_period_in_days']);
 				$time_interval = strtotime('+' . $custom_in_days. ' days');
 			}else{
 				$periods = array( '1_day' =>86400,
@@ -662,11 +662,4 @@ class Check_Email_Table_Manager implements Loadie {
 		$this->deleteLogOlderThan();
 		error_log('Cron job executed at' . date('Y-m-d H:i:s'));
 	}
-	
-
-	
-	
-	
-	
-	
 }
