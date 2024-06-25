@@ -605,12 +605,10 @@ class Check_Email_Table_Manager implements Loadie {
 		$table_name = $this->get_log_table_name();
 		$option = get_option( 'check-email-log-core' );
 		if (isset($option['is_retention_amount_enable']) && isset($option['retention_amount']) &&  $option['is_retention_amount_enable']) {
+			$limit= intval($option['retention_amount']);
 			if(!empty($limit)){
 				$count_query = 'SELECT count(*) FROM ' . $table_name;
-				$total_items = $wpdb->get_var( $count_query );
-
-				print_r($total_items);
-	
+				$total_items = $wpdb->get_var( $count_query );	
 				if ($total_items > $limit) {
 					$data_to_delete = $total_items - $limit;
 					$old_posts = $wpdb->get_col( $wpdb->prepare("
