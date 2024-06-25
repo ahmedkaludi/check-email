@@ -28,8 +28,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'reply_to'    => '<label for="check-email-reply_to" class="check-email-opt-labels">'.esc_html__( 'Display Reply To', 'check-email' ).'</label>',			
 				
 				'retention'    => '<label style="font-size:20px;">'.esc_html__( 'Retention', 'check-email' ).'</Label>',
-				'log_retention_amount'    => '<label for="check-email-is_retention_amount_enable" class="check-email-opt-labels">'.esc_html__( 'Log Retention By Amount', 'check-email' ).'</label>',
-				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',
+				'log_retention_amount'    => '<label for="check-email-is_retention_amount_enable" class="check-email-opt-labels">'.esc_html__( 'By Emails Count', 'check-email' ).'</label>',
+				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'By Period', 'check-email' ).'</label>',
 				'forward_email'    => '<label for="check-email-forward_email" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',			
 				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
 				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
@@ -537,11 +537,10 @@ EOT;
 						'1_month' =>'1 Month',
 						'6_month' =>'6 Month',
 						'1_year' =>'1 Year',
-						'custom_in_days' =>'Custom in days',
+						'custom_in_days' =>'Custom Days'
 					);
 		?>
-			<select id="check-email-log_retention_period" name="<?php echo esc_attr( $field_name ); ?>">
-				<option value=""><?php esc_html_e( 'Forever', 'check-email' ) ?></option>
+			<select id="check-email-log_retention_period" name="<?php echo esc_attr( $field_name ); ?>">				
 				<?php
 				foreach ($periods as $key => $value) {
 					?>
