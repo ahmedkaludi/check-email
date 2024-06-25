@@ -592,7 +592,6 @@ class Check_Email_Table_Manager implements Loadie {
 		if ( ! empty( $orderby ) & ! empty( $order ) ) {
 			$query_cond .= ' ORDER BY ' . $orderby . ' ' . $order;
 		}
-		// print_r($query_cond);die;
 
 		// Find total number of items.
 		$count_query = $count_query . $query_cond;
@@ -602,19 +601,50 @@ class Check_Email_Table_Manager implements Loadie {
 
 	public function deleteLogOlderThan($timeInterval = null)
     {
+		global $wpdb;
+		$table_name = $this->get_log_table_name();
 		$option = get_option( 'check-email-log-core' );
-		if (isset($option['log_retention_period']) && !empty($option['log_retention_period'])) {
-			$periods = array( '1_day' =>86400,
-						'1_week' =>604800,
-						'1_month' =>2419200,
-						'6_month' =>15780000,
-						'1_year' =>31560000
-					);
-			$time_interval = $periods[$option['log_retention_period']];
-			$timestamp = time() - $time_interval;
+		if (isset($option['log_retention_amount']['is_retention_amount_enable']) && isset($option['log_retention_amount']['retention_amount']) &&  $option['log_retention_amount']['is_retention_amount_enable']) {
+			$limit= $option['log_retention_amount']['retention_amount'];
 
-			global $wpdb;
-			$table_name = $this->get_log_table_name();
+			$count_query = 'SELECT count(*) FROM ' . $table_name;
+			$total_items = $wpdb->get_var( $count_query );
+
+			if ($total_items > $limit) {
+				$data_to_delete = $total_items - $limit;
+				$old_posts = $wpdb->get_col( "
+					SELECT ID FROM $table_name
+					ORDER BY ID ASC 
+					LIMIT $data_to_delete
+				" );
+		
+				// Delete the logs
+				foreach ($old_posts as $column_value) {
+					$sql = $wpdb->prepare(
+						"DELETE FROM $table_name WHERE ID = %s",
+						$column_value
+					);
+					$wpdb->query($sql);
+				}
+			}
+		}
+		if (isset($option['log_retention_period']) && !empty($option['log_retention_period'])) {
+
+			if ($option['log_retention_period'] == 'custom_in_days') {
+				$custom_in_days = $option['log_retention_period_in_days'];
+				$time_interval = strtotime('+' . $custom_in_days. ' days');
+			}else{
+				$periods = array( '1_day' =>86400,
+							'1_week' =>604800,
+							'1_month' =>2419200,
+							'6_month' =>15780000,
+							'1_year' =>31560000
+						);
+				$time_interval = $periods[$option['log_retention_period']];
+
+			}
+			$timestamp = time() - $time_interval;
+			
 			$sql = "DELETE FROM " . $table_name . " WHERE Unix_timestamp(sent_date) <= %d";
 			$sql = $wpdb->prepare($sql, $timestamp);
 			$wpdb->query($sql);

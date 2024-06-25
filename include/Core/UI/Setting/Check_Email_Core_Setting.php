@@ -26,6 +26,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
 				'reply_to'    => '<label for="check-email-reply_to" class="check-email-opt-labels">'.esc_html__( 'Display Reply To', 'check-email' ).'</label>',			
+				
+				'retention'    => '<label style="font-size:20px;">'.esc_html__( 'Retention', 'check-email' ).'</Label>',
+				'log_retention_amount'    => '<label for="check-email-is_retention_amount_enable" class="check-email-opt-labels">'.esc_html__( 'Log Retention By Amount', 'check-email' ).'</label>',
 				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels">'.esc_html__( 'Log Retention Period', 'check-email' ).'</label>',
 				'forward_email'    => '<label for="check-email-forward_email" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',			
 				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
@@ -55,7 +58,13 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'cc' 		  => false,			
 				'bcc' 		  => false,			
 				'reply_to' 		  => false,			
+				'retention' 		  => 'its_heading',			
 				'log_retention_period' 		  => '',			
+				'log_retention_period_in_days' 		  => 0,			
+				'log_retention_amount' 		  => array(
+					'is_retention_amount_enable'  => false,
+					'retention_amount'               => 0,
+				),			
 				'forward_to' 		  => '',			
 				'forward_cc' 		  => '',			
 				'forward_bcc' 		  => '',			
@@ -518,15 +527,18 @@ EOT;
 		<?php
 	}
 	public function render_log_retention_period_settings( $args ){
-
 		$option      = $this->get_value();
+		$log_retention_period_in_days_field_value = $option[ 'log_retention_period_in_days' ];
+		$log_retention_period_in_days_field_name = $this->section->option_name . '[log_retention_period_in_days]';
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		$periods = array( '1_day' =>'1 Day',
 						'1_week' =>'1 Week',
 						'1_month' =>'1 Month',
 						'6_month' =>'6 Month',
-						'1_year' =>'1 Year');
+						'1_year' =>'1 Year',
+						'custom_in_days' =>'Custom in days',
+					);
 		?>
 			<select id="check-email-log_retention_period" name="<?php echo esc_attr( $field_name ); ?>">
 				<option value=""><?php esc_html_e( 'Forever', 'check-email' ) ?></option>
@@ -539,6 +551,35 @@ EOT;
 				?>
 			</select>
 		<?php
+		echo sprintf(
+			'<input id="check-email-log_retention_period_in_days"  placeholder="'.esc_html__( 'Enter number od days', 'check-email' ).'" class="check-email-js-cusotm-in-day" type="number" min="1" name="%s" value="%s" /><label for="check-email-bcc" class="check-email-opt-labels check-email-js-cusotm-in-day">&nbsp;'.esc_html( 'Delete email logs after this number of days.', 'check-email' ).'</label>',
+			esc_attr( $log_retention_period_in_days_field_name ),
+			esc_attr( $log_retention_period_in_days_field_value )
+			);
+	}
+	public function render_log_retention_amount_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$defaults = array(
+			'is_retention_amount_enable' => false,
+			'retention_amount' => 0,
+		);
+		$retention_amount_data = wp_parse_args( $field_value, $defaults );
+
+		$is_retention_amount_enable = $field_name . '[is_retention_amount_enable]';
+		$retention_amount          = $field_name . '[retention_amount]';
+		?>
+			<input id="check-email-is_retention_amount_enable" type="checkbox" name="<?php echo esc_attr( $is_retention_amount_enable ); ?>" value="true" <?php checked( 'true', $retention_amount_data['is_retention_amount_enable'] ); ?>>
+		<?php
+		echo sprintf(
+			'<input id="check-email-retention_amount"  placeholder="'.esc_html__( 'Retention Amount', 'check-email' ).'" class="check-email-js-amount-enable" type="number" min="1" name="%s" value="%s" /><label for="check-email-bcc" class="check-email-opt-labels check-email-js-amount-enable">&nbsp;'.esc_html( 'Delete email logs after this number has been reached.', 'check-email' ).'</label>',
+			esc_attr( $retention_amount ),
+			esc_attr( $retention_amount_data['retention_amount'] )
+			);
+	}
+	public function render_retention_settings( $args ){		
 	}
 
 	public function sanitize_display_host_ip( $value ) {

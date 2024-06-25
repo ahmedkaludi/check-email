@@ -199,6 +199,31 @@
         forward_email_bcc.hide();
       }
     });
+    
+    var retention_amount = $(".check-email-js-amount-enable");
+    if (!$("#check-email-is_retention_amount_enable").is(":checked")) {
+      retention_amount.hide();
+    }
+
+    $("#check-email-is_retention_amount_enable").on("click", function () {
+      if ($(this).is(":checked")) {
+        retention_amount.show();
+      } else {
+        retention_amount.hide();
+      }
+    });
+
+    var retention_by_days = $(".check-email-js-cusotm-in-day");
+    if ($("#check-email-log_retention_period").val() != 'custom_in_days') {
+      retention_by_days.hide();
+    }
+    $("#check-email-log_retention_period").on("change", function () {
+      if ($(this).val() == 'custom_in_days') {
+        retention_by_days.show();
+      } else {
+        retention_by_days.hide();
+      }
+    });
   
 
   });
