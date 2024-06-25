@@ -116,10 +116,4 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 = v1.0.6 - 02/05/2022 =
 - Fixed: Security, sanitization and escaping
 
-= v1.0.5 - 10/03/2022 =
-- Fixed: Replaced deprecated jQuery code ( https://github.com/WPChill/check-email/issues/32 )
-- Fixed: HTML code was being shown in dashboard widget ( https://github.com/WPChill/check-email/issues/33 )
-- Added: Tabs and grouped settings by tabs ( https://github.com/WPChill/check-email/issues/37 )
-- Added: Quick install WP SMTP plugin from settings ( https://github.com/WPChill/check-email/issues/37 )
-
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/check-email/trunk/changelog.txt)
