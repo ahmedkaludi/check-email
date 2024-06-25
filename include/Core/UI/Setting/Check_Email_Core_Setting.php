@@ -542,7 +542,7 @@ EOT;
 						'custom_in_days' =>'Custom Days'
 					);
 		?>
-			<select id="check-email-log_retention_period" name="<?php echo esc_attr( $field_name ); ?>">				
+			<select id="check-email-log_retention_period" style="width:177px;" name="<?php echo esc_attr( $field_name ); ?>">				
 				<?php
 				foreach ($periods as $key => $value) {
 					?>
@@ -559,7 +559,7 @@ EOT;
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';		
 		echo sprintf(
-			'<input id="check-email-retention_amount" class="check-email-js-amount-enable" type="number" min="1" name="%s" value="%s" /><label for="check-email-bcc" class="check-email-opt-labels check-email-js-amount-enable">&nbsp;'.esc_html__( 'Delete email logs after this number has been reached.', 'check-email' ).'</label>',
+			'<input id="check-email-retention_amount" class="check-email-js-amount-enable" type="number" min="1" name="%s" value="%s" />',
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 			);
@@ -572,6 +572,7 @@ EOT;
 		
 		?>
 			<input id="check-email-is_retention_amount_enable" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<label for="check-email-is_retention_amount_enable" class="check-email-opt-labels"><?php echo esc_html__( 'Automatically deletes old emails when a certain amount of logs have been saved.', 'check-email' ); ?></label>
 		<?php
 	}
 	public function render_is_retention_period_enable_settings( $args ){
@@ -582,6 +583,7 @@ EOT;
 		
 		?>
 			<input id="check-email-is_retention_period_enable" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<label for="check-email-is_retention_period_enable" class="check-email-opt-labels"><?php echo esc_html__( 'Automatically deletes old emails after a certain amount of time has passed', 'check-email' ); ?></label>
 		<?php
 	}
 	public function render_log_retention_period_in_days_settings( $args ){
@@ -591,7 +593,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-			'<input id="check-email-log_retention_period_in_days" class="check-email-js-cusotm-in-day" type="number" min="1" name="%s" value="%s" /><label for="check-email-bcc" class="check-email-opt-labels check-email-js-cusotm-in-day">&nbsp;'.esc_html__( 'Delete email logs after this number of days.', 'check-email' ).'</label>',
+			'<input id="check-email-log_retention_period_in_days" class="check-email-js-cusotm-in-day" type="number" min="1" name="%s" value="%s" />',
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 			);
