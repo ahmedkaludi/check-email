@@ -32,8 +32,11 @@ class Check_Email_Table_Manager implements Loadie {
 		
 		add_filter( 'admin_init', array( $this, 'add_backtrace_segment_field' ) );
 
-		add_action('admin_init',  array( $this, 'check_mail_cron_schedule' ));
-		add_action('check_mail_cron_hook',  array( $this, 'check_mail_cron_execute' ));
+		$option = get_option( 'check-email-log-core' );
+		if ((isset($option['is_retention_amount_enable']) &&  $option['is_retention_amount_enable']) || (isset($option['is_retention_period_enable']) && $option['is_retention_period_enable'])) {
+			add_action('admin_init',  array( $this, 'check_mail_cron_schedule' ));
+			add_action('check_mail_cron_hook',  array( $this, 'check_mail_cron_execute' ));
+		}
 
 		// Do any DB upgrades.
 		$this->update_table_if_needed();
