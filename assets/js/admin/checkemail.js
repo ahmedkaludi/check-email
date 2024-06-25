@@ -200,10 +200,11 @@
       }
     });
     
-    var retention_amount = $(".check-email-js-amount-enable");
+    var retention_amount = $(".check_email_retention_amount");
     if (!$("#check-email-is_retention_amount_enable").is(":checked")) {
       retention_amount.hide();
     }
+    
 
     $("#check-email-is_retention_amount_enable").on("click", function () {
       if ($(this).is(":checked")) {
@@ -213,15 +214,32 @@
       }
     });
 
-    var retention_by_days = $(".check-email-js-cusotm-in-day");
+
+    var period = $(".check_email_log_retention_period");
+    var days = $(".check_email_log_retention_period_in_days");
+    if (!$("#check-email-is_retention_period_enable").is(":checked")) {
+      period.hide();
+      days.hide();
+    }
+
+    $("#check-email-is_retention_period_enable").on("click", function () {
+      if ($(this).is(":checked")) {
+        period.show();
+        $('#check-email-log_retention_period').trigger('change');
+      } else {
+        period.hide();
+        days.hide();
+      }
+    });
+
     if ($("#check-email-log_retention_period").val() != 'custom_in_days') {
-      retention_by_days.hide();
+      days.hide();
     }
     $("#check-email-log_retention_period").on("change", function () {
       if ($(this).val() == 'custom_in_days') {
-        retention_by_days.show();
+        days.show();
       } else {
-        retention_by_days.hide();
+        days.hide();
       }
     });
   
