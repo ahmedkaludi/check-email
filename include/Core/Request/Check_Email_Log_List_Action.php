@@ -18,6 +18,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
 		add_action( 'check-email-log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'deleted_logs_message' ) );
+		add_action( 'wp_ajax_check_mail_save_wizard_data', array( $this, 'check_mail_save_wizard_data' ) );
 	}
 
 	public function view_log_message() {
@@ -318,7 +319,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			<?php
 		}
 
-		wp_die(); // this is required to return a proper result.
+		wp_die();
 	}
 
 	public function submit_resend_message() {
@@ -396,7 +397,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			die;
 	}
 
-	function check_mail_import_plugin_data(){                  
+	public function check_mail_import_plugin_data(){                  
     
         if ( ! current_user_can( 'manage_check_email' ) ) {
 			return;
@@ -453,7 +454,7 @@ class Check_Email_Log_List_Action implements Loadie {
            wp_die();           
 	}
 
-	function check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name){
+	public function check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name){
         global $wpdb;
 		$offset = 0;
 		$chunk_size=100;
@@ -549,6 +550,53 @@ class Check_Email_Log_List_Action implements Loadie {
 			return false;
 		}                    
     }
+
+	public function check_mail_save_wizard_data() {
+		if ( ! current_user_can( 'manage_check_email' ) ) {
+			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
+			wp_die();
+		}
+		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			wp_die();
+		}
+		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			wp_die();
+		}
+
+		$option = get_option( 'check-email-log-core' );
+		$from_data = $_POST;
+		unset($from_data['action']);
+		unset($from_data['ck_mail_security_nonce']);
+		if (isset($_POST['email_from_name']) && !empty($_POST['email_from_name'])) {
+			$from_data['email_from_name'] = sanitize_text_field($_POST['email_from_name']);
+		}
+		if (isset($_POST['email_from_email']) && !empty($_POST['email_from_email'])) {
+			$from_data['email_from_email'] = sanitize_email($_POST['email_from_email']);
+		}
+		if (isset($_POST['smtp_from']) && !empty($_POST['smtp_from'])) {
+			$from_data['smtp_from'] = sanitize_email($_POST['smtp_from']);
+		}
+		if (isset($_POST['smtp_from_name']) && !empty($_POST['smtp_from_name'])) {
+			$from_data['smtp_from_name'] = sanitize_text_field($_POST['smtp_from_name']);
+		}
+		if (isset($_POST['smtp_port']) && !empty($_POST['smtp_port'])) {
+			$from_data['smtp_port'] = sanitize_text_field($_POST['smtp_port']);
+		}
+		if (isset($_POST['smtp_username']) && !empty($_POST['smtp_username'])) {
+			$from_data['smtp_username'] = sanitize_text_field($_POST['smtp_username']);
+		}
+		if (isset($_POST['smtp_password']) && !empty($_POST['smtp_password'])) {
+			$from_data['smtp_password'] = sanitize_text_field($_POST['smtp_password']);
+		}
+
+		$merge_options = array_merge($option, $from_data);
+        update_option('check-email-log-core',$merge_options);
+
+		echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Email Sent.','check-mail')));
+		die;
+	}
 
 
 }
