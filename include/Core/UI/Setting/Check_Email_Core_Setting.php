@@ -578,7 +578,7 @@ EOT;
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';		
 		echo sprintf(
-			'<input id="check-email-retention_amount" class="check-email-js-amount-enable" type="number" min="1" name="%s" value="%s" />',
+			'<input id="check-email-retention_amount" class="check-email-js-amount-enable" type="number" min="0" name="%s" value="%s" />',
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 			);
@@ -612,7 +612,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-			'<input id="check-email-log_retention_period_in_days" class="check-email-js-cusotm-in-day" type="number" min="1" name="%s" value="%s" />',
+			'<input id="check-email-log_retention_period_in_days" class="check-email-js-cusotm-in-day" type="number" min="0" name="%s" value="%s" />',
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 			);
