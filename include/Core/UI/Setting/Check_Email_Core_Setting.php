@@ -22,6 +22,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				// 'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
+				'default_format_for_message'    => '<label for="check-email-default_format_for_message" class="check-email-opt-labels">'.esc_html__( 'Default Format for Message', 'check-email' ).'</label>',
 				'display_host_ip'    => '<label for="check-email-display-host-ip" class="check-email-opt-labels">'.esc_html__( 'Display Host IP', 'check-email' ).'</label>',			
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
@@ -57,6 +58,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'log_threshold_met'         => false,
 					'threshold_email_last_sent' => false,
 				),
+				'default_format_for_message' 		  => '',			
 				'display_host_ip' 		  => false,			
 				'cc' 		  => false,			
 				'bcc' 		  => false,			
@@ -528,10 +530,28 @@ EOT;
 			<label for="check-email-reply_to" class="check-email-opt-labels"><?php esc_html_e( 'Display the Reply to of emails.', 'check-email' ) ?></label>
 		<?php
 	}
+	public function render_default_format_for_message_settings( $args ){
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$periods = array( 'html' =>'HTML',
+						'raw' =>'RAW',
+						'json' =>'JSON'
+					);
+		?>
+			<select id="check-email-default_format_for_message" style="width:177px;" name="<?php echo esc_attr( $field_name ); ?>">				
+				<?php
+				foreach ($periods as $key => $value) {
+					?>
+						<option value="<?php echo esc_attr($key); ?>" <?php selected($field_value,$key); ?>><?php esc_html_e( $value, 'check-email' ) ?></option>
+					<?php
+				}
+				?>
+			</select>
+		<?php
+	}
 	public function render_log_retention_period_settings( $args ){
 		$option      = $this->get_value();
-		$log_retention_period_in_days_field_value = $option[ 'log_retention_period_in_days' ];
-		$log_retention_period_in_days_field_name = $this->section->option_name . '[log_retention_period_in_days]';
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		$periods = array( '1_day' =>'1 Day',
@@ -554,7 +574,6 @@ EOT;
 		<?php
 	}
 	public function render_retention_amount_settings( $args ){
-
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';		

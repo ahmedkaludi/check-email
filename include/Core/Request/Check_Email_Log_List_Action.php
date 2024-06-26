@@ -41,10 +41,25 @@ class Check_Email_Log_List_Action implements Loadie {
 				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
 				$headers = $parser->parse_headers( $log_item['headers'] );
 			}
+			$option = get_option( 'check-email-log-core' );
+			$default_format_for_message = (isset( $option['default_format_for_message'])) ?  $option['default_format_for_message'] : '';
 
-			$active_tab = '0';
-			if ( isset( $headers['content_type'] ) && 'text/html' === $headers['content_type'] ) {
-				$active_tab = '1';
+			$active_tab = 0;
+
+			switch ($default_format_for_message) {
+				case 'raw':
+					$active_tab = 0;
+					break;
+				case 'html':
+					$active_tab = 1;
+					break;
+				case 'json':
+					$active_tab = 2;
+					break;
+				
+				default:
+				$active_tab = 0;
+					break;
 			}
 
 			?>
@@ -82,11 +97,21 @@ class Check_Email_Log_List_Action implements Loadie {
 				<ul data-active-tab="<?php echo absint( $active_tab ); ?>" class="check_mail_non-printable">
 					<li><a href="#tabs-text" onclick='hidePrint();'><?php esc_html_e( 'Raw Email Content', 'check-email' ); ?></a></li>
 					<li><a href="#tabs-preview" onclick='showPrint();'><?php esc_html_e( 'Preview Content as HTML', 'check-email' ); ?></a></li>
+					<li><a href="#tabs-json" onclick='hidePrint();'><?php esc_html_e( 'Json', 'check-email' ); ?></a></li>
 					<li><a href="#tabs-trigger-data" onclick='hidePrint();'><?php esc_html_e( 'Triggered Form', 'check-email' ); ?></a></li>
 				</ul>
 
 				<div id="tabs-text">
 					<pre class="tabs-text-pre"><?php echo esc_textarea( $log_item['message'] ); ?></pre>
+				</div>
+				<div id="tabs-json">
+					<?php
+						$json_data = $log_item;
+						$json_data['mail_id'] = $json_data['id'];
+						unset($json_data['id']);
+						$json_data['message'] = htmlentities( htmlspecialchars_decode( $json_data['message'] ) );
+					?>
+					<pre class="tabs-text-pre"><?php echo esc_html( json_encode($json_data,JSON_PRETTY_PRINT)); ?></pre>
 				</div>
 
 				<div id="tabs-preview">
