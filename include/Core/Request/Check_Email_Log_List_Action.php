@@ -80,10 +80,40 @@ class Check_Email_Log_List_Action implements Loadie {
 					<td style="padding: 5px;"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $headers['from'] ); ?></td>
 				</tr>
+				<?php 
+					if(empty($option) || (isset( $option['reply_to']) && $option['reply_to'])){
+				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $headers['reply_to'] ); ?></td>
 				</tr>
+				<?php
+					}
+					if(empty($option) || (isset( $option['cc']) && $option['cc'])){
+				?>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Cc', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><?php echo esc_html( $headers['cc'] ); ?></td>
+				</tr>
+				<?php
+					}
+					if(empty($option) || (isset( $option['bcc']) && $option['bcc'])){
+				?>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Bcc', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><?php echo esc_html( $headers['bcc'] ); ?></td>
+				</tr>
+				<?php
+					}
+					if(empty($option) || (isset( $option['display_host_ip']) && $option['display_host_ip'])){
+				?>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Host IP', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><?php echo esc_html( $log_item['ip_address'] ); ?></td>
+				</tr>
+				<?php
+					}
+					?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Headers', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['headers'] ); ?></td>

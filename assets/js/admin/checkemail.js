@@ -231,6 +231,7 @@
         days.hide();
       }
     });
+    
 
     if ($("#check-email-log_retention_period").val() != 'custom_in_days') {
       days.hide();
@@ -240,6 +241,14 @@
         days.show();
       } else {
         days.hide();
+      }
+    });
+
+    $(".check_main_js_display_checkbox").on("click", function () {
+      if ($(this).is(":checked")) {
+        $(this).next('.check_mail_js_hidden_display').val(1);
+      } else {
+        $(this).next('.check_mail_js_hidden_display').val(0);
       }
     });
   

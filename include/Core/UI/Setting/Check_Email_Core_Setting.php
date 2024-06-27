@@ -59,10 +59,10 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'threshold_email_last_sent' => false,
 				),
 				'default_format_for_message' 		  => '',			
-				'display_host_ip' 		  => false,			
-				'cc' 		  => false,			
-				'bcc' 		  => false,			
-				'reply_to' 		  => false,			
+				'display_host_ip' 		  => true,			
+				'cc' 		  => true,			
+				'bcc' 		  => true,			
+				'reply_to' 		  => true,			
 				'retention' 		  => 'its_heading',			
 				'log_retention_period' 		  => '',			
 				'log_retention_period_in_days' 		  => 0,			
@@ -491,12 +491,17 @@ EOT;
 	}
 
 	public function render_display_host_ip_settings( $args ){
-
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+
+		$checked = "";
+		if($field_value){
+			$checked = "checked";
+		}
 		?>
-			<input id="check-email-display-host-ip" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<input id="check-email-display-host-ip" class="check_main_js_display_checkbox" type="checkbox" value="true" <?php echo $checked; ?>>
+			<input id="check-email-display-host-ip-hidden" class="check_mail_js_hidden_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			<label for="check-email-display-host-ip" class="check-email-opt-labels"><?php esc_html_e( 'Display the IP Addresses of the WordPress Host.', 'check-email' ) ?></label>
 		<?php
 	}
@@ -505,8 +510,13 @@ EOT;
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$checked = "";
+		if($field_value){
+			$checked = "checked";
+		}
 		?>
-			<input id="check-email-cc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<input id="check-email-cc" class="check_main_js_display_checkbox" type="checkbox"  value="true" <?php echo $checked; ?>>
+			<input id="check-email-display-host-ip-hidden" class="check_mail_js_hidden_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			<label for="check-email-cc" class="check-email-opt-labels"><?php esc_html_e( 'Display the Cc of emails.', 'check-email' ) ?></label>
 		<?php
 	}
@@ -515,8 +525,13 @@ EOT;
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$checked = "";
+		if($field_value){
+			$checked = "checked";
+		}
 		?>
-			<input id="check-email-bcc" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<input id="check-email-bcc" class="check_main_js_display_checkbox" type="checkbox" value="true" <?php echo $checked; ?>>
+			<input id="check-email-display-host-ip-hidden" class="check_mail_js_hidden_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			<label for="check-email-bcc" class="check-email-opt-labels"><?php esc_html_e( 'Display the Bcc of emails.', 'check-email' ) ?></label>
 		<?php
 	}
@@ -525,8 +540,13 @@ EOT;
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$checked = "";
+		if($field_value){
+			$checked = "checked";
+		}
 		?>
-			<input id="check-email-reply_to" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<input id="check-email-reply_to" class="check_main_js_display_checkbox" type="checkbox" value="true" <?php echo $checked; ?>>
+			<input id="check-email-display-host-ip-hidden" class="check_mail_js_hidden_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			<label for="check-email-reply_to" class="check-email-opt-labels"><?php esc_html_e( 'Display the Reply to of emails.', 'check-email' ) ?></label>
 		<?php
 	}

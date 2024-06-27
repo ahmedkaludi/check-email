@@ -32,24 +32,6 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		);
 		$other_columns = array( 'sent_date', 'result', 'to_email', 'from_email', 'subject' );
 
-		$option = get_option( 'check-email-log-core' );
-		if ( is_array( $option ) && array_key_exists( 'display_host_ip', $option ) &&
-			'true' === strtolower( $option['display_host_ip'] ) ) {
-				$other_columns[]='ip_address';
-		}
-		if ( is_array( $option ) && array_key_exists( 'cc', $option ) &&
-			'true' === strtolower( $option['cc'] ) ) {
-				$other_columns[]='cc';
-		}
-		if ( is_array( $option ) && array_key_exists( 'bcc', $option ) &&
-			'true' === strtolower( $option['bcc'] ) ) {
-				$other_columns[]='bcc';
-		}
-		if ( is_array( $option ) && array_key_exists( 'reply_to', $option ) &&
-			'true' === strtolower( $option['reply_to'] ) ) {
-				$other_columns[]='reply_to';
-		}
-
 		foreach ($other_columns  as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
 		}
@@ -71,46 +53,6 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	protected function column_default( $item, $column_name ) {
 
 		do_action( 'check_email_display_log_columns', $column_name, $item );
-	}
-
-	protected function column_ip_address( $item ) {
-		return esc_html( $item->ip_address );
-	}
-	protected function column_cc( $item ) {
-		$headers = array();
-			if ( ! empty( $item->headers ) ) {
-				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
-				$headers = $parser->parse_headers( $item->headers );
-			}
-			$cc = "";
-			if (isset($headers['cc'])) {
-				$cc = $headers['cc'];
-			}
-		return esc_html( $cc );
-	}
-	protected function column_bcc( $item ) {
-		$headers = array();
-			if ( ! empty( $item->headers ) ) {
-				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
-				$headers = $parser->parse_headers( $item->headers );
-			}
-			$bcc = "";
-			if (isset($headers['bcc'])) {
-				$bcc = $headers['bcc'];
-			}
-		return esc_html( $bcc );
-	}
-	protected function column_reply_to( $item ) {
-		$headers = array();
-			if ( ! empty( $item->headers ) ) {
-				$parser  = new \CheckEmail\Util\Check_Email_Header_Parser();
-				$headers = $parser->parse_headers( $item->headers );
-			}
-			$reply_to = "";
-			if (isset($headers['reply_to'])) {
-				$reply_to = $headers['reply_to'];
-			}
-		return esc_html( $reply_to );
 	}
 
 	protected function column_sent_date( $item ) {
