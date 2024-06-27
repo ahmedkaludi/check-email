@@ -1,91 +1,6 @@
 let currentStep = 1;
         const steps = ck_mail_wizard_data.steps;
         const ck_mail_security_nonce = ck_mail_wizard_data.ck_mail_security_nonce;
-        // const steps = [
-        //     {
-        //         title: 'Step 1 of 4',
-        //         heading: 'Configure General Settings',
-        //         content: `
-        //             <p class="cm_p">Allowed User Roles</p>
-        //             <ul class="cm_checklist">
-        //                 <li>
-        //                     <span>Administrator</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Administrator</span>
-        //                     <span class="checkmark"><input id="check-email-remove-on-uninstall" type="checkbox" name="check-email-log-core[remove_on_uninstall]" value="true"></span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Save file attachments sent from WordPress</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Track when an email is opened</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Track when a link in an email is clicked</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //             </ul>
-        //             <p class="cm_p">Enable these powerful logging features for more control of your WordPress emails.</p>
-        //             <ul class="cm_checklist">
-        //                 <li>
-        //                     <span>Remove Data on Uninstall?</span>
-        //                     <span class="checkmark"><input id="check-email-remove-on-uninstall" type="checkbox" name="check-email-log-core[remove_on_uninstall]" value="true"></span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Save file attachments sent from WordPress</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Track when an email is opened</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Track when a link in an email is clicked</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //             </ul>
-        //         `,
-        //     },
-        //     {
-        //         title: 'Step 2 of 6',
-        //         heading: 'SMTP Configuration',
-        //         content: 'Configure the SMTP settings for your email.',
-        //     },
-        //     {
-        //         title: 'Step 3 of 6',
-        //         heading: 'Email Test',
-        //         content: 'Send a test email to ensure the configuration is correct.',
-        //     },
-        //     {
-        //         title: 'Step 4 of 6',
-        //         heading: 'Configure Email Logs',
-        //         content: `
-        //             <p class="cm_p">Enable these powerful logging features for more control of your WordPress emails.</p>
-        //             <ul class="cm_checklist">
-        //                 <li>
-        //                     <span>Store the content for all sent emails</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Save file attachments sent from WordPress</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Track when an email is opened</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //                 <li>
-        //                     <span>Track when a link in an email is clicked</span>
-        //                     <span class="checkmark">&#10003;</span>
-        //                 </li>
-        //             </ul>
-        //         `,
-        //     }
-        // ];
 
         function cm_showStep(step) {
             const stepContent = document.getElementById('step-content');
@@ -119,8 +34,7 @@ let currentStep = 1;
                 cm_save_wizard();
                 cm_showStep(currentStep);
             } else {
-                // Finish action
-                alert('Setup Complete!');
+                cm_save_wizard();
             }
         }
 
@@ -144,21 +58,19 @@ let currentStep = 1;
               dataType: "json",
               data:data,
               beforeSend: function(response){
-                // t.html('Resend<span class="spinner is-active"></span>');
                 t.prop('disabled',true);
               },
               success:function(response){
-                console.log(response)
-                // if (response.status != 200) {
-                //   jQuery('.cm_js_error').html(response.message);
-                // }else{
-                //   jQuery('.cm_js_success').html(response.message);
-                //   location.reload();
-                // }
+                if (response.status == 200) {
+                    if (response.step == 'last') {
+                        window.location = "admin.php?page=check-email-logs";
+                    }
+                }else{
+                    console.log('something went wrong');
+                }
               },
               complete:function(response){
                 document.getElementById('cm-container-loader').style.display = 'none';
-                // t.html('Resend');
                 t.prop('disabled',false);
               }               
             });

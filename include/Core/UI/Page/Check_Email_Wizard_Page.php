@@ -75,8 +75,6 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
                     <div class="active" id="cm_step1">
                     </div>
                     <div id="cm_step2"></div>
-                    <div id="cm_step3"></div>
-                    <div id="cm_step4"></div>
                 </div>
                 <div id="step-content">
                     <!-- Step content will be dynamically injected here -->
@@ -100,21 +98,13 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         $data['steps'] = [
             [
             'title'=> esc_html( "Step 1 of 4", "check-email" ),
-            'heading'=> esc_html( "Allowed User Roles", "check-email" ),
-            'content'=> $this->allowed_user_roles_settings()
+            'heading'=> esc_html( "General Settings", "check-email" ),
+            'content'=> $this->configure_general_settings()
             ],
             [
             'title'=> esc_html__( "Step 2 of 4", "check-email" ),
-            'heading'=> esc_html__( "Configure General Settings", "check-email" ),
-            'content'=> $this->configure_general_settings()],
-            [
-            'title'=> esc_html__( "Step 3 of 4", "check-email" ),
-            'heading'=> esc_html__( "Configure SMTP Settings", "check-email" ),
-            'content'=> $this->configure_smtp_settings()],
-            [
-            'title'=> esc_html__( "Final Step", "check-email" ),
-            'heading'=> 'Finish Setup',
-            'content'=> $this->finish_settings()],
+            'heading'=> esc_html__( "Allowed User Roles", "check-email" ),
+            'content'=> $this->allowed_user_roles_settings()]
     
             ];
 		$check_email    = wpchill_check_email();
@@ -149,85 +139,37 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         return $html;
 	}
     public function configure_general_settings( ) {
+        $option = get_option( 'check-email-log-core' );
+        $enable_dashboard_widget = "";
+        $default_format_for_message = "";
+        if(isset( $option['enable_dashboard_widget']) && $option['enable_dashboard_widget']){
+            $enable_dashboard_widget = "checked";
+        }
+        if(empty($option) || !isset( $option['default_format_for_message']) || (isset( $option['default_format_for_message'])) && $option['default_format_for_message']){
+            $default_format_for_message = $option['default_format_for_message'];
+        }
         $html = "";
+		$periods = array( 'html' =>'HTML',
+						'raw' =>'RAW',
+						'json' =>'JSON'
+					);
+                    $cm_dropdown ="";
+		$cm_dropdown = 	'<select id="cm_default_format_for_message" style="width:177px;" name="default_format_for_message">';
+				foreach ($periods as $key => $value) {
+                    $selected = $key == $default_format_for_message ? 'selected' : "";
+                    $cm_dropdown .= '<option value="'.esc_attr($key).'" '.$selected.'>'.esc_html__( $value, 'check-email' ).'</option>';
+				}
+			$cm_dropdown .= '</select>';
         $html .='<ul class="cm_checklist">
             <li>
-                <span><label for="cm_remove_on_uninstall">'. esc_html__( "Remove Data on Uninstall?", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="cm_remove_on_uninstall" type="checkbox" name="remove_on_uninstall" value="true"></span>
+                <span><label for="cm_enable_dashboard_widget">'. esc_html__( "Enable Dashboard Widget", "check-email" ).'</label></span>
+                <span class="checkmark"><input id="cm_enable_dashboard_widget" type="checkbox" name="enable_dashboard_widget" value="true" '.$enable_dashboard_widget.'></span>
             </li>
             <li>
-                <span><label for="check-email-overdide-from" >'. esc_html__( "Override Emails From", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="check-email-overdide-from" type="checkbox" name="override_emails_from" value="true"></span>
-            </li>
-            <li>
-                <span><label for="check-email-from_name">'. esc_html__( "Change the `from` name.", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="check-email-from_name" type="text" name="email_from_name" value="" ></span>
-            </li>
-            <li>
-                <span><label for="check-email-from_name">'. esc_html__( "Change the `from` email.", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="check-email-from_name" type="text" name="email_from_email" value="" ></span>
+                <span><label for="cm_default_format_for_message" >'. esc_html__( "Default Format for Message", "check-email" ).'</label></span>
+                <span class="checkmark">'.$cm_dropdown.'</span>
             </li>
             </ul>';
         return $html;
 	}
-
-    public function configure_smtp_settings( ) {
-        $html = "";
-        $html .='<ul class="cm_checklist">
-            <li>
-                <span><label for="check-email-enable-smtp">'. esc_html( "SMTP", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="check-email-enable-smtp" type="checkbox" name="enable_smtp"></span>
-            </li>
-            <li>
-                <span><label for="check-email-smtp-from">'. esc_html( "From", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="check-email-smtp-from" type="text" name="smtp_from" value=""></span>
-            </li>
-            <li>
-                <span><label for="check-email-smtp-from-name">'. esc_html( "From Name", "check-email" ).'</label></span>
-                <span class="checkmark"><input id="check-email-smtp-from-name" type="text" name="smtp_from_name" value=""></span>
-            </li>
-            <li>
-                <span><label for="check-email-smtp-from-name">'. esc_html( "SMTP Secure", "check-email" ).'</label></span>
-                <span class="checkmark">
-                <input id="check-email-smtp-secure" type="radio" name="smtp_secure" value="" checked="">
-                <input id="check-email-smtp-secure" type="radio" name="smtp_secure" value="ssl">
-                <input id="check-email-smtp-secure" type="radio" name="smtp_secure" value="tls">
-                </span>
-            </li>
-            <li>
-                <span><label for="check-email-smtp-options">'. esc_html( "SMTP Port", "check-email" ).'</label></span>
-                <span class="checkmark">
-                <input id="check-email-smtp-port" type="number" name="smtp_port" value="" >
-                </span>
-            </li>
-            <li>
-                <span>'. esc_html( "SMTP Authentication", "check-email" ).'</span>
-                <span class="checkmark">
-                <input  type="radio" name="smtp_auth" value="no">
-                <input  type="radio" name="smtp_auth" value="yes" checked>
-                </span>
-            </li>
-            <li>
-                <span><label for="check-email-smtp-username">'. esc_html( "Username", "check-email" ).'</label></span>
-                <span class="checkmark">
-                <input id="check-email-smtp-username" type="text" name="smtp_username" value="">
-                </span>
-            </li>
-            <li>
-                <span><label for="check-email-smtp-password">'. esc_html( "Password", "check-email" ).'</label></span>
-                <span class="checkmark">
-                <input id="check-email-smtp-password" type="password" name="smtp_password" value="">
-                </span>
-            </li>
-            </ul>';
-        return $html;
-	}
-    public function finish_settings( ) {
-        $html = "";
-        $html .='';
-        return $html;
-	}
-
-   
-    
 }

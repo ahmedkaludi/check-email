@@ -645,32 +645,26 @@ class Check_Email_Log_List_Action implements Loadie {
 		$from_data = $_POST;
 		unset($from_data['action']);
 		unset($from_data['ck_mail_security_nonce']);
-		if (isset($_POST['email_from_name']) && !empty($_POST['email_from_name'])) {
-			$from_data['email_from_name'] = sanitize_text_field($_POST['email_from_name']);
+		if (isset($_POST['enable_dashboard_widget']) && !empty($_POST['enable_dashboard_widget'])) {
+			$from_data['enable_dashboard_widget'] = true;
+		}else{
+			$from_data['enable_dashboard_widget'] = false;
 		}
-		if (isset($_POST['email_from_email']) && !empty($_POST['email_from_email'])) {
-			$from_data['email_from_email'] = sanitize_email($_POST['email_from_email']);
+
+		if (isset($_POST['enable_dashboard_widget']) && !empty($_POST['enable_dashboard_widget'])) {
+			$from_data['enable_dashboard_widget'] = true;
 		}
-		if (isset($_POST['smtp_from']) && !empty($_POST['smtp_from'])) {
-			$from_data['smtp_from'] = sanitize_email($_POST['smtp_from']);
+		$step = 'last';
+		if (isset($_POST['default_format_for_message']) && !empty($_POST['default_format_for_message'])) {
+			$from_data['default_format_for_message']= sanitize_text_field($_POST['default_format_for_message']);
+			$step = 'first';
 		}
-		if (isset($_POST['smtp_from_name']) && !empty($_POST['smtp_from_name'])) {
-			$from_data['smtp_from_name'] = sanitize_text_field($_POST['smtp_from_name']);
-		}
-		if (isset($_POST['smtp_port']) && !empty($_POST['smtp_port'])) {
-			$from_data['smtp_port'] = sanitize_text_field($_POST['smtp_port']);
-		}
-		if (isset($_POST['smtp_username']) && !empty($_POST['smtp_username'])) {
-			$from_data['smtp_username'] = sanitize_text_field($_POST['smtp_username']);
-		}
-		if (isset($_POST['smtp_password']) && !empty($_POST['smtp_password'])) {
-			$from_data['smtp_password'] = sanitize_text_field($_POST['smtp_password']);
-		}
+		
 
 		$merge_options = array_merge($option, $from_data);
         update_option('check-email-log-core',$merge_options);
 
-		echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Email Sent.','check-mail')));
+		echo wp_json_encode(array('status'=> 200, 'step'=> $step, 'message'=> esc_html__('Wizard setup succefully.','check-mail')));
 		die;
 	}
 
