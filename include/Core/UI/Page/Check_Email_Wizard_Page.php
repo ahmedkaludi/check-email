@@ -97,12 +97,12 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         }
         $data['steps'] = [
             [
-            'title'=> esc_html( "Step 1 of 4", "check-email" ),
+            'title'=> esc_html( "Step 1 of 2", "check-email" ),
             'heading'=> esc_html( "General Settings", "check-email" ),
             'content'=> $this->configure_general_settings()
             ],
             [
-            'title'=> esc_html__( "Step 2 of 4", "check-email" ),
+            'title'=> esc_html__( "Step 2 of 2", "check-email" ),
             'heading'=> esc_html__( "Allowed User Roles", "check-email" ),
             'content'=> $this->allowed_user_roles_settings()]
     
