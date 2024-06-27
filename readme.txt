@@ -28,6 +28,26 @@ This WordPress plugin helps you store sent emails for auditing purposes, as well
 
 - Triggered Data - Triggered data helps you in debugging by showing the exact code that is sending that email
 
+== Filters ==
+
+- <b>wp_mail_catcher_mail_success</b> -  is triggered before an email is sent. It has a single argument that is an array containing original mail info.
+
+- <b>check_email_email_log_before_insert</b> -  is triggered before an email data about to save in check & Log Email. It has a two argument.
+    - <b>log</b> -  It is an array containing argument that will store in database
+    - <b>original_mail_info</b> -   It is an array containing argument of original mail info.
+
+- <b>wp_check_email_failed</b> -  is triggered when an email is failed. It has a two argument.
+    - <b>mail_error_data</b> -  It is an array containing argument that has what possible reasons of error.
+    - <b>mail_error_message</b> -   It is an string containing error message.
+
+
+== Action ==
+
+- <b>check_email_log_inserted</b> -  is triggered after data successfully saved in log.
+
+- <b>check_email_loaded</b> -  is triggered when check & log email successfully loaded.
+
+
 <strong>Support</strong><br>
 We try our best to provide support on WordPress.org forums. However, We have a special [community support](https://check-email.tech/contact/) where you can ask us questions and get help about your Check & Log Email related questions. Delivering a good user experience means a lot to us and so we try our best to reply each and every question that gets asked.
 
