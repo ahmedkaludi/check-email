@@ -394,7 +394,7 @@ class Check_Email_Export_Log {
 							<div class="ck-mail-logs-contents">
 								<div class="ck-mail-log-exp-recipient ck-mail-export-options">
 									<label for="ck-mail-export-recipient"> <?php esc_html_e('Enter Email id', 'check-email'); ?> </label>
-									<input type="text" name="export_recipient" class="ck-mail-export-recipient" id="ck-mail-export-recipient" placeholder="Enter Recipient Email">
+									<input type="text" name="export_recipient" class="ck-mail-export-recipient" id="ck-mail-export-recipient" placeholder="<?php esc_attr_e( 'Enter Recipient Email', 'check-email' ); ?>">
 								</div>
 							</div>
 						</div>
