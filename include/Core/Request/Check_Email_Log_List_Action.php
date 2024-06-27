@@ -62,6 +62,10 @@ class Check_Email_Log_List_Action implements Loadie {
 					break;
 			}
 
+			if(isset( $option['log_email_content']) && !$option['log_email_content']){
+				$active_tab = 0;
+			}
+
 			?>
 			<table style="width: 100%;" id="email_log_table">
 				<tr style="background: #eee;">
@@ -80,8 +84,8 @@ class Check_Email_Log_List_Action implements Loadie {
 					<td style="padding: 5px;"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $headers['from'] ); ?></td>
 				</tr>
-				<?php 
-					if(empty($option) || (isset( $option['reply_to']) && $option['reply_to'])){
+				<?php
+					if(empty($option) || !isset( $option['reply_to']) || (isset( $option['reply_to'])) && $option['reply_to']){
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
@@ -89,7 +93,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				</tr>
 				<?php
 					}
-					if(empty($option) || (isset( $option['cc']) && $option['cc'])){
+					if(empty($option) || !isset( $option['cc']) || (isset( $option['cc'])) && $option['cc']){
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Cc', 'check-email' ); ?></b>:</td>
@@ -97,7 +101,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				</tr>
 				<?php
 					}
-					if(empty($option) || (isset( $option['bcc']) && $option['bcc'])){
+					if(empty($option) || !isset( $option['bcc']) || (isset( $option['bcc'])) && $option['bcc']){
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Bcc', 'check-email' ); ?></b>:</td>
@@ -105,7 +109,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				</tr>
 				<?php
 					}
-					if(empty($option) || (isset( $option['display_host_ip']) && $option['display_host_ip'])){
+					if(empty($option) || !isset( $option['display_host_ip']) || (isset( $option['display_host_ip'])) && $option['display_host_ip']){
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Host IP', 'check-email' ); ?></b>:</td>
@@ -125,25 +129,25 @@ class Check_Email_Log_List_Action implements Loadie {
 
 			<div id="tabs">
 				<ul data-active-tab="<?php echo absint( $active_tab ); ?>" class="check_mail_non-printable">
+					<?php
+					if(empty($option) || !isset( $option['log_email_content']) || (isset( $option['log_email_content'])) && $option['log_email_content']){
+					?>
 					<li><a href="#tabs-text" onclick='hidePrint();'><?php esc_html_e( 'Raw Email Content', 'check-email' ); ?></a></li>
+					
 					<li><a href="#tabs-preview" onclick='showPrint();'><?php esc_html_e( 'Preview Content as HTML', 'check-email' ); ?></a></li>
+
+					<?php
+					}
+					?>
 					<li><a href="#tabs-json" onclick='hidePrint();'><?php esc_html_e( 'Json', 'check-email' ); ?></a></li>
 					<li><a href="#tabs-trigger-data" onclick='hidePrint();'><?php esc_html_e( 'Triggered Form', 'check-email' ); ?></a></li>
 				</ul>
-
+				<?php
+					if(empty($option) || !isset( $option['log_email_content']) || (isset( $option['log_email_content'])) && $option['log_email_content']){
+					?>
 				<div id="tabs-text">
 					<pre class="tabs-text-pre"><?php echo esc_textarea( $log_item['message'] ); ?></pre>
 				</div>
-				<div id="tabs-json">
-					<?php
-						$json_data = $log_item;
-						$json_data['mail_id'] = $json_data['id'];
-						unset($json_data['id']);
-						$json_data['message'] = htmlentities( htmlspecialchars_decode( $json_data['message'] ) );
-					?>
-					<pre class="tabs-text-pre"><?php echo esc_html( json_encode($json_data,JSON_PRETTY_PRINT)); ?></pre>
-				</div>
-
 				<div id="tabs-preview">
 					<?php echo wp_kses( $log_item['message'], $this->check_email_kses_allowed_html( 'post' ) ); ?>
 					<?php
@@ -162,7 +166,24 @@ class Check_Email_Log_List_Action implements Loadie {
 					}
 					?>
 				</div>
-				
+				<?php
+				}
+				?>
+				<div id="tabs-json">
+					<?php
+						$json_data = $log_item;
+						$json_data['mail_id'] = $json_data['id'];
+						unset($json_data['id']);
+						if(isset( $option['log_email_content']) && !$option['log_email_content']){
+							unset($json_data['message']);
+						}else{
+							$json_data['message'] = htmlentities( htmlspecialchars_decode( $json_data['message'] ) );
+						}
+					?>
+					<pre class="tabs-text-pre"><?php echo esc_html( json_encode($json_data,JSON_PRETTY_PRINT)); ?></pre>
+				</div>
+
+								
 				<div id="tabs-trigger-data">
 					<?php 
 					if(!defined('CK_MAIL_PRO_VERSION')){

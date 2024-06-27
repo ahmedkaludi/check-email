@@ -23,6 +23,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
 				'default_format_for_message'    => '<label for="check-email-default_format_for_message" class="check-email-opt-labels">'.esc_html__( 'Default Format for Message', 'check-email' ).'</label>',
+				'log_email_content'    => '<label for="check-email-log_email_content" class="check-email-opt-labels">'.esc_html__( 'Log Email Content', 'check-email' ).'</label>',			
 				'display_host_ip'    => '<label for="check-email-display-host-ip" class="check-email-opt-labels">'.esc_html__( 'Display Host IP', 'check-email' ).'</label>',			
 				'cc'    => '<label for="check-email-cc" class="check-email-opt-labels">'.esc_html__( 'Display CC', 'check-email' ).'</label>',			
 				'bcc'    => '<label for="check-email-bcc" class="check-email-opt-labels">'.esc_html__( 'Display BCC', 'check-email' ).'</label>',			
@@ -59,6 +60,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 					'threshold_email_last_sent' => false,
 				),
 				'default_format_for_message' 		  => '',			
+				'log_email_content' 		  => true,			
 				'display_host_ip' 		  => true,			
 				'cc' 		  => true,			
 				'bcc' 		  => true,			
@@ -490,6 +492,21 @@ EOT;
 		}
 	}
 
+	public function render_log_email_content_settings( $args ){
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+
+		$checked = "";
+		if($field_value){
+			$checked = "checked";
+		}
+		?>
+			<input id="check-email-log_email_content" class="check_main_js_display_checkbox" type="checkbox" value="true" <?php echo $checked; ?>>
+			<input id="check-email-log_email_content-hidden" class="check_mail_js_hidden_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
+			<label for="check-email-log_email_content" class="check-email-opt-labels"><?php esc_html_e( 'Display the content of email in log.', 'check-email' ) ?></label>
+		<?php
+	}
 	public function render_display_host_ip_settings( $args ){
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
