@@ -41,6 +41,7 @@
 .tab-content.ce_tab_general .check_email_enable_logs,
 .tab-content.ce_tab_general .check_email_default_format_for_message,
 .tab-content.ce_tab_general .check_email_display_host_ip,
+.tab-content.ce_tab_general .check_email_log_email_content,
 .tab-content.ce_tab_general .check_email_reply_to,
 .tab-content.ce_tab_general .check_email_cc,
 .tab-content.ce_tab_general .check_email_bcc,
@@ -84,6 +85,7 @@
 
 .tab-content.ce_tab_smtp .check_email_enable_logs,
 .tab-content.ce_tab_smtp .check_email_default_format_for_message,
+.tab-content.ce_tab_smtp .check_email_log_email_content,
 .tab-content.ce_tab_smtp .check_email_display_host_ip,
 .tab-content.ce_tab_smtp .check_email_reply_to,
 .tab-content.ce_tab_smtp .check_email_cc,
