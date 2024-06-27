@@ -34,7 +34,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Period', 'check-email' ).'</label>',
 				'log_retention_period_in_days'    => '<label for="check-email-log_retention_period_in_days" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Days', 'check-email' ).'</label>',
 				'forward_email'    => '<label for="check-email-forward_email" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',			
-				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Froward To', 'check-email' ).'</label>',			
+				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward To', 'check-email' ).'</label>',			
 				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
 				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
 				'trigger_data'    		  => '<label for="check-email-trigger-data" class="check-email-opt-labels">'.esc_html__( 'Triggered Data', 'check-email' ).'</label>',
@@ -262,7 +262,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				printf(
 					esc_html__( 'Last notification email was sent on %1$s. Click %2$s button to reset sending the notification.', 'check-email' ),
 					'<strong>' . esc_html( get_date_from_gmt( date( 'Y-m-d H:i:s', $db_size_notification_data['threshold_email_last_sent'] ), \CheckEmail\Util\wp_chill_check_email_get_user_defined_date_format() ) ) . '</strong>',
-					'<b>Save</b>'
+					'<b>' . esc_html__( 'Save', 'check-email' ) . '</b>'
 				);
 				?>
 			</p>
@@ -477,13 +477,13 @@ EOT;
 		if(!defined('CK_MAIL_PRO_VERSION')){
 		?>
 			<input id="check-email-trigger-data" type="checkbox" disabled />
-			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span></label>
+			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More', 'check-email'); ?></a></span></label>
 			<p id="check-email-trigger-data-free-note"> <?php esc_html_e( 'This Feature requires the Premium Version', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank" class="check-mail-premium-btn"><span><?php esc_html_e('Upgrade Now', 'check-email'); ?><span></a> </p>
 		<?php
 		}else{
 		?>
 			<input id="check-email-trigger-data" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $trigger_data ); ?>>
-			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></span></label>
+			<label for="check-email-trigger-data" class="check-email-opt-labels"><span><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More', 'check-email'); ?></a></span></label>
 		<?php
 		}
 	}
@@ -534,12 +534,12 @@ EOT;
 		$log_retention_period_in_days_field_name = $this->section->option_name . '[log_retention_period_in_days]';
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
-		$periods = array( '1_day' =>'1 Day',
-						'1_week' =>'1 Week',
-						'1_month' =>'1 Month',
-						'6_month' =>'6 Month',
-						'1_year' =>'1 Year',
-						'custom_in_days' =>'Custom Days'
+		$periods = array( '1_day' => __( '1 Day', 'check-email' ),
+						'1_week' => __( '1 Week', 'check-email' ),
+						'1_month' => __( '1 Month', 'check-email' ),
+						'6_month' => __( '6 Month', 'check-email' ),
+						'1_year' => __( '1 Year', 'check-email' ),
+						'custom_in_days' => __( 'Custom Days', 'check-email' )
 					);
 		?>
 			<select id="check-email-log_retention_period" style="width:177px;" name="<?php echo esc_attr( $field_name ); ?>">				
@@ -624,7 +624,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Froward To Email', 'check-email' ).'" type="text" name="%s" value="%s"  class="regular-text" /><small>&nbsp;'.esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ).'</small>',
+		'<input id="check-email-forward_to"  placeholder="'.esc_html__( 'Forward To Email', 'check-email' ).'" type="text" name="%s" value="%s"  class="regular-text" /><small>&nbsp;'.esc_html__( 'Separate multiple emails by comma ( , )', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
@@ -637,7 +637,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Froward To Cc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>&nbsp;'.esc_html__( 'Separate multiple emails by comma ( , )', 'check-email' ).'</small>',
+		'<input id="check-email-forward_cc" placeholder="'.esc_html__( 'Forward To Cc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>&nbsp;'.esc_html__( 'Separate multiple emails by comma ( , )', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
@@ -650,7 +650,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		
 		echo sprintf(
-		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Froward To Bcc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>&nbsp;'.esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ).'</small>',
+		'<input id="check-email-forward_bcc" placeholder="'.esc_html__( 'Forward To Bcc Email', 'check-email' ).'" type="text" name="%s" value="%s" class="regular-text"  /><small>&nbsp;'.esc_html__( 'Separate multiple emails by comma ( , )', 'check-email' ).'</small>',
 		esc_attr( $field_name ),
 		esc_attr( $field_value )
 		);
