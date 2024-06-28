@@ -437,7 +437,7 @@ EOT;
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		?>
             <input id="check-email-forward_email" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-            <label for="check-email-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?><a href="https://check-email.tech/docs/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></label>
+            <label for="check-email-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?><a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></label>
 		<?php
 
 	}

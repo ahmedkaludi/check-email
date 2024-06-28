@@ -6,12 +6,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f9f9f9;
+    /* height: 100vh; */
+    /* background-color: #f9f9f9; */
 }
 .container {
     background-color: white;
     padding: 20px;
+    margin: 80px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
@@ -33,7 +34,7 @@
 
 .cm_step_body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    /* background-color: #f9f9f9; */
     margin: 0;
     padding: 50px;
     display: flex;
@@ -130,7 +131,7 @@
     display: none;
 }
 
-#adminmenuback, #adminmenuwrap, #adminmenu, #wpadminbar {
+#adminmenuback, #adminmenuwrap, #adminmenu, #wpadminbar, #wpfooter{
     display: none;
 }
 #wpcontent, #wpfooter {

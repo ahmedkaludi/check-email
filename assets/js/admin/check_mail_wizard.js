@@ -1,5 +1,5 @@
 let currentStep = 1;
-        const steps = ck_mail_wizard_data.steps;
+        var steps = ck_mail_wizard_data.steps;
         const ck_mail_security_nonce = ck_mail_wizard_data.ck_mail_security_nonce;
 
         function cm_showStep(step) {
@@ -22,8 +22,7 @@ let currentStep = 1;
                 <input type="hidden" name="ck_mail_security_nonce" value="${ck_mail_security_nonce}">
                 ${steps[step - 1].content}</form></div>
             `;
-            
-            document.getElementById('cm_prevBtn').style.display = step === 1 ? 'none' : 'inline-block';
+            document.getElementById('cm_prevBtn').style.visibility = step === 1 ? 'hidden' : 'visible';
             document.getElementById('cm_nextBtn').innerText = step === steps.length ? 'Finish' : 'Save and Continue →';
         }
 
@@ -62,6 +61,7 @@ let currentStep = 1;
               },
               success:function(response){
                 if (response.status == 200) {
+                    steps = response.steps_data;
                     if (response.step == 'last') {
                         window.location = "admin.php?page=check-email-logs";
                     }

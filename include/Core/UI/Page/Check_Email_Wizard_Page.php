@@ -23,6 +23,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 	public function load() {
 		parent::load();
         add_action( 'admin_enqueue_scripts', array( $this, 'checkemail_assets' ) );
+        add_action( 'wp_ajax_check_mail_save_wizard_data', array( $this, 'check_mail_save_wizard_data' ) );
 	}
 
 	/**
@@ -60,6 +61,9 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
                 <a href="admin.php?page=check-email-wizard-setup" class="button_check_mail"><?php echo esc_html__( "Let's Get Started", 'check-email' ); ?> &rarr;</a>
             </div>
         </div>
+        <div class="cm_step_footer">
+                    <a href="<?php echo admin_url(); ?>"><?php echo esc_html__( "Go back to the Dashboard", 'check-email' ); ?></a>
+                </div>
 		<?php
 	}
 	public function render_wizard_steps() {
@@ -91,11 +95,8 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 		<?php
 	}
 
-    public function checkemail_assets($hook) {
-        if ($hook !== 'admin_page_check-email-wizard' && $hook !== 'admin_page_check-email-wizard-setup') {
-            return;
-        }
-        $data['steps'] = [
+    public function cm_wizard_steps(){
+        return[
             [
             'title'=> esc_html( "Step 1 of 2", "check-email" ),
             'heading'=> esc_html( "General Settings", "check-email" ),
@@ -107,6 +108,13 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
             'content'=> $this->allowed_user_roles_settings()]
     
             ];
+    }
+
+    public function checkemail_assets($hook) {
+        if ($hook !== 'admin_page_check-email-wizard' && $hook !== 'admin_page_check-email-wizard-setup') {
+            return;
+        }
+        $data['steps'] = $this->cm_wizard_steps();
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		wp_enqueue_style( 'checkemail-css', $plugin_dir_url . 'assets/css/admin/checkemail.css', array(), $check_email->get_version() );
@@ -120,6 +128,9 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 	}
 
     public function allowed_user_roles_settings( ) {
+        $option = get_option( 'check-email-log-core' );
+        $allowed_user_roles = (isset($option['allowed_user_roles'])) ? $option['allowed_user_roles'] : [];
+        
 		$available_roles = get_editable_roles();
 		unset( $available_roles['administrator'] );
         $html = "";
@@ -130,9 +141,13 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
             </li>';
             foreach ( $available_roles as $role_id => $role ){
 			$role_chk_id = 'check-email-role-'.$role_id;
+            $checked = "";
+            if (in_array($role_id,$allowed_user_roles)) {
+                $checked = "checked";
+            }
             $html .='<li>
                 <span><label for="'.esc_attr($role_chk_id).'">'.esc_html( translate_user_role( $role['name'] ) ).'</label></span>
-                <span class="checkmark"><input type="checkbox" id="'.esc_attr($role_chk_id).'" name="allowed_user_roles[]" value="'. esc_attr( $role_id ).'"></span>
+                <span class="checkmark"><input type="checkbox" id="'.esc_attr($role_chk_id).'" name="allowed_user_roles[]" value="'. esc_attr( $role_id ).'" '.$checked.'></span>
             </li>';
             }
         $html .='</ul>';
@@ -171,5 +186,45 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
             </li>
             </ul>';
         return $html;
+	}
+
+    public function check_mail_save_wizard_data() {
+		if ( ! current_user_can( 'manage_check_email' ) ) {
+			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
+			wp_die();
+		}
+		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			wp_die();
+		}
+		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			wp_die();
+		}
+
+		$option = get_option( 'check-email-log-core' );
+		$from_data = $_POST;
+		unset($from_data['action']);
+		unset($from_data['ck_mail_security_nonce']);
+		if (isset($_POST['enable_dashboard_widget']) && !empty($_POST['enable_dashboard_widget'])) {
+			$from_data['enable_dashboard_widget'] = true;
+		}
+
+		$step = 'last';
+		if (isset($_POST['default_format_for_message']) && !empty($_POST['default_format_for_message'])) {
+			$from_data['default_format_for_message']= sanitize_text_field($_POST['default_format_for_message']);
+			$step = 'first';
+
+			if (!isset($_POST['enable_dashboard_widget'])) {
+				$from_data['enable_dashboard_widget'] = false;
+			}
+		}
+		
+
+		$merge_options = array_merge($option, $from_data);
+        update_option('check-email-log-core',$merge_options);
+
+		echo wp_json_encode(array('status'=> 200, 'step'=> $step,'steps_data'=>$this->cm_wizard_steps(), 'message'=> esc_html__('Wizard setup succefully.','check-mail')));
+		die;
 	}
 }

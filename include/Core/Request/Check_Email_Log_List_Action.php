@@ -17,8 +17,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
 		add_action( 'check-email-log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
-		add_action( 'admin_init', array( $this, 'deleted_logs_message' ) );
-		add_action( 'wp_ajax_check_mail_save_wizard_data', array( $this, 'check_mail_save_wizard_data' ) );
+		add_action( 'admin_init', array( $this, 'deleted_logs_message' ) );		
 	}
 
 	public function view_log_message() {
@@ -626,48 +625,5 @@ class Check_Email_Log_List_Action implements Loadie {
 			return false;
 		}                    
     }
-
-	public function check_mail_save_wizard_data() {
-		if ( ! current_user_can( 'manage_check_email' ) ) {
-			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
-			wp_die();
-		}
-		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
-			wp_die();
-		}
-		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
-			wp_die();
-		}
-
-		$option = get_option( 'check-email-log-core' );
-		$from_data = $_POST;
-		unset($from_data['action']);
-		unset($from_data['ck_mail_security_nonce']);
-		if (isset($_POST['enable_dashboard_widget']) && !empty($_POST['enable_dashboard_widget'])) {
-			$from_data['enable_dashboard_widget'] = true;
-		}else{
-			$from_data['enable_dashboard_widget'] = false;
-		}
-
-		$step = 'last';
-		if (isset($_POST['default_format_for_message']) && !empty($_POST['default_format_for_message'])) {
-			$from_data['default_format_for_message']= sanitize_text_field($_POST['default_format_for_message']);
-			$step = 'first';
-
-			if (!isset($_POST['enable_dashboard_widget'])) {
-				$from_data['enable_dashboard_widget'] = false;
-			}
-		}
-		
-
-		$merge_options = array_merge($option, $from_data);
-        update_option('check-email-log-core',$merge_options);
-
-		echo wp_json_encode(array('status'=> 200, 'step'=> $step, 'message'=> esc_html__('Wizard setup succefully.','check-mail')));
-		die;
-	}
-
 
 }
