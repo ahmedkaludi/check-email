@@ -49,7 +49,7 @@ class Check_Email_Tools_Tab {
 			<table class="form-table" role="presentation">
 				<tbody>
 					<tr class="ck-mail-tools-logs">
-						<th><?php esc_html_e('Export Email Logs'); ?></th>
+						<th><?php esc_html_e('Export Email Logs', 'check-email'); ?></th>
 						<td>
 							<?php 
 							$logs_ajax_url = add_query_arg(

@@ -262,7 +262,7 @@ class Check_Email_SMTP_Tab {
 				</table>
 			</div>
 			<?php wp_nonce_field('check_mail_smtp_nonce','check_mail_smtp_nonce'); ?>
-			<p class="submit"><input type="submit" name="check_mail_smtp_submit" id="check_mail_smtp_submit" class="button button-primary" value="Save"></p>
+			<p class="submit"><input type="submit" name="check_mail_smtp_submit" id="check_mail_smtp_submit" class="button button-primary" value="<?php esc_attr_e( 'Save', 'check-email' ); ?>"></p>
 		</form>
 	<?php
 	}

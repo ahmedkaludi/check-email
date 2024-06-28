@@ -190,15 +190,15 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 
     public function check_mail_save_wizard_data() {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
-			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
+			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-email')));
 			wp_die();
 		}
 		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email'))); 
 			wp_die();
 		}
 		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email')));
 			wp_die();
 		}
 
@@ -224,7 +224,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 		$merge_options = array_merge($option, $from_data);
         update_option('check-email-log-core',$merge_options);
 
-		echo wp_json_encode(array('status'=> 200, 'step'=> $step,'steps_data'=>$this->cm_wizard_steps(), 'message'=> esc_html__('Wizard setup succefully.','check-mail')));
+		echo wp_json_encode(array('status'=> 200, 'step'=> $step,'steps_data'=>$this->cm_wizard_steps(), 'message'=> esc_html__('Wizard setup succefully.','check-email')));
 		die;
 	}
 }

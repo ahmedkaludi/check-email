@@ -187,7 +187,7 @@ class Check_Email_Log_List_Action implements Loadie {
 					<?php 
 					if(!defined('CK_MAIL_PRO_VERSION')){
 					?>
-						<p><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More'); ?></a></p>
+						<p><?php esc_html_e( 'Triggered data helps you in debugging by showing the exact code that is sending that email ', 'check-email' ); ?><a href="https://check-email.tech/docs/knowledge-base/how-to-use-the-trigger-option-to-debug-emails-by-identifying-the-exact-code/" target="_blank"><?php esc_html_e(' Learn More', 'check-email'); ?></a></p>
 						<p id="check-email-trigger-data-free-note"> <?php esc_html_e( 'This Feature requires the Premium Version', 'check-email' ); ?> <a href="https://check-email.tech/pricing/#pricings" target="_blank" class="check-mail-premium-btn"><span><?php esc_html_e('Upgrade Now', 'check-email'); ?><span></a> </p>
 					<?php
 					}else{
@@ -326,7 +326,7 @@ class Check_Email_Log_List_Action implements Loadie {
 					<td style="padding: 5px; width:113px;"><b><?php esc_html_e( 'To', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
 					<td style="padding: 5px;">
 						<input type="email" id="ckm_to" name="ckm_to" class="regular-text" value="<?php echo esc_attr( $log_item['to_email'] ); ?>" />
-						<small>&nbsp;<?php echo esc_html__( 'Separate multiple emails  by comma ( , )', 'check-email' ); ?></small>
+						<small>&nbsp;<?php esc_html__( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small>
 					</td>
 				</tr>
 				<tr style="background: #eee;">
@@ -399,15 +399,15 @@ class Check_Email_Log_List_Action implements Loadie {
 
 	public function submit_resend_message() {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
-			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-mail')));
+			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-email')));
 			wp_die();
 		}
 		if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email'))); 
 			wp_die();
 		}
 		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email')));
 			wp_die();
 		}
 		$to = sanitize_text_field($_POST['ckm_to']);
@@ -438,7 +438,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			$headers[] ='Content-Type: '.$content_type;
 		}
 		if ( empty( $to )  || empty( $subject )){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Please fill all required fields','check-mail')));
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Please fill all required fields','check-email')));
 			wp_die();
 		}
 		$emailErr = false;
@@ -458,7 +458,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		}
 
 		if ( $emailErr){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Invalid email address in to','check-mail')));
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Invalid email address in to','check-email')));
 			wp_die();
 		}
 
@@ -468,7 +468,7 @@ class Check_Email_Log_List_Action implements Loadie {
 
 		wp_mail( $to, $subject, $message, $headers, $attachments=array() );
 
-		echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Email Sent.','check-mail')));
+		echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Email Sent.','check-email')));
 			die;
 	}
 
@@ -479,11 +479,11 @@ class Check_Email_Log_List_Action implements Loadie {
         }
         
         if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail'))); 
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email'))); 
 			wp_die();
 		}
 		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
-			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-mail')));
+			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email')));
 			wp_die();
 		}
 		set_time_limit(300);  
@@ -524,7 +524,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			$result = $this->check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name);
 			echo wp_json_encode($result);
         }else{
-            echo wp_json_encode(array('status'=>503, 'message'=>esc_html__( "Plugin data is not available or it is not activated",'check-mail'))); 
+            echo wp_json_encode(array('status'=>503, 'message'=>esc_html__( "Plugin data is not available or it is not activated",'check-email'))); 
         }        
            wp_die();           
 	}
@@ -543,11 +543,11 @@ class Check_Email_Log_List_Action implements Loadie {
 			$total_rows = $wpdb->get_var("SELECT COUNT(*) FROM $plugin_table_name");
 
 			if ($total_rows === null) {
-				  $result = esc_html__( "Failed to count rows.",'check-mail');
+				  $result = esc_html__( "Failed to count rows.",'check-email');
 				  return $response;
 			}
 
-    		$result =  esc_html__( "Total ",'check-mail').$total_rows.esc_html__( " rows successfully imported: ",'check-mail');
+    		$result =  esc_html__( "Total ",'check-email').$total_rows.esc_html__( " rows successfully imported: ",'check-email');
 
 			while ($offset < $total_rows) {
 				// Retrieve data in chunks from table A
@@ -621,7 +621,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			$response['status'] = 503;
 			$response['total_row'] = $total_rows;
 			$response['plugin_name'] = $plugin_name;
-			$response['message'] = esc_html__( "Something went wrong no data migrated",'check-mail');
+			$response['message'] = esc_html__( "Something went wrong no data migrated",'check-email');
 			return false;
 		}                    
     }
