@@ -11,6 +11,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	 * Page slug.
 	 */
 	const PAGE_SLUG = 'check-email-status';
+	const DASHBOARD_SLUG = 'check-email-dashboard';
 
 	/**
 	 * Specify additional hooks.
@@ -19,7 +20,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 	 */
 	public function load() {
 		parent::load();
-                add_action( 'admin_enqueue_scripts', array( $this, 'checkemail_assets' ) );;
+        add_action( 'admin_enqueue_scripts', array( $this, 'checkemail_assets' ) );;
 	}
 
 	/**
@@ -36,14 +37,24 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             'dashicons-email-alt',
             26
         );
-
+		
 		$this->page = add_submenu_page(
 			Check_Email_Status_Page::PAGE_SLUG,
-			esc_html__( 'Status', 'check-email' ),
-			esc_html__( 'Status', 'check-email' ),
+			esc_html__( 'Test Email', 'check-email' ),
+			esc_html__( 'Test Email', 'check-email' ),
 			'manage_check_email',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' ),
+            -10
+		);
+
+        $this->page = add_submenu_page(
+			Check_Email_Status_Page::PAGE_SLUG,
+			esc_html__( 'Dashboard', 'check-email' ),
+			esc_html__( 'Dashboard', 'check-email' ),
+			'manage_check_email',
+			self::DASHBOARD_SLUG,
+			array( $this, 'dashboard_render_page' ),
             -10
 		);
 	}
@@ -78,6 +89,19 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             </div>
 
             <?php require_once 'partials/check-email-admin-status-display.php'; ?>
+		</div>
+		<?php
+	}
+
+    public function dashboard_render_page() {
+		?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Dashboard', 'check-email' ); ?></h1>
+           
+
+            <div id="CKE_banner">
+                
+		</div>
 		</div>
 		<?php
 	}
