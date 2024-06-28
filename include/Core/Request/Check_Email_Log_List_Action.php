@@ -651,13 +651,14 @@ class Check_Email_Log_List_Action implements Loadie {
 			$from_data['enable_dashboard_widget'] = false;
 		}
 
-		if (isset($_POST['enable_dashboard_widget']) && !empty($_POST['enable_dashboard_widget'])) {
-			$from_data['enable_dashboard_widget'] = true;
-		}
 		$step = 'last';
 		if (isset($_POST['default_format_for_message']) && !empty($_POST['default_format_for_message'])) {
 			$from_data['default_format_for_message']= sanitize_text_field($_POST['default_format_for_message']);
 			$step = 'first';
+
+			if (!isset($_POST['enable_dashboard_widget'])) {
+				$from_data['enable_dashboard_widget'] = false;
+			}
 		}
 		
 

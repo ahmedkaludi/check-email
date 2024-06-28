@@ -54,7 +54,6 @@ class Check_Email_Logger implements Loadie {
             $log = array(
                 'to_email'        => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['to'] ),
                 'subject'         => esc_html($mail_info['subject']),
-                'message'         => wp_kses_post($mail_info['message']),
                 'backtrace_segment'=> $backtrace_segment,
                 'headers'         => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['headers'], "\n" ),
                 'attachment_name' => \CheckEmail\Util\wp_chill_check_email_stringify( $mail_info['attachments'] ),
@@ -62,6 +61,10 @@ class Check_Email_Logger implements Loadie {
                 'ip_address'      => $ip,
                 'result'          => 1,
             );
+
+            if(empty($option) || !isset( $option['log_email_content']) || (isset( $option['log_email_content'])) && $option['log_email_content']){
+                $log['message'] = wp_kses_post($mail_info['message']);
+            }
 
             if ( empty( $log['attachment_name'] ) ) {
                     $log['attachments'] = 'false';

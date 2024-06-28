@@ -196,9 +196,13 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$enable_dashboard_widget = $option[ $args['id'] ];
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
+		$checked = "";
+		if($enable_dashboard_widget){
+			$checked = "checked";
+		}
 		?>
 
-		<input id="check-email-enable-widget" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_dashboard_widget ); ?>>
+		<input id="check-email-enable-widget" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php echo $checked; ?>>
 		<label for="check-email-enable-widget" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ); ?></label>
 
 		<?php
