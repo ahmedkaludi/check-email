@@ -508,7 +508,9 @@ EOT;
 		?>
 			<input id="check-email-log_email_content" class="check_main_js_display_checkbox" type="checkbox" value="true" <?php echo $checked; ?>>
 			<input id="check-email-log_email_content-hidden" class="check_mail_js_hidden_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
-			<label for="check-email-log_email_content" class="check-email-opt-labels"><?php esc_html_e( 'Display the content of email in log.', 'check-email' ) ?></label>
+			<label for="check-email-log_email_content" class="check-email-opt-labels"><?php esc_html_e('Email content may contain personal information, such as plain text passwords. Please carefully consider before enabling this option, as it will store all sent email content to your site’s database.', 'check-email' ) ?></label>
+
+			
 		<?php
 	}
 	public function render_display_host_ip_settings( $args ){
