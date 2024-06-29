@@ -634,7 +634,7 @@ EOT;
 		
 		?>
 			<input id="check-email-is_retention_amount_enable" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-is_retention_amount_enable" class="check-email-opt-labels"><?php esc_html__( 'Automatically deletes old emails when a certain amount of logs have been saved.', 'check-email' ); ?></label>
+			<label for="check-email-is_retention_amount_enable" class="check-email-opt-labels"><?php esc_html_e( 'Automatically deletes old emails when a certain amount of logs have been saved.', 'check-email' ); ?></label>
 		<?php
 	}
 	public function render_is_retention_period_enable_settings( $args ){
@@ -645,7 +645,7 @@ EOT;
 		
 		?>
 			<input id="check-email-is_retention_period_enable" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
-			<label for="check-email-is_retention_period_enable" class="check-email-opt-labels"><?php esc_html__( 'Automatically deletes old emails after a certain amount of time has passed', 'check-email' ); ?></label>
+			<label for="check-email-is_retention_period_enable" class="check-email-opt-labels"><?php esc_html_e( 'Automatically deletes old emails after a certain amount of time has passed', 'check-email' ); ?></label>
 		<?php
 	}
 	public function render_log_retention_period_in_days_settings( $args ){
