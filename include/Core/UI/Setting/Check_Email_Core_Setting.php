@@ -70,7 +70,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'log_retention_period_in_days' 		  => 0,			
 				'is_retention_amount_enable'=>false,			
 				'is_retention_period_enable'=>false,			
-				'retention_amount'=>'',			
+				'retention_amount'=>0,			
 				'forward_to' 		  => '',			
 				'forward_cc' 		  => '',			
 				'forward_bcc' 		  => '',			
