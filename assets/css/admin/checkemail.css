@@ -63,6 +63,7 @@
     display: none;
 }
 
+.tab-content.ce_tab_logging .check_email_setup_wizard,
 .tab-content.ce_tab_logging .check_email_allowed_user_roles,
 .tab-content.ce_tab_logging .check_email_remove_on_uninstall,
 .tab-content.ce_tab_logging .check_email_override_emails_from,
@@ -99,6 +100,7 @@
 .tab-content.ce_tab_smtp .check_email_enable_dashboard_widget,
 .tab-content.ce_tab_smtp .check_email_trigger_data,
 .tab-content.ce_tab_smtp .check_email_db_size_notification,
+.tab-content.ce_tab_smtp .check_email_setup_wizard,
 .tab-content.ce_tab_smtp .check_email_allowed_user_roles,
 .tab-content.ce_tab_smtp .check_email_remove_on_uninstall,
 .tab-content.ce_tab_smtp .check_email_override_emails_from,

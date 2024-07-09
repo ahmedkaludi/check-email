@@ -14,6 +14,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			$this->section->option_name = 'check-email-log-core';
 
 			$this->section->field_labels = array(
+				'setup_wizard'      => esc_html__( 'Setup Wizard', 'check-email' ),
 				'allowed_user_roles'      => esc_html__( 'Allowed User Roles', 'check-email' ),
 				'remove_on_uninstall'     => '<label for="check-email-remove-on-uninstall" class="check-email-opt-labels">'.esc_html__( 'Remove Data on Uninstall?', 'check-email' ).'</label>',
 				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',				
@@ -44,6 +45,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			);
 
 			$this->section->default_value = array(
+				'setup_wizard'      => '',
 				'allowed_user_roles'      => array(),
 				'remove_on_uninstall'     => '',
 				'email_from_name'         => '',
@@ -124,6 +126,11 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			</em>
 		</p>
 
+		<?php
+	}
+	public function render_setup_wizard_settings( $args ) {
+		?>
+		<a href="admin.php?page=check-email-wizard" class="check-mail-premium-btn"><?php echo esc_html('Setup Wizard', 'check-email' ); ?></a>
 		<?php
 	}
 
