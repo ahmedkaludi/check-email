@@ -27,14 +27,15 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 	public function register_page() {
                 $option = get_option( 'check-email-log-core' );
                 
-                // if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {             
+                // if ( is_array( $option ) && array_key_exists( 'enable_logs', $option ) && 'true' === strtolower( $option['enable_logs'] ) ) {  
                     $this->page = add_submenu_page(
                             Check_Email_Status_Page::PAGE_SLUG,
-                            esc_html__( 'View Logs', 'check-email'),
-                            esc_html__( 'View Logs', 'check-email'),
+                            esc_html__( 'Email Logs', 'check-email'),
+                            esc_html__( 'Email Logs', 'check-email'),
                             'manage_check_email',
                             self::PAGE_SLUG,
-                            array( $this, 'render_page' )
+                            array( $this, 'render_page' ),
+							-10
                     );
                     
                     add_action( "load-{$this->page}", array( $this, 'load_page' ) );

@@ -33,7 +33,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             esc_html__( 'Check & Log Email', 'check-email' ),
             'manage_check_email',
             self::PAGE_SLUG,
-            array( $this, 'render_page' ),
+            'admin.php?page=check-email-logs',
             'dashicons-email-alt',
             26
         );
@@ -45,17 +45,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 			'manage_check_email',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' ),
-            -10
-		);
-
-        $this->page = add_submenu_page(
-			Check_Email_Status_Page::PAGE_SLUG,
-			esc_html__( 'Dashboard', 'check-email' ),
-			esc_html__( 'Dashboard', 'check-email' ),
-			'manage_check_email',
-			self::DASHBOARD_SLUG,
-			array( $this, 'dashboard_render_page' ),
-            -10
+            -11
 		);
 	}
 
@@ -89,19 +79,6 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             </div>
 
             <?php require_once 'partials/check-email-admin-status-display.php'; ?>
-		</div>
-		<?php
-	}
-
-    public function dashboard_render_page() {
-		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Dashboard', 'check-email' ); ?></h1>
-           
-
-            <div id="CKE_banner">
-                
-		</div>
 		</div>
 		<?php
 	}

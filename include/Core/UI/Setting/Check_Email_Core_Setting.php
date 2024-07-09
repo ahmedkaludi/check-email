@@ -678,6 +678,9 @@ EOT;
 	public function sanitize_bcc( $value ) {
 		return sanitize_text_field( $value );
 	}
+	public function sanitize_reply_to( $value ) {
+		return sanitize_text_field( $value );
+	}
 
 	public function render_forward_to_settings( $args ){
 
@@ -719,6 +722,9 @@ EOT;
 		
 	}
 
+	public function sanitize_forward_email( $value ) {
+		return sanitize_text_field( $value );
+	}
 	public function sanitize_forward_to( $value ) {
 		return sanitize_text_field( $value );
 	}
@@ -726,6 +732,30 @@ EOT;
 		return sanitize_text_field( $value );
 	}
 	public function sanitize_forward_bcc( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_is_retention_period_enable( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_log_retention_period( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_email_from_name( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_email_from_email( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_enable_dashboard_widget( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_default_format_for_message( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_log_email_content( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_trigger_data( $value ) {
 		return sanitize_text_field( $value );
 	}
 }
