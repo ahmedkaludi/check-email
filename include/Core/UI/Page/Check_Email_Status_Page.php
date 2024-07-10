@@ -33,7 +33,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             esc_html__( 'Check & Log Email', 'check-email' ),
             'manage_check_email',
             self::PAGE_SLUG,
-            'admin.php?page=check-email-logs',
+            '',
             'dashicons-email-alt',
             26
         );
