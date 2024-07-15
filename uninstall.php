@@ -33,9 +33,11 @@ function check_email_delete_db_data() {
 	$table_name = $wpdb->prefix . 'check_email_log';
 
 	if ( $remove_data_on_uninstall ) {
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) == $table_name ) {
+		// phpcs:disable.
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE  %s",$wpdb->esc_like( $table_name )) ) == $table_name ) {
 			$wpdb->query( "DROP TABLE $table_name" );
 		}
+		// phpcs:enable.
 
 		delete_option( 'check-email-log-db' );
 		delete_option( 'check-email-log-core' );

@@ -24,7 +24,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			wp_die();
 		}
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information but only loading it inside the admin_init hook.
 		$id = isset( $_GET['log_id'] ) ? absint( $_GET['log_id'] ) : 0 ;
 
 		if ( $id <= 0 ) {
@@ -158,7 +158,7 @@ class Check_Email_Log_List_Action implements Loadie {
 							<?php
 							foreach ($attachments as $key => $attachment) {
 								?>
-								<img src="<?php echo $attachment ?>" height="100px" width="100px" />
+								<img src="<?php echo esc_attr($attachment) ?>" height="100px" width="100px" />
 								<?php
 							}
 						}
@@ -179,7 +179,7 @@ class Check_Email_Log_List_Action implements Loadie {
 							$json_data['message'] = htmlentities( htmlspecialchars_decode( $json_data['message'] ) );
 						}
 					?>
-					<pre class="tabs-text-pre"><?php echo esc_html( json_encode($json_data,JSON_PRETTY_PRINT)); ?></pre>
+					<pre class="tabs-text-pre"><?php echo esc_html( wp_json_encode($json_data,JSON_PRETTY_PRINT)); ?></pre>
 				</div>
 
 								
@@ -221,7 +221,9 @@ class Check_Email_Log_List_Action implements Loadie {
 		$id_list = implode( ',', $ids );
 
 		$logs_deleted = $this->get_table_manager()->delete_logs( $id_list );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if( isset( $_REQUEST['_wp_http_referer'] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
 		}else{
 			// phpcs:ignore
@@ -231,13 +233,17 @@ class Check_Email_Log_List_Action implements Loadie {
 
 	public function delete_all_logs() {
 		$logs_deleted = $this->get_table_manager()->delete_all_logs();
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if( isset($_REQUEST['_wp_http_referer'] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
 		}
 	}
 
 	public function deleted_logs_message(){
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if( isset( $_GET['deleted_logs'] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			$this->render_log_deleted_notice( intval( $_GET['deleted_logs'] ) );
 		}
 	}
@@ -264,7 +270,8 @@ class Check_Email_Log_List_Action implements Loadie {
 		$type    = 'error';
 
 		if ( absint( $logs_deleted ) > 0 ) {
-			$message = sprintf( esc_html( _n( '1 email log deleted.', '%s email logs deleted', $logs_deleted, 'check-email' )), $logs_deleted );
+			$message = $logs_deleted .esc_html('email log deleted.','check-email');
+			// $message = sprintf(  _n( esc_html('1 email log deleted.'), '%s email logs deleted', $logs_deleted, 'check-email' ), $logs_deleted );
 			$type    = 'updated';
 		}
 
@@ -299,7 +306,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			wp_die();
 		}
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information but only loading it inside the admin_init hook.
 		$id = isset( $_GET['log_id'] ) ? absint( $_GET['log_id'] ) : 0 ;
 
 		if ( $id <= 0 ) {
@@ -319,8 +326,8 @@ class Check_Email_Log_List_Action implements Loadie {
 			?>
 			<form name="check-mail-resend-form" id="check-mail-resend-form" >
 			<input type="hidden" name="action" value="check_mail_resend_submit" />
-			<input type="hidden" name="ck_mail_security_nonce" value="<?php echo wp_create_nonce( 'ck_mail_ajax_check_nonce' ) ?>" />
-			<input type="hidden" id="cm_ajax_url" value="<?php echo admin_url( 'admin-ajax.php' ); ?>" />
+			<input type="hidden" name="ck_mail_security_nonce" value="<?php echo esc_attr(wp_create_nonce( 'ck_mail_ajax_check_nonce' )) ?>" />
+			<input type="hidden" id="cm_ajax_url" value="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>" />
 			<table style="width: 100%;">
 				<tr style="background: #eee;">
 					<td style="padding: 5px; width:113px;"><b><?php esc_html_e( 'To', 'check-email' ); ?></b><span class="" style="color:red;">*</span></td>
@@ -346,24 +353,24 @@ class Check_Email_Log_List_Action implements Loadie {
 			<table style="width: 100%;">
                 <tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="email" name="ckm_from" id="ckm_from" class="regular-text" value="<?php  echo isset( $headers['from'] ) ?  $headers['from'] : '' ?>" /></td>
+					<td style="padding: 5px;"><input type="email" name="ckm_from" id="ckm_from" class="regular-text" value="<?php  echo isset( $headers['from'] ) ?  esc_attr($headers['from']) : '' ?>" /></td>
 				</tr>
 				
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'CC', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  $headers['cc'] : '' ?>" /><small>&nbsp;<?php esc_html_e( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small></td>
+					<td style="padding: 5px;"><input type="email" name="ckm_cc" id="ckm_cc" class="regular-text" value="<?php echo ( isset( $headers['cc'] )) ?  esc_attr($headers['cc']) : '' ?>" /><small>&nbsp;<?php esc_html_e( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'BCC', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  $headers['bcc'] : '' ?>" /><small>&nbsp;<?php esc_html_e( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small></td>
+					<td style="padding: 5px;"><input type="text" name="ckm_bcc" id="ckm_bcc" class="regular-text" value="<?php  echo isset( $headers['bcc'] ) ?  esc_attr($headers['bcc']) : '' ?>" /><small>&nbsp;<?php esc_html_e( 'Separate multiple emails by comma ( , )', 'check-email' ); ?></small></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px; width:110px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="text" name="ckm_reply_to" id="ckm_reply_to" class="regular-text" value="<?php echo ( isset( $headers['reply_to'] )) ?  $headers['reply_to'] : '' ?>" /></td>
+					<td style="padding: 5px;"><input type="text" name="ckm_reply_to" id="ckm_reply_to" class="regular-text" value="<?php echo ( isset( $headers['reply_to'] )) ?  esc_attr($headers['reply_to']) : '' ?>" /></td>
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Content Type', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><input type="text" name="ckm_content_type" id="ckm_content_type" class="regular-text" value="<?php echo ( isset( $headers['content_type'] )) ?  $headers['content_type'] : '' ?>" /></td>
+					<td style="padding: 5px;"><input type="text" name="ckm_content_type" id="ckm_content_type" class="regular-text" value="<?php echo ( isset( $headers['content_type'] )) ?  esc_attr($headers['content_type']) : '' ?>" /></td>
 				</tr>
 
 				
@@ -377,7 +384,7 @@ class Check_Email_Log_List_Action implements Loadie {
 						<?php
 						foreach ($attachments as $key => $attachment) {
 							?>
-							<img src="<?php echo $attachment ?>" height="100px" width="100px" />
+							<img src="<?php echo esc_attr($attachment) ?>" height="100px" width="100px" />
 							<?php
 						}
 					}
@@ -526,97 +533,109 @@ class Check_Email_Log_List_Action implements Loadie {
         }else{
             echo wp_json_encode(array('status'=>503, 'message'=>esc_html__( "Plugin data is not available or it is not activated",'check-email'))); 
         }        
-           wp_die();           
+        wp_die();           
 	}
 
 	public function check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name){
         global $wpdb;
 		$offset = 0;
+		$total_rows = 0;
 		$chunk_size=100;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->query('START TRANSACTION');
 		$response = array('status'=>503,'total_row'=>0);
 		try {
-			$plugin_table_name = $wpdb->prefix . $plugin_table_name;
-			$ce_table = $wpdb->prefix . 'check_email_log';
+			$plugin_table = $wpdb->prefix . $plugin_table_name;
+			$plugin_table_name = esc_sql($plugin_table);
+			$ce_table_name = $wpdb->prefix . 'check_email_log';
+			$ce_table = esc_sql($ce_table_name);
+			$cache_key = 'check_mail_import_data_'. $plugin_name;
+			$ck_plugin_data = wp_cache_get( $cache_key );
+			if ( false === $ck_plugin_data ) {
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$total_rows = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $plugin_table_name"));
 
-			// Count the total number of rows in table A
-			$total_rows = $wpdb->get_var("SELECT COUNT(*) FROM $plugin_table_name");
-
-			if ($total_rows === null) {
-				  $result = esc_html__( "Failed to count rows.",'check-email');
-				  return $response;
-			}
-
-    		$result =  esc_html__( "Total ",'check-email').$total_rows.esc_html__( " rows successfully imported: ",'check-email');
-
-			while ($offset < $total_rows) {
-				// Retrieve data in chunks from table A
-				$rows = $wpdb->get_results($wpdb->prepare("SELECT * FROM $plugin_table_name LIMIT %d OFFSET %d", $chunk_size, $offset), ARRAY_A);
-
-				if ($rows) {
-					// Insert data into table B
-					foreach ($rows as $row) {
-						$data_to_insert = array();
-						unset($row['id']);
-						switch ($plugin_name) {
-							case 'email_log':
-								$data_to_insert = $row;
-								break;
-							case 'mail_logging_wp_mail_catcher':
-								$data_to_insert = array(
-									'to_email' => $row['email_to'],
-									'subject' => $row['subject'],
-									'message' => $row['message'],
-									'backtrace_segment' => $row['backtrace_segment'],
-									'headers' => $row['additional_headers'],
-									'attachments' => $row['attachments'],
-									'sent_date' => (!empty($row['time'])) ? date('Y-m-d H:i:s', $row['time']) : NULL,
-									'result' => $row['status'],
-									'error_message' => $row['error'],
-								);
-								break;
-							case 'wp_mail_logging':
-								$data_to_insert = array(
-									'to_email' => $row['receiver'],
-									'subject' => $row['subject'],
-									'message' => $row['message'],
-									'headers' => $row['headers'],
-									'attachments' => $row['attachments'],
-									'sent_date' => $row['timestamp'],
-									'ip_address' => $row['host'],
-									'error_message' => $row['error'],
-									'result' => empty($row['error'])? 1:0,
-								);
-								break;
-							case 'wp_mail_log':
-								$data_to_insert = array(
-									'to_email' => $row['to_email'],
-									'subject' => $row['subject'],
-									'message' => $row['message'],
-									'headers' => $row['headers'],
-									'attachments' => $row['attachments_file'],
-									'sent_date' => $row['sent_date'],
-								);
-								break;
-								
-							default:
-								break;
-						}
-						if(!empty($data_to_insert)){
-							$wpdb->insert($ce_table, $data_to_insert);
-						}
-					}
+				if ($total_rows === null) {
+					$result = esc_html__( "Failed to count rows.",'check-email');
+					return $response;
 				}
 
-				$offset += $chunk_size;
+				$result =  esc_html__( "Total ",'check-email').$total_rows.esc_html__( " rows successfully imported: ",'check-email');
+
+				while ($offset < $total_rows) {
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$rows = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$plugin_table_name}  LIMIT %d OFFSET %d", $chunk_size, $offset), ARRAY_A);
+
+					if ($rows) {
+						foreach ($rows as $row) {
+							$data_to_insert = array();
+							unset($row['id']);
+							switch ($plugin_name) {
+								case 'email_log':
+									$data_to_insert = $row;
+									break;
+								case 'mail_logging_wp_mail_catcher':
+									$data_to_insert = array(
+										'to_email' => $row['email_to'],
+										'subject' => $row['subject'],
+										'message' => $row['message'],
+										'backtrace_segment' => $row['backtrace_segment'],
+										'headers' => $row['additional_headers'],
+										'attachments' => $row['attachments'],
+										'sent_date' => (!empty($row['time'])) ? gmdate('Y-m-d H:i:s', $row['time']) : NULL,
+										'result' => $row['status'],
+										'error_message' => $row['error'],
+									);
+									break;
+								case 'wp_mail_logging':
+									$data_to_insert = array(
+										'to_email' => $row['receiver'],
+										'subject' => $row['subject'],
+										'message' => $row['message'],
+										'headers' => $row['headers'],
+										'attachments' => $row['attachments'],
+										'sent_date' => $row['timestamp'],
+										'ip_address' => $row['host'],
+										'error_message' => $row['error'],
+										'result' => empty($row['error'])? 1:0,
+									);
+									break;
+								case 'wp_mail_log':
+									$data_to_insert = array(
+										'to_email' => $row['to_email'],
+										'subject' => $row['subject'],
+										'message' => $row['message'],
+										'headers' => $row['headers'],
+										'attachments' => $row['attachments_file'],
+										'sent_date' => $row['sent_date'],
+									);
+									break;
+									
+								default:
+									break;
+							}
+							if(!empty($data_to_insert)){
+								// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+								$wpdb->insert($ce_table, $data_to_insert);
+							}
+						}
+					}
+
+					$offset += $chunk_size;
+				}
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->query('COMMIT');
+				$response['status'] = 200;
+				$response['total_row'] = $total_rows;
+				$response['plugin_name'] = $plugin_name;
+				$response['message'] = $result;
+
+				wp_cache_set( $cache_key, $response );
+				return $response;
 			}
-			$wpdb->query('COMMIT');
-			$response['status'] = 200;
-			$response['total_row'] = $total_rows;
-			$response['plugin_name'] = $plugin_name;
-			$response['message'] = $result;
-			return $response; 
+			return $ck_plugin_data;
 		} catch (\Throwable $th) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$wpdb->query('ROLLBACK');
 			$response['status'] = 503;
 			$response['total_row'] = $total_rows;

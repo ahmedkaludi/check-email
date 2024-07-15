@@ -61,6 +61,7 @@ class Check_Email_Newsletter {
                                 
                         global $current_user;                
         		$tour     = array ();
+                        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
                         $tab      = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : '';                   
                         
                         if (!array_key_exists($tab, $tour)) {                
@@ -111,7 +112,7 @@ class Check_Email_Newsletter {
                     
                     $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
                     $response = wp_remote_retrieve_body( $response );                    
-                    echo $response;
+                    echo esc_html($response, 'check-email');
 
                 }else{
                         echo esc_html('Email id required', 'check-email');                        

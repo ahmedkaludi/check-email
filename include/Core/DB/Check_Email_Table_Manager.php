@@ -91,6 +91,7 @@ class Check_Email_Table_Manager implements Loadie {
 		global $wpdb;
 
 		$table_name = $this->get_log_table_name();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
 		$wpdb->insert( $table_name, $data );
 	}
 
@@ -100,23 +101,37 @@ class Check_Email_Table_Manager implements Loadie {
 		$table_name = $this->get_log_table_name();
                 
 		$ids = esc_sql( $ids );
-
-		return $wpdb->query( "DELETE FROM {$table_name} where id IN ( {$ids} )" ); 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
+		$result = $wpdb->query( "DELETE FROM {$table_name} where id IN ( {$ids} )" );
+		$ids_array = array_map('intval', explode(',', $ids));
+		if ($result !== false) {
+			foreach ($ids_array as $id) {
+				wp_cache_delete($id, 'check_mail_log');
+			}
+		}
+		return $result;
 	}
 
 	public function delete_all_logs() {
 		global $wpdb;
 
 		$table_name = $this->get_log_table_name();
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
+		$result =  $wpdb->query( "DELETE FROM {$table_name}" );
 
-		return $wpdb->query( "DELETE FROM {$table_name}" );
+		if ($result !== false) {
+			wp_cache_delete('check_mail_log','check_mail_log');
+		}
+		
+		return $result;
 	}
 
 	public function delete_logs_older_than( $interval_in_days ) {
 		global $wpdb;
 		$table_name = $this->get_log_table_name();
-
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$query              = $wpdb->prepare( "DELETE FROM {$table_name} WHERE sent_date < DATE_SUB( CURDATE(), INTERVAL %d DAY )", $interval_in_days );
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- already prepare in query
 		$deleted_rows_count = $wpdb->query( $query );
 
 		return $deleted_rows_count;
@@ -260,6 +275,7 @@ class Check_Email_Table_Manager implements Loadie {
 
 		// Find total number of items.
 		$count_query = $count_query . $query_cond;
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$total_items = $wpdb->get_var( $count_query );
 
 		// Adjust the query to take pagination into account.
@@ -270,6 +286,7 @@ class Check_Email_Table_Manager implements Loadie {
 
 		// Fetch the items.
 		$query = $query . $query_cond;
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: Due to critical query not used prepare $table_name
 		$items = $wpdb->get_results( $query );
 
 		return array( $items, $total_items );
@@ -279,8 +296,8 @@ class Check_Email_Table_Manager implements Loadie {
 		global $wpdb;
 
 		$table_name = $this->get_log_table_name();
-
-		if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE  %s",$wpdb->esc_like( $table_name ))) != $table_name ) {
 
 			$sql = $this->get_create_table_query();
 
@@ -293,9 +310,10 @@ class Check_Email_Table_Manager implements Loadie {
 
 	public function get_logs_count() {
 		global $wpdb;
-
-		$query = 'SELECT count(*) FROM ' . $this->get_log_table_name();
-
+		$table_name = $this->get_log_table_name();
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$query = $wpdb->prepare("SELECT count(*) FROM `$table_name`");
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason:already used prepare 
 		return $wpdb->get_var( $query );
 	}
 
@@ -317,12 +335,12 @@ class Check_Email_Table_Manager implements Loadie {
 			$to_email = Util\wp_chill_check_email_stringify( $data['to'] );
 
 			$to_email = trim( esc_sql( $to_email ) );
-			$where[]  = "to_email = '$to_email'";
+			$where[]  =  $wpdb->prepare("to_email = %s",$to_email);
 		}
 
 		if ( array_key_exists( 'subject', $data ) ) {
 			$subject = trim( esc_sql( $data['subject'] ) );
-			$where[] = "subject = '$subject'";
+			$where[] = $wpdb->prepare("subject = %s",$subject);
 		}
 
 		if ( array_key_exists( 'attachments', $data ) ) {
@@ -332,7 +350,7 @@ class Check_Email_Table_Manager implements Loadie {
 				$attachments = empty( $data['attachments'] ) ? 'false' : 'true';
 			}
 			$attachments = trim( esc_sql( $attachments ) );
-			$where[]     = "attachments = '$attachments'";
+			$where[]     = $wpdb->prepare("attachments = %s",$attachments);
 		}
 
 		foreach ( $where as $index => $value ) {
@@ -344,14 +362,14 @@ class Check_Email_Table_Manager implements Loadie {
 		$query_cond .= ' ORDER BY id DESC LIMIT 1';
 
 		$query = $query . $query_cond;
-
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		return absint( $wpdb->get_var( $query ) );
 	}
 
 	public function mark_log_as_failed( $log_item_id, $message ) {
 		global $wpdb;
 		$table_name = $this->get_log_table_name();
-
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
 			$table_name,
 			array(
@@ -444,7 +462,7 @@ class Check_Email_Table_Manager implements Loadie {
 			$query_cond .= ' ORDER BY id DESC';
 
 			$query = $query . $query_cond;
-
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			return $wpdb->get_results( $query );
 		}
 	}
@@ -461,8 +479,10 @@ class Check_Email_Table_Manager implements Loadie {
 		$field_name = 'backtrace_segment';
 
 		// Query to check if the field exists in the table
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$field_exists = $wpdb->get_results(
 		    $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		        "SHOW COLUMNS FROM $table_name LIKE %s",
 		        $field_name
 		    )
@@ -470,6 +490,7 @@ class Check_Email_Table_Manager implements Loadie {
 
 		if(empty($field_exists)){
 			$query = "ALTER TABLE $table_name ADD backtrace_segment TEXT NULL DEFAULT NULL AFTER message";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query($query);
 		}
 	}
@@ -598,6 +619,7 @@ class Check_Email_Table_Manager implements Loadie {
 
 		// Find total number of items.
 		$count_query = $count_query . $query_cond;
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason using critical conditions in query
 		$total_items = $wpdb->get_var( $count_query );
 		return $total_items;
 	}
@@ -614,20 +636,25 @@ class Check_Email_Table_Manager implements Loadie {
 			$limit= intval($option['retention_amount']);
 			if(!empty($limit)){
 				$count_query = 'SELECT count(*) FROM ' . $table_name;
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 				$total_items = $wpdb->get_var( $count_query );	
 				if ($total_items > $limit) {
 					$data_to_delete = $total_items - $limit;
-					$old_posts = $wpdb->get_col( $wpdb->prepare("
-						SELECT ID FROM $table_name
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+					$old_posts = $wpdb->get_col( $wpdb->prepare(
+						// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+						"SELECT ID FROM $table_name
 						ORDER BY ID ASC 
 						LIMIT %d",$data_to_delete) );
 			
 					// Delete the logs
 					foreach ($old_posts as $column_value) {
 						$sql = $wpdb->prepare(
+							// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 							"DELETE FROM $table_name WHERE ID = %d",
 							$column_value
 						);
+						// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 						$wpdb->query($sql);
 					}
 				}
@@ -651,7 +678,9 @@ class Check_Email_Table_Manager implements Loadie {
 			$timestamp = time() - $time_interval;
 			
 			$sql = "DELETE FROM " . $table_name . " WHERE Unix_timestamp(sent_date) <= %d";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$sql = $wpdb->prepare($sql, $timestamp);
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query($sql);
 		}
     }
@@ -664,6 +693,6 @@ class Check_Email_Table_Manager implements Loadie {
 
 	function check_mail_cron_execute() {
 		$this->deleteLogOlderThan();
-		error_log('Cron job executed at' . date('Y-m-d H:i:s'));
+		error_log('Cron job executed at' . gmdate('Y-m-d H:i:s'));
 	}
 }

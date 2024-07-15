@@ -8,7 +8,7 @@ Stable tag: 1.0.13
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Check & Log email allows you to test if your WordPress installation is sending emails correctly by sending a test email to an address of your choice. Allows overriding of email headers and carbon copying to another address.
+Check & Log email allows you to test if your website is correctly sending emails . Overriding of email headers and carbon copying to another address.
 
 == Description ==
 

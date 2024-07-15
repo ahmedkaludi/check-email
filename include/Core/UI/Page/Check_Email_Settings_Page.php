@@ -101,7 +101,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
     * @since 1.0.5
     */
 	public function render_page() {
-
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			$tab = isset( $_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 			
 		?>

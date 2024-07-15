@@ -26,19 +26,19 @@ class Check_Email_Tools_Tab {
 		$migration_plugins = array(
 			[
 				'data_id' => 'email_log',
-				'title' => 'Email Log'
+				'title' => esc_html__( 'Email Log', 'check-email' )
 			],
 			[
 				'data_id' => 'mail_logging_wp_mail_catcher',
-				'title' => 'Mail logging - WP Mail Catcher'
+				'title' => esc_html__('Mail logging - WP Mail Catcher', 'check-email' )
 			],
 			[
 				'data_id' => 'wp_mail_logging',
-				'title' => 'WP Mail Logging'
+				'title' => esc_html__('WP Mail Logging', 'check-email' )
 			],
 			[
 				'data_id' => 'wp_mail_log',
-				'title' => 'WP Mail Log'
+				'title' => esc_html__('WP Mail Log', 'check-email' )
 			],
 		);
 
@@ -73,17 +73,17 @@ class Check_Email_Tools_Tab {
 			</table>
 		</div>
 		<h3><?php esc_html_e('Migration', 'check-email'); ?></h3>
-		<span id="cm_security_nonce" data="<?php echo wp_create_nonce( 'ck_mail_ajax_check_nonce' ) ?>" ></span>
-		<span id="cm_ajax_url" data="<?php echo admin_url( 'admin-ajax.php' ); ?>" ></span>
+		<span id="cm_security_nonce" data="<?php echo esc_attr(wp_create_nonce( 'ck_mail_ajax_check_nonce' )) ?>" ></span>
+		<span id="cm_ajax_url" data="<?php echo esc_url(admin_url( 'admin-ajax.php' )); ?>" ></span>
 		<table class="form-table" role="presentation">
 			<tbody>
 				<?php
 				foreach ($migration_plugins as $key => $value) {
 				?>
 					<tr class="cm_js_migration">
-						<th scope=""><?php esc_html_e($value['title'], 'check-email');  ?></th>
+						<th ><?php echo esc_attr($value['title']);  ?></th>
 						<td>
-						<button type="button" data-id="<?php echo $value['data_id'] ?>" class="button check-mail-import-plugins"><?php esc_html_e('Import', 'check-email'); ?></button>
+						<button type="button" data-id="<?php echo esc_attr($value['data_id']) ?>" class="button check-mail-import-plugins"><?php esc_html_e('Import', 'check-email'); ?></button>
 						<span class="cm_js_error" style="color:red; line-height: 2;"></span>
 						<span class="cm_js_success" style="color:green;line-height: 2;"></span>
 						</td>

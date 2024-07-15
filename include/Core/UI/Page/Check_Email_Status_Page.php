@@ -139,8 +139,8 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
                
             }
 
-            $title = sprintf( esc_html__( "Test email from %s ", "check-email"), esc_url( get_bloginfo( "url" ) ) );
-            $body  = sprintf( esc_html__( 'This test email proves that your WordPress installation at %1$s can send emails.\n\nSent: %2$s', "check-email" ), esc_url( get_bloginfo( "url" ) ), date( "r" ) );
+            $title = esc_html__( "Test email from", "check-email").' '.esc_url( get_bloginfo( "url" ));
+            $body  = esc_html__( 'This test email proves that your WordPress installation at', "check-email" ).' '.esc_url( get_bloginfo( "url" ) ). esc_html__( 'can send emails. Sent: ', "check-email" ).gmdate( "r" ) ;
             wp_mail( $to, $title, $body, $headers );
 
             return $headers;

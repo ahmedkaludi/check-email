@@ -29,20 +29,20 @@ shuffle($reasons);
 <div id="ck-mail-reloaded-feedback-overlay" style="display: none;">
     <div id="ck-mail-reloaded-feedback-content">
 	<form action="" method="post">
-	    <h3><strong><?php _e('If you have a moment, please let us know why you are deactivating:', 'check-email'); ?></strong></h3>
+	    <h3><strong><?php esc_html_e('If you have a moment, please let us know why you are deactivating:', 'check-email'); ?></strong></h3>
 	    <ul>
                 <?php 
                 foreach ($reasons as $reason){
-                    echo $reason;
+                    echo wp_kses_post($reason);
                 }
                 ?>
 	    </ul>
 	    <?php if( null !== $email && !empty( $email ) ) : ?>
-    	    <input type="hidden" name="ck_mail_disable_from" value="<?php echo $email; ?>" />
+    	    <input type="hidden" name="ck_mail_disable_from" value="<?php echo esc_attr($email); ?>" />
 	    <?php endif; ?>
-	    <input id="ck-mail-reloaded-feedback-submit" class="button button-primary" type="submit" name="ck_mail_disable_submit" value="<?php _e('Submit & Deactivate', 'check-email'); ?>"/>
-	    <a class="button ck-mail-feedback-only-deactivate"><?php _e('Only Deactivate', 'check-email'); ?></a>
-	    <a class="ck-mail-feedback-not-deactivate" href="#"><?php _e('Don\'t deactivate', 'check-email'); ?></a>
+	    <input id="ck-mail-reloaded-feedback-submit" class="button button-primary" type="submit" name="ck_mail_disable_submit" value="<?php esc_html_e('Submit & Deactivate', 'check-email'); ?>"/>
+	    <a class="button ck-mail-feedback-only-deactivate"><?php esc_html_e('Only Deactivate', 'check-email'); ?></a>
+	    <a class="ck-mail-feedback-not-deactivate" href="#"><?php esc_html_e('Don\'t deactivate', 'check-email'); ?></a>
 	</form>
     </div>
 </div>

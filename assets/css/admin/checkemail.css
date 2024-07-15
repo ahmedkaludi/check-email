@@ -215,3 +215,17 @@
 .ce_tab_general table{
     margin-bottom: 50px;
 }
+
+.check-mail-premium-btn-orange{
+    text-decoration: none;
+    color: #fff !important;
+    font-weight: 500;
+    padding: 7px 20px 9px 20px;
+    background: rgba(245, 127, 23, 1);
+    font-size: 15px;
+}
+
+
+.check-mail-premium-btn-orange:hover{
+    background: rgb(216, 101, 1);;
+}

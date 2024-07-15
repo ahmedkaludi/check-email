@@ -45,7 +45,7 @@ class Check_Email_Logger implements Loadie {
             $backtrace_segment = array();
             $backtrace_segment = $this->ck_mail_get_backtrace();
             if(!empty($backtrace_segment) && is_array($backtrace_segment)){
-            	$backtrace_segment = json_encode($backtrace_segment);
+            	$backtrace_segment = wp_json_encode($backtrace_segment);
             }else{
             	$backtrace_segment = null;
             }

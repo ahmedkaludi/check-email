@@ -57,8 +57,9 @@ function ck_mail_add_deactivation_feedback_modal() {
  * @since 1.4.0
  */
 function ck_mail_send_feedback() {
-
+    // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason: in form variable.
     if( isset( $_POST['data'] ) ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason: in form variable.
         parse_str( $_POST['data'], $form );
     }
     
@@ -151,7 +152,7 @@ function ck_mail_subscribe_for_newsletter(){
     );
     $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
     $response = wp_remote_retrieve_body( $response );
-    echo $response;
+    echo esc_html($response, 'check-email');
     die;
 }
 

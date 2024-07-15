@@ -15,7 +15,9 @@ class Check_Email_Log_Init {
 			$current_blog = $wpdb->blogid;
 
 			// Get all blogs in the network and activate plugin on each one
+			// phpcs:disable.
 			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
+			// phpcs:enable.
 			foreach ( $blog_ids as $blog_id ) {
 				switch_to_blog( $blog_id );
 				self::create_checkemaillog_table();
@@ -46,8 +48,8 @@ class Check_Email_Log_Init {
 
 		$table_name = $wpdb->prefix . Check_Email_Log::TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
-
-		if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+		// phpcs:disable.
+		if ( $wpdb->get_var( $wpdb->prepare( "show tables like %s",$wpdb->esc_like( $table_name )) ) != $table_name ) {
 
 			$sql = 'CREATE TABLE ' . $table_name . ' (
 				id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -66,6 +68,7 @@ class Check_Email_Log_Init {
 
 			add_option( Check_Email_Log::DB_OPTION_NAME, Check_Email_Log::DB_VERSION );
 		}
+		// phpcs:enable.
 	}
 }
 

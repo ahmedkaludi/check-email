@@ -57,9 +57,12 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 	protected function column_sent_date( $item ) {
 		$email_date = mysql2date(
-			sprintf( esc_html__( '%s @ %s', 'check-email' ), get_option( 'date_format', 'F j, Y' ), 'g:i:s a' ),
+			// The values within each field are already escaped.
+			// phpcs:disable
+			sprintf( esc_html__( '%1$s @ %2$s', 'check-email' ), get_option( 'date_format', 'F j, Y' ), 'g:i:s a' ),
 			$item->sent_date
 		);
+		// phpcs:enable
 
 		$actions = array();
 
@@ -97,6 +100,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 		$delete_url = add_query_arg(
 			array(
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 				'page'                   => ( isset( $_REQUEST['page'] ) ) ? sanitize_text_field( wp_unslash($_REQUEST['page']) ) : '',
 				'action'                 => 'check-email-log-list-delete',
 				$this->_args['singular'] => $item->id,
@@ -199,7 +203,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		// Get current page number.
 		$current_page_no = $this->get_pagenum();
 		$per_page        = $this->page->get_per_page();
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		list( $items, $total_items ) = $this->page->get_table_manager()->fetch_log_items( $_GET, $per_page, $current_page_no );
 
 		$this->items = $items;
@@ -220,15 +224,23 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 		$this->views();
 		$input_text_id  = $input_id . '-search-input';
 		$input_date_id  = $input_id . '-search-date-input';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		$input_date_val = ( ! empty( $_REQUEST['d'] ) ) ? sanitize_text_field( wp_unslash($_REQUEST['d']) ) : '';
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if ( ! empty( $_REQUEST['orderby'] ) )
+			// phpcs:ignore
 			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( wp_unslash($_REQUEST['orderby']) ) ) . '" />';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if ( ! empty( $_REQUEST['order'] ) )
+		// phpcs:ignore
 			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( wp_unslash($_REQUEST['order']) ) ) . '" />';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if ( ! empty( $_REQUEST['post_mime_type'] ) )
+		// phpcs:ignore
 			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( sanitize_text_field( wp_unslash($_REQUEST['post_mime_type']) ) ) . '" />';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if ( ! empty( $_REQUEST['detached'] ) )
+		// phpcs:ignore
 			echo '<input type="hidden" name="detached" value="' . esc_attr( sanitize_text_field( wp_unslash($_REQUEST['detached']) ) ) . '" />';
 		?>
 		<p class="search-box">
@@ -272,9 +284,9 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
         echo "<ul class='subsubsub'>\n";
         foreach ( $views as $class => $view ) {
-            $views[ $class ] = "\t<li class='$class'>$view";
+            echo "<li class='".esc_attr($class)."'>".wp_kses($view,['a'=>['href' => array(),'title'=>array(),'class'=>array()]])."</li>";
         }
-        echo implode( " |</li>\n", $views ) . "</li>\n";
+        // echo wp_kses(implode( " |</li>\n", $views ) . "</li>\n";
         echo "</ul>";
     }
 
@@ -299,7 +311,9 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
 	public function get_current_page_status(){
 		$status ="all";
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if (isset($_GET['status'])) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			$status = $_GET['status'];
 		}
 		return $status;
@@ -316,7 +330,7 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 	public function get_status_count($status ='all') {
 		$current_page_no = $this->get_pagenum();
 		$per_page        = $this->page->get_per_page();
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		$total_items = $this->page->get_table_manager()->fetch_log_count_by_status( $_GET, $per_page, $current_page_no,$status);
 		if (empty($total_items)) {
 			$total_items = 0;

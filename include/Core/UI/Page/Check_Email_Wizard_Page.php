@@ -62,7 +62,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
             </div>
         </div>
         <div class="cm_step_footer">
-                    <a href="<?php echo admin_url(); ?>"><?php echo esc_html__( "Go back to the Dashboard", 'check-email' ); ?></a>
+                    <a href="<?php echo esc_url(admin_url()); ?>"><?php echo esc_html__( "Go back to the Dashboard", 'check-email' ); ?></a>
                 </div>
 		<?php
 	}
@@ -88,7 +88,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
                     <button href="javascript:void(0)" class="cm_step_button" id="cm_nextBtn" onclick="cm_nextStep()"><?php echo esc_html__( "Save and Continue", 'check-email' ); ?> &rarr;</button>
                 </div>
                 <div class="cm_step_footer">
-                    <a href="<?php echo admin_url(); ?>"><?php echo esc_html__( "Close and exit the Setup Wizard", 'check-email' ); ?></a>
+                    <a href="<?php echo esc_url(admin_url()); ?>"><?php echo esc_html__( "Close and exit the Setup Wizard", 'check-email' ); ?></a>
                 </div>
             </div>
 		</div>
@@ -172,7 +172,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 		$cm_dropdown = 	'<select id="cm_default_format_for_message" style="width:177px;" name="default_format_for_message">';
 				foreach ($periods as $key => $value) {
                     $selected = $key == $default_format_for_message ? 'selected' : "";
-                    $cm_dropdown .= '<option value="'.esc_attr($key).'" '.$selected.'>'.esc_html__( $value, 'check-email' ).'</option>';
+                    $cm_dropdown .= "<option value='".esc_attr($key)."' ".esc_attr($selected).">".esc_attr( $value)."</option>";
 				}
 			$cm_dropdown .= '</select>';
         $html .='<ul class="cm_checklist">
