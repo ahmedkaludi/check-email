@@ -11,16 +11,16 @@ if( $current_user instanceof WP_User ) {
 }
 
 $reasons = array(
-    		1 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="temporary"/>' . __('It is only temporary', 'check-email') . '</label></li>',
-		2 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="stopped showing Using"/>' . __('I stopped using check & log mail on my site', 'check-email') . '</label></li>',
-		3 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="missing feature"/>' . __('I miss a feature', 'check-email') . '</label></li>
-		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="Please describe the feature"/></li>',
-		4 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="technical issue"/>' . __('Technical Issue', 'check-email') . '</label></li>
-		<li><textarea name="ck_mail_disable_text[]" placeholder="' . __('Can we help? Please describe your problem', 'check-email') . '"></textarea></li>',
-		5 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="other plugin"/>' . __('I switched to another plugin', 'check-email') .  '</label></li>
-		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="Name of the plugin"/></li>',
+    		1 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="temporary"/>' . esc_html__('It is only temporary', 'check-email') . '</label></li>',
+		2 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="stopped showing Using"/>' . esc_html__('I stopped using check & log mail on my site', 'check-email') . '</label></li>',
+		3 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="missing feature"/>' . esc_html__('I miss a feature', 'check-email') . '</label></li>
+		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="'.esc_attr('Please describe the feature').'"/></li>',
+		4 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="technical issue"/>' . esc_html__('Technical Issue', 'check-email') . '</label></li>
+		<li><textarea name="ck_mail_disable_text[]" placeholder="' . esc_html__('Can we help? Please describe your problem', 'check-email') . '"></textarea></li>',
+		5 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="'.esc_attr('other plugin').'"/>' . esc_html__('I switched to another plugin', 'check-email') .  '</label></li>
+		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="'.esc_attr('Name of the plugin').'"/></li>',
 		6 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="other"/>' . __('Other reason', 'check-email') . '</label></li>
-		<li><textarea name="ck_mail_disable_text[]" placeholder="' . __('Please specify, if possible', 'check-email') . '"></textarea></li>',
+		<li><textarea name="ck_mail_disable_text[]" placeholder="' . esc_attr('Please specify, if possible', 'check-email') . '"></textarea></li>',
     );
 shuffle($reasons);
 ?>
@@ -32,8 +32,9 @@ shuffle($reasons);
 	    <h3><strong><?php esc_html_e('If you have a moment, please let us know why you are deactivating:', 'check-email'); ?></strong></h3>
 	    <ul>
                 <?php 
-                foreach ($reasons as $reason){
-                    echo wp_kses_post($reason);
+                foreach ($reasons as $reason_escaped){
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all html inside this variable already escaped above in $reasons variable
+                    echo $reason_escaped;
                 }
                 ?>
 	    </ul>

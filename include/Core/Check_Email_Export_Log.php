@@ -112,7 +112,7 @@ class Check_Email_Export_Log {
 
 		if(!empty($fields)){
 			$logs = $this->ck_mail_generate_csv($fields, $status, $export_date, $from_date, $to_date, $export_recipient, $file_format);
-			echo esc_html($logs, 'check-email');
+			echo esc_html($logs);
 		}
 
 	   	wp_die();

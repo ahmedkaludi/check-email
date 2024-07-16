@@ -91,7 +91,7 @@ class Check_Email_Table_Manager implements Loadie {
 		global $wpdb;
 
 		$table_name = $this->get_log_table_name();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: custom table on insert
 		$wpdb->insert( $table_name, $data );
 	}
 

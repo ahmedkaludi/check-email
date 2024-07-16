@@ -42,7 +42,7 @@ class Check_Email_Newsletter {
                 $check_email      = wpchill_check_email();
                 $plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 
-                wp_register_script( 'ck_mail-newsletter-script', $plugin_dir_url . 'assets/js/admin/ck_mail-newsletter-script' . $suffix . '.js', array( 'jquery' ), CK_MAIL_VERSION );
+                wp_register_script( 'ck_mail-newsletter-script', $plugin_dir_url . 'assets/js/admin/ck_mail-newsletter-script' . $suffix . '.js', array( 'jquery' ), CK_MAIL_VERSION,true);
                 wp_localize_script( 'ck_mail-newsletter-script', 'ck_mail_localize_data', $script_data );
                 wp_enqueue_script( 'ck_mail-newsletter-script' );
         }

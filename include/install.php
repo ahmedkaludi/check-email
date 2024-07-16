@@ -11,18 +11,11 @@ class Check_Email_Log_Init {
 		global $wpdb;
 
 		if ( is_multisite() && $network_wide ) {
-			// store the current blog id
-			$current_blog = $wpdb->blogid;
-
-			// Get all blogs in the network and activate plugin on each one
-			// phpcs:disable.
-			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
-			// phpcs:enable.
-			foreach ( $blog_ids as $blog_id ) {
-				switch_to_blog( $blog_id );
-				self::create_checkemaillog_table();
+			foreach ( get_sites() as $site ) {
+                switch_to_blog( $site->blog_id );
+                self::create_checkemaillog_table();
 				restore_current_blog();
-			}
+            }
 		} else {
 			self::create_checkemaillog_table();
 		}

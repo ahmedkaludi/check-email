@@ -117,7 +117,7 @@ function ck_mail_enqueue_makebetter_email_js(){
         return;
     }
 
-    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback.js', array( 'jquery' ));
+    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback.js', array( 'jquery' ), CK_MAIL_VERSION,true);
             $data = array(
                 'ajax_url'                     => admin_url( 'admin-ajax.php' ),
                 'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
@@ -127,7 +127,7 @@ function ck_mail_enqueue_makebetter_email_js(){
 
             wp_localize_script( 'ck_mail_make_better_js', 'cn_ck_mail_admin_data', $data );
 
-    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback.css', false  );
+    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback.css', array(), CK_MAIL_VERSION,true );
 
 
 }

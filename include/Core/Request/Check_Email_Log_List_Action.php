@@ -615,7 +615,7 @@ class Check_Email_Log_List_Action implements Loadie {
 									break;
 							}
 							if(!empty($data_to_insert)){
-								// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+								// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason custom table on insert
 								$wpdb->insert($ce_table, $data_to_insert);
 							}
 						}
