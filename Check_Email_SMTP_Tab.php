@@ -302,7 +302,7 @@ class Check_Email_SMTP_Tab {
 			delete_option( 'check_email_smtp_status' );
 			do_action( 'check_mail_smtp_admin_update' );
 
-			wp_redirect(admin_url('admin.php?page=check-email-settings&tab=smtp'));
+			wp_safe_redirect(admin_url('admin.php?page=check-email-settings&tab=smtp'));
 		}
 	}	
 	
