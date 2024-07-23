@@ -33,7 +33,7 @@ class Check_Email_UpgradeToPro_Page extends Check_Email_BasePage {
 	}
 
 	public function render_page() {
-		wp_redirect( 'https://check-email.tech/pricing/#pricings' );
+		wp_safe_redirect( 'https://check-email.tech/pricing/#pricings' );
     	exit;
 	}
 }
