@@ -63,21 +63,21 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 
 		$actions = array();
 
-		// $content_ajax_url = add_query_arg(
-		// 	array(
-		// 		'action' => 'check-email-log-list-view-message',
-		// 		'log_id' => $item->id,
-		// 		'width'  => '800',
-		// 		'height' => '550',
-		// 	),
-		// 	'admin-ajax.php'
-		// );
+		$content_ajax_url = add_query_arg(
+			array(
+				'action' => 'check-email-error-tracker-detail',
+				'tracker_id' => $item->id,
+				'width'  => '700',
+				'height' => '350',
+			),
+			'admin-ajax.php'
+		);
 
-		// $actions['view-content'] = sprintf( '<a href="%1$s" class="thickbox" title="%2$s">%3$s</a>',
-		// 	esc_url( $content_ajax_url ),
-		// 	esc_html__( 'Email Content', 'check-email' ),
-		// 	esc_html__( 'View Content', 'check-email' )
-		// );
+		$actions['view-content'] = sprintf( '<a href="%1$s" class="thickbox" title="%2$s">%3$s</a>',
+			esc_url( $content_ajax_url ),
+			esc_html__( 'Email Error Content', 'check-email' ),
+			esc_html__( 'View Content', 'check-email' )
+		);
 
 		
 
@@ -204,11 +204,6 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
     public function get_error_initiator($initiator) {
 
 		$initiator = (array) json_decode( $initiator, true );
-        // echo"<pre>";
-        // $plugin_data = plugin_basename($initiator['file']);
-        // // $plugin_name = $plugin_data['Name'];
-        // print_r($plugin_data);die;
-        // // print_r(get_plugins());die;
 
 		if ( empty( $initiator['file'] ) ) {
 			return '';

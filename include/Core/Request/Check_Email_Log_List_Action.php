@@ -10,6 +10,7 @@ class Check_Email_Log_List_Action implements Loadie {
 
 	public function load() {
 		add_action( 'wp_ajax_check-email-log-list-view-message', array( $this, 'view_log_message' ) );
+		add_action( 'wp_ajax_check-email-error-tracker-detail', array( $this, 'email_tracker_details' ) );
 		add_action( 'wp_ajax_check-email-log-list-view-resend-message', array( $this, 'view_resend_message' ) );
 		add_action( 'wp_ajax_check_mail_resend_submit', array( $this, 'submit_resend_message' ) );
 		add_action('wp_ajax_check_mail_import_plugin_data', array( $this, 'check_mail_import_plugin_data' ));
@@ -202,6 +203,66 @@ class Check_Email_Log_List_Action implements Loadie {
 			<div id="view-message-footer" class="check_mail_non-printable">
 				<a href="#" class="button action" id="thickbox-footer-close"><?php esc_html_e( 'Close', 'check-email' ); ?></a>
 				<bitton type="button" class="button button-primary" id="check_mail_print_button" style="margin-top: 10px; display:none;" onclick='printLog();'><?php esc_html_e( 'Print', 'check-email' ); ?></a>
+			</div>
+			<?php
+		}
+
+		wp_die(); // this is required to return a proper result.
+	}
+
+	public function get_error_initiator($initiator) {
+
+		$initiator = (array) json_decode( $initiator, true );
+
+		if ( empty( $initiator['file'] ) ) {
+			return '';
+		}
+        return $initiator['file'];
+	}
+	public function email_tracker_details() {
+		if ( ! current_user_can( 'manage_check_email' ) ) {
+			wp_die();
+		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information but only loading it inside the admin_init hook.
+		$id = isset( $_GET['tracker_id'] ) ? absint( $_GET['tracker_id'] ) : 0 ;
+
+		if ( $id <= 0 ) {
+			wp_die();
+		}
+
+		$log_items = $this->get_table_manager()->fetch_error_tracker_items_by_id( array( $id ) );
+		if ( count( $log_items ) > 0 ) {
+			$log_item = $log_items[0];
+
+			$headers = array();
+			
+			$option = get_option( 'check-email-log-core' );
+			
+
+			
+
+			?>
+			<table style="width: 100%;" id="email_log_table">
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Date', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><?php echo esc_html( $log_item['created_at'] ); ?></td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Content', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><?php echo esc_html( $log_item['content'] ); ?></td>
+				</tr>
+				<tr style="background: #eee;">
+					<td style="padding: 5px;"><b><?php esc_html_e( 'Initiator', 'check-email' ); ?></b>:</td>
+					<td style="padding: 5px;"><?php echo esc_html( $log_item['initiator'] ); ?></td>
+				</tr>
+               
+
+				<?php do_action( 'check_email_view_log_after_headers', $log_item ); ?>
+
+			</table>
+
+			<div id="view-message-footer" class="check_mail_non-printable">
+				<a href="#" class="button action" id="thickbox-footer-close"><?php esc_html_e( 'Close', 'check-email' ); ?></a>
 			</div>
 			<?php
 		}

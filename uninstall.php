@@ -40,6 +40,12 @@ function check_email_delete_db_data() {
 				//phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Reason Custom table drop on uninstall
 				"DROP TABLE $table_name" );
 		}
+		$table_name_email_tracker = $wpdb->prefix . 'check_email_error_logs';
+		if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE  %s",$wpdb->esc_like( $table_name_email_tracker )) ) == $table_name_email_tracker ) {
+			$wpdb->query( 
+				//phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Reason Custom table drop on uninstall
+				"DROP TABLE $table_name_email_tracker" );
+		}
 
 		delete_option( 'check-email-log-db' );
 		delete_option( 'check-email-log-core' );

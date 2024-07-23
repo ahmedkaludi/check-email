@@ -795,4 +795,27 @@ class Check_Email_Table_Manager implements Loadie {
 
 		return array( $items, $total_items );
 	}
+
+	public function fetch_error_tracker_items_by_id( $ids = array(), $additional_args = array() ) {
+		global $wpdb;
+		$table_name = $this->get_error_tracker_table_name();
+
+		$query = "SELECT * FROM {$table_name}";
+
+		$date_column_format_key = 'date_column_format';
+		if ( array_key_exists( $date_column_format_key, $additional_args ) && ! empty( $additional_args[ $date_column_format_key ] ) ) {
+			$query = "SELECT DATE_FORMAT(created_at, \"{$additional_args[ $date_column_format_key ]}\") as sent_date_custom, el.* FROM {$table_name} as el";
+		}
+
+		if ( ! empty( $ids ) ) {
+			$ids = array_map( 'absint', $ids );
+
+			// Can't use wpdb->prepare for the below query.
+			$ids_list = esc_sql( implode( ',', $ids ) );
+
+			$query .= " where id IN ( {$ids_list} )";
+		}
+
+		return $wpdb->get_results( $query, 'ARRAY_A' ); //@codingStandardsIgnoreLine
+	}
 }

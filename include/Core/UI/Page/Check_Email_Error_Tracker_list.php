@@ -51,7 +51,7 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
 		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
                 if ( is_array( $option ) && array_key_exists( 'email_error_tracking', $option ) && 'true' === strtolower( $option['email_error_tracking'] ) ) { 
-                    // add_thickbox();
+                    add_thickbox();
 
                     $this->log_list_table->prepare_items();
                     ?>
