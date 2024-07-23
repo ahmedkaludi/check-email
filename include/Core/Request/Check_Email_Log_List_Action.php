@@ -16,6 +16,8 @@ class Check_Email_Log_List_Action implements Loadie {
 
 		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
+		add_action( 'check-email-error-tracker-delete', array( $this, 'delete_error_tracker' ) );
+		add_action( 'check-email-error-tracker-delete-all', array( $this, 'delete_all_error_tracker' ) );
 		add_action( 'check-email-log-list-manage-user-roles-changed', array( $this, 'update_capabilities_for_user_roles' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'deleted_logs_message' ) );		
 	}
@@ -239,6 +241,38 @@ class Check_Email_Log_List_Action implements Loadie {
 			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
 		}
 	}
+	public function delete_error_tracker( $data ) {
+		if ( ! is_array( $data ) || ! array_key_exists( 'check-email-error-tracker', $data ) ) {
+			return;
+		}
+
+		$ids = $data['check-email-error-tracker'];
+		if ( ! is_array( $ids ) ) {
+			$ids = array( $ids );
+		}
+
+		$ids     = array_map( 'absint', $ids );
+		$id_list = implode( ',', $ids );
+
+		$logs_deleted = $this->get_table_manager()->delete_error_tracker( $id_list );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+		if( isset( $_REQUEST['_wp_http_referer'] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
+		}else{
+			// phpcs:ignore
+			wp_redirect( wp_unslash( $_SERVER['HTTP_REFERER'] ) . '&deleted_logs=' . $logs_deleted ); exit;
+		}
+	}
+
+	public function delete_all_error_tracker() {
+		$logs_deleted = $this->get_table_manager()->delete_all_error_tracker();
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+		if( isset($_REQUEST['_wp_http_referer'] ) ){
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+			wp_redirect( wp_unslash( $_REQUEST['_wp_http_referer'] ) . '&deleted_logs=' . $logs_deleted ); exit;
+		}
+	}
 
 	public function deleted_logs_message(){
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
@@ -270,7 +304,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		$type    = 'error';
 
 		if ( absint( $logs_deleted ) > 0 ) {
-			$message = $logs_deleted .esc_html('email log deleted.','check-email');
+			$message = $logs_deleted .' '.esc_html('email log deleted.','check-email');
 			// $message = sprintf(  _n( esc_html('1 email log deleted.'), '%s email logs deleted', $logs_deleted, 'check-email' ), $logs_deleted );
 			$type    = 'updated';
 		}

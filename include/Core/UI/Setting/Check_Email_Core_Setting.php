@@ -37,6 +37,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'log_retention_period'    => '<label for="check-email-log_retention_period" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Period', 'check-email' ).'</label>',
 				'log_retention_period_in_days'    => '<label for="check-email-log_retention_period_in_days" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Days', 'check-email' ).'</label>',
 				'forward_email'    => '<label for="check-email-forward_email" class="check-email-opt-labels">'.esc_html__( 'Forward Email', 'check-email' ).'</label>',			
+				'email_error_tracking'    => '<label for="check-email-email_error_tracking" class="check-email-opt-labels">'.esc_html__( 'Email Error Tracking', 'check-email' ).'</label>',			
 				'forward_to'    => '<label for="check-email-forward_to" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward To', 'check-email' ).'</label>',			
 				'forward_cc'    => '<label for="check-email-forward_cc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Cc', 'check-email' ).'</label>',			
 				'forward_bcc'    => '<label for="check-email-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Forward Bcc', 'check-email' ).'</label>',			
@@ -52,6 +53,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_email'        => '',
 				'override_emails_from'    => false,
 				'forward_email'    => false,
+				'email_error_tracking'    => false,
 				// 'enable_logs'             => false,				
 				'enable_dashboard_widget' => false,
 				'db_size_notification'    => array(
@@ -458,6 +460,20 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		<?php
 
 	}
+	public function render_email_error_tracking_settings( $args ){
+
+		$option      = $this->get_value();
+		$field_value = $option[ $args['id'] ];
+		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		if (!empty($field_value) && $field_value) {
+			create_check_email_error_logs();
+		}
+		?>
+            <input id="check-email-email_error_tracking" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+            <label for="check-email-email_error_tracking" class="check-email-opt-labels"><?php esc_html_e( 'You can easily track errors in email delivery.', 'check-email' ) ?></label>
+		<?php
+
+	}
 
 	public function render_email_from_name_settings( $args ){
 
@@ -740,6 +756,9 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 	}
 
 	public function sanitize_forward_email( $value ) {
+		return sanitize_text_field( $value );
+	}
+	public function sanitize_email_error_tracking( $value ) {
 		return sanitize_text_field( $value );
 	}
 	public function sanitize_forward_to( $value ) {

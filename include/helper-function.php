@@ -444,3 +444,33 @@ function check_mail_forward_mail($atts) {
         return false;
     }
 }
+
+function create_check_email_error_logs() {
+
+    global $wpdb;
+
+    $table           = $wpdb->prefix . 'check_email_error_logs';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    $sql = "CREATE TABLE IF NOT EXISTS `$table` (
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        `check_email_log_id` INT DEFAULT NULL,
+        `content` TEXT DEFAULT NULL,
+        `initiator` TEXT DEFAULT NULL,
+        `event_type` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+    )
+    ENGINE='InnoDB'
+    {$charset_collate};";
+
+    $result = $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+}
+
+function insert_check_email_error_logs($data_to_insert) {
+
+    global $wpdb;
+
+    $table_name           = $wpdb->prefix . 'check_email_error_logs';
+    $wpdb->insert( $table_name, $data_to_insert ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+}

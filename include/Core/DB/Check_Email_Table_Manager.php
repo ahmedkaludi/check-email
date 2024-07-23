@@ -15,6 +15,7 @@ class Check_Email_Table_Manager implements Loadie {
 
 	/* Database table name */
 	const LOG_TABLE_NAME = 'check_email_log';
+	const ERROR_TRACKER_TABLE_NAME = 'check_email_error_logs';
 
 	/* Database option name */
 	const DB_OPTION_NAME = 'check_email-log-db';
@@ -86,6 +87,11 @@ class Check_Email_Table_Manager implements Loadie {
 
 		return $wpdb->prefix . self::LOG_TABLE_NAME;
 	}
+	public function get_error_tracker_table_name() {
+		global $wpdb;
+
+		return $wpdb->prefix . self::ERROR_TRACKER_TABLE_NAME;
+	}
 
 	public function insert_log( $data ) {
 		global $wpdb;
@@ -116,6 +122,37 @@ class Check_Email_Table_Manager implements Loadie {
 		global $wpdb;
 
 		$table_name = $this->get_log_table_name();
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
+		$result =  $wpdb->query( "DELETE FROM {$table_name}" );
+
+		if ($result !== false) {
+			wp_cache_delete('check_mail_log','check_mail_log');
+		}
+		
+		return $result;
+	}
+
+	public function delete_error_tracker( $ids ) {
+		global $wpdb;
+
+		$table_name = $this->get_error_tracker_table_name();
+                
+		$ids = esc_sql( $ids );
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
+		$result = $wpdb->query( "DELETE FROM {$table_name} where id IN ( {$ids} )" );
+		$ids_array = array_map('intval', explode(',', $ids));
+		if ($result !== false) {
+			foreach ($ids_array as $id) {
+				wp_cache_delete($id, 'check_mail_log');
+			}
+		}
+		return $result;
+	}
+
+	public function delete_all_error_tracker() {
+		global $wpdb;
+
+		$table_name = $this->get_error_tracker_table_name();
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reason: $table_name
 		$result =  $wpdb->query( "DELETE FROM {$table_name}" );
 
@@ -312,7 +349,8 @@ class Check_Email_Table_Manager implements Loadie {
 		global $wpdb;
 		$table_name = $this->get_log_table_name();
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$query = $wpdb->prepare("SELECT count(*) FROM `$table_name`");
+		// $query = $wpdb->prepare("SELECT count(*) FROM `$table_name`");
+		$query = "SELECT count(*) FROM `$table_name`";
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason:already used prepare 
 		return $wpdb->get_var( $query );
 	}
@@ -694,5 +732,67 @@ class Check_Email_Table_Manager implements Loadie {
 	function check_mail_cron_execute() {
 		$this->deleteLogOlderThan();
 		error_log('Cron job executed at' . gmdate('Y-m-d H:i:s'));
+	}
+
+	public function fetch_error_tracker_items( $request, $per_page, $current_page_no ) {
+		global $wpdb;
+		$table_name = $this->get_error_tracker_table_name();
+
+		$query       = 'SELECT * FROM ' . $table_name;
+		$count_query = 'SELECT count(*) FROM ' . $table_name;
+		$query_cond  = '';
+
+		if ( isset( $request['d'] ) && $request['d'] !== '' ) {
+			$search_date = trim( esc_sql( $request['d'] ) );
+			if ( '' === $query_cond ) {
+				$query_cond .= " WHERE created_at BETWEEN '$search_date 00:00:00' AND '$search_date 23:59:59' ";
+			} else {
+				$query_cond .= " AND created_at BETWEEN '$search_date 00:00:00' AND '$search_date 23:59:59' ";
+			}
+		}
+		if ( isset( $request['status'] ) && $request['status'] !== '' ) {
+			$status = trim( esc_sql( $request['status'] ) );
+			switch( $status ) {
+				case 'failed':
+					$query_cond .= " WHERE `event_type` IS NULL OR `event_type` = ''";
+					break;
+				case 'complete':
+					$query_cond .= " WHERE `event_type` IS NOT NULL AND `event_type` != ''";
+					break;
+				default:
+					break;
+			}
+		}
+
+		// Ordering parameters.
+		$orderby = ! empty( $request['orderby'] ) ? sanitize_sql_orderby( $request['orderby'] ) : 'created_at';
+		if ( isset( $request['order'] ) ) {
+			$order = in_array( strtoupper($request['order']), array( 'DESC', 'ASC' ) ) ? esc_sql( $request['order'] ) : 'DESC';
+		}else{
+			$order = 'DESC';
+		}
+		
+
+		if ( ! empty( $orderby ) & ! empty( $order ) ) {
+			$query_cond .= ' ORDER BY ' . $orderby . ' ' . $order;
+		}
+
+		// Find total number of items.
+		$count_query = $count_query . $query_cond;
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$total_items = $wpdb->get_var( $count_query );
+
+		// Adjust the query to take pagination into account.
+		if ( ! empty( $current_page_no ) && ! empty( $per_page ) ) {
+			$offset     = ( $current_page_no - 1 ) * $per_page;
+			$query_cond .= ' LIMIT ' . (int) $offset . ',' . (int) $per_page;
+		}
+
+		// Fetch the items.
+		$query = $query . $query_cond;
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Reason: Due to critical query not used prepare $table_name
+		$items = $wpdb->get_results( $query );
+
+		return array( $items, $total_items );
 	}
 }

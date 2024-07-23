@@ -176,12 +176,24 @@ class Check_Email_Logger implements Loadie {
 		$check_email = wpchill_check_email();
 
 		$log_item_id = $check_email->table_manager->fetch_log_id_by_data( $log );
+		
 
 		if ( empty( $log_item_id ) ) {
 			return;
 		}
 
 		$check_email->table_manager->mark_log_as_failed( $log_item_id, $error_message );
+
+        $data = $check_email->table_manager->fetch_log_items_by_id( [$log_item_id] );
+        $data = $data[0];
+        $data_to_insert = array(
+            'check_email_log_id' => $log_item_id,
+            'content' => $data['message'],
+            'initiator' => $data['backtrace_segment'],
+            'created_at' => $data['sent_date'],
+        );
+
+        insert_check_email_error_logs($data_to_insert);
 	}
 
     
