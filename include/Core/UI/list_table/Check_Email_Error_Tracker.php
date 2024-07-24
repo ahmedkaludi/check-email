@@ -30,7 +30,7 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 		);
-		$other_columns = array( 'created_at', 'content', 'initiator' );
+		$other_columns = array( 'created_at', 'check_email_log_id', 'initiator' );
 
 		foreach ($other_columns  as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
@@ -111,8 +111,8 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 	
 
 	
-	protected function column_content( $item ) {
-		return esc_html( $item->content );
+	protected function column_check_email_log_id( $item ) {
+		return esc_html( $item->check_email_log_id );
 	}
 	
     protected function column_initiator( $item ) {
@@ -208,7 +208,73 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 		if ( empty( $initiator['file'] ) ) {
 			return '';
 		}
-        return $initiator['file'];
+		$plugin_name = $this->get_plugin_name_from_path($initiator['file']);
+        return $plugin_name;
+	}
+
+	function get_plugin_name_from_path($file_path) {
+		// Normalize the directory separator for compatibility
+		$file_path = str_replace('\\', '/', $file_path);
+		
+		// Split the path into parts
+		$path_parts = explode('/', $file_path);
+
+		// Find the 'plugins' directory in the path
+		$plugins_key = array_search('plugins', $path_parts);
+
+		// Check if 'plugins' directory was found and get the plugin directory name
+		if ($plugins_key !== false && isset($path_parts[$plugins_key + 1])) {
+			$plugin_dir = $path_parts[$plugins_key + 1];
+		} else {
+			return null; // Invalid path or not within a plugin directory
+		}
+
+		// Construct the main plugin file path
+		$plugin_main_file = glob("C:/wamp64/www/wordpress/wp-content/plugins/$plugin_dir/*.php");
+
+		// Find the main plugin file by checking for the plugin header
+		foreach ($plugin_main_file as $file) {
+			$plugin_data = get_plugin_data($file);
+			if (!empty($plugin_data['Name'])) {
+				return $plugin_data['Name'];
+			}
+		}
+
+		return null; // Plugin header not found in any files
+	}
+	function get_plugin_data($file) {
+		$default_headers = array(
+			'Name' => 'Plugin Name',
+			'PluginURI' => 'Plugin URI',
+			'Version' => 'Version',
+			'Description' => 'Description',
+			'Author' => 'Author',
+			'AuthorURI' => 'Author URI',
+			'TextDomain' => 'Text Domain',
+			'DomainPath' => 'Domain Path',
+			'Network' => 'Network',
+			'RequiresWP' => 'Requires at least',
+			'RequiresPHP' => 'Requires PHP',
+			'UpdateURI' => 'Update URI',
+		);
+
+		$plugin_data = get_file_data($file, $default_headers, 'plugin');
+		return $plugin_data;
+	}
+	function get_file_data($file, $default_headers, $context) {
+		$fp = fopen($file, 'r');
+		$file_data = fread($fp, 8192);
+		fclose($fp);
+
+		foreach ($default_headers as $field => $regex) {
+			if (preg_match('/^[ \t\/*#@]*' . preg_quote($regex, '/') . ':(.*)$/mi', $file_data, $match) && $match[1]) {
+				$default_headers[$field] = trim(preg_replace("/\s*(?:\*\/|\?>).*/", '', $match[1]));
+			} else {
+				$default_headers[$field] = '';
+			}
+		}
+
+		return $default_headers;
 	}
 	
 }

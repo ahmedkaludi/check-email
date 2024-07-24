@@ -152,7 +152,8 @@ function wp_chill_check_email_get_column_label_map() {
 		'result'      => esc_html__( 'Sent Status', 'check-email' ),
 		'content'      => esc_html__( 'Content', 'check-email' ),
 		'created_at'      => esc_html__( 'Date', 'check-email' ),
-		'initiator'      => esc_html__( 'Initiator', 'check-email' ),
+		'initiator'      => esc_html__( 'Source', 'check-email' ),
+		'check_email_log_id'      => esc_html__( 'Log ID', 'check-email' ),
 	);
 
 	return apply_filters( 'check_email_db_column_labels', $labels );

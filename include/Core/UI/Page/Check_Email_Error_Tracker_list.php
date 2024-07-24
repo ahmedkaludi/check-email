@@ -35,7 +35,7 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
                     'manage_check_email',
                     self::PAGE_SLUG,
                     array( $this, 'render_page' ),
-                    5
+                    2
             );
             
             add_action( "load-{$this->page}", array( $this, 'load_page' ) );
