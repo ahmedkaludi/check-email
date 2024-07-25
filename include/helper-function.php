@@ -464,7 +464,7 @@ function create_check_email_error_logs() {
     ENGINE='InnoDB'
     {$charset_collate};";
 
-    $result = $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+    $result = $wpdb->query( $sql ); // //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
 }
 
 function insert_check_email_error_logs($data_to_insert) {
@@ -472,5 +472,28 @@ function insert_check_email_error_logs($data_to_insert) {
     global $wpdb;
 
     $table_name           = $wpdb->prefix . 'check_email_error_logs';
-    $wpdb->insert( $table_name, $data_to_insert ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+    $wpdb->insert( $table_name, $data_to_insert ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+}
+
+function check_mail_local_file_get_contents($file_path){
+
+    // Include WordPress Filesystem API
+    if ( ! function_exists( 'WP_Filesystem' ) ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    }
+
+    // Initialize the API
+    global $wp_filesystem;
+    if ( ! WP_Filesystem() ) {
+        return false;
+    }
+    // Check if the file exists
+    if ( $wp_filesystem->exists( $file_path ) ) {
+        // Read the file content
+        $file_content = $wp_filesystem->get_contents( $file_path );
+        return $file_content;
+    } else {
+       return false;
+    }
+
 }
