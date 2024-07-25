@@ -30,7 +30,7 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 		);
-		$other_columns = array( 'created_at', 'check_email_log_id', 'initiator' );
+		$other_columns = array( 'created_at', 'initiator', 'check_email_log_id' );
 
 		foreach ($other_columns  as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
@@ -230,7 +230,7 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 		}
 
 		// Construct the main plugin file path
-		$plugin_main_file = glob("C:/wamp64/www/wordpress/wp-content/plugins/$plugin_dir/*.php");
+		$plugin_main_file = glob(ABSPATH."wp-content/plugins/$plugin_dir/*.php");
 
 		// Find the main plugin file by checking for the plugin header
 		foreach ($plugin_main_file as $file) {
