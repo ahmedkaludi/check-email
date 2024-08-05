@@ -255,7 +255,6 @@ class Check_Email_Log_List_Action implements Loadie {
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Initiator', 'check-email' ); ?></b>:</td>
 					<td style="padding: 5px;"><?php echo esc_html( $log_item['initiator'] ); ?></td>
 				</tr>
-               
 
 				<?php do_action( 'check_email_view_log_after_headers', $log_item ); ?>
 

@@ -30,7 +30,7 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 		);
-		$other_columns = array( 'created_at', 'initiator', 'check_email_log_id' );
+		$other_columns = array( 'created_at', 'initiator', 'check_email_log_id','action' );
 
 		foreach ($other_columns  as $column ) {
 			$columns[ $column ] = Util\wp_chill_check_email_get_column_label( $column );
@@ -118,6 +118,37 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
     protected function column_initiator( $item ) {
         $file_path = $this->get_error_initiator($item->initiator);
 		return esc_html( $file_path );
+	}
+
+	protected function column_action( $item ) {
+		$email_date = mysql2date(
+			// The values within each field are already escaped.
+			// phpcs:disable
+			sprintf( esc_html__( '%1$s @ %2$s', 'check-email' ), get_option( 'date_format', 'F j, Y' ), 'g:i:s a' ),
+			$item->created_at
+		);
+		// phpcs:enable
+
+		$actions = array();
+
+		$content_ajax_url = add_query_arg(
+			array(
+				'action' => 'check-email-error-tracker-detail',
+				'tracker_id' => $item->id,
+				'width'  => '700',
+				'height' => '350',
+			),
+			'admin-ajax.php'
+		);
+
+		$actions['view-content'] = sprintf( '<a href="%1$s" class="thickbox" title="%2$s">%3$s</a>',
+			esc_url( $content_ajax_url ),
+			esc_html__( 'Email Error Content', 'check-email' ),
+			esc_html__( 'View Error', 'check-email' )
+		);
+		$actions = apply_filters( 'check_email_row_actions', $actions, $item );
+
+		return $actions['view-content'];
 	}
 
 	
