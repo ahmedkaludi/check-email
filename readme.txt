@@ -4,7 +4,7 @@ Tags: logging, email, email log, smtp, log
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 5.6.20
-Stable tag: 1.0.14
+Stable tag: 2.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,17 +17,24 @@ This WordPress plugin helps you store sent emails for auditing purposes, as well
 
 [Home](https://check-email.tech/) | [Help & Tech Support](https://check-email.tech/contact/) | [Documentation](https://check-email.tech/docs/) | [Premium Features](https://check-email.tech/pricing/#pro-feature)
 
+== New Features of the plugin check & log email 2.0 ==
+
+- <b>Log Retention Period</b> - It allows to deletes old emails when a certain amount of logs and time has passed. 
+- <b>Print or save as PDF</b> - You can print the email log, or save it as a PDF. 
+- <b>Resend email</b> - This feature allow you to modify email and resend email. 
+- <b>Forward Email</b> - By using this feature you can automatically forward a copy of all emails sent by WordPress to other email addresses <a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/">Learn More</a>. 
+- <b>Easy migration</b> - It is allow you to import data from various plugins like <i>Email Log</i>, <i>Mail logging - WP Mail Catcher</i>, <i>WP Mail Logging</i>, <i>WP Mail Log</i> and export the data. 
+- <b>Easy migration</b> - It is allow you to import data from various plugins like <i>Email Log</i>, <i>Mail logging - WP Mail Catcher</i>, <i>WP Mail Logging</i>, <i>WP Mail Log</i> and export the data. 
+- <b>Email Error Tracking</b> - You can easily see list of errors of emails and view details of error. 
+- <b>Setup Wizard</b> - Wizard setup allows you to one time setup of this plugin. 
+- <b>Default Format for Message</b> - Its allow you to Default Format for Message on view of content. 
+
 == Features of the plugin Check & Log Email ==
 
 - <b>Test email sending</b> - if you’re not sure whether WordPress is sending emails, you can use this plugin to find out. The process is very simple: you need to choose an address that will receive a simple test email. You can even override the custom header with your own values, to avoid any other issues.
 - <b>Viewing logged emails</b> - they can be viewed from the admin interface, as they are stored in a separate table. You get the option to filter them based on subject, email, date, etc.
 - <b>Deleting logged emails</b> - you can delete them by going to the admin interface. You can either delete them in bulk or  selectively - by date, email, or subject. 
 - <b>Ability to change</b> the "mail from" email address, "mail from name" and override default email WordPress addresses. 
-- <b>Log Retention Period</b> - It allows to deletes old emails when a certain amount of logs and time has passed. 
-- <b>Print or save as PDF</b> - You can print the email log, or save it as a PDF. 
-- <b>Resend email</b> - This feature allow you to modify email and resend email. 
-- <b>Forward Email</b> - By using this feature you can automatically forward a copy of all emails sent by WordPress to other email addresses <a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/">Learn More</a>. 
-- <b>Easy migration</b> - It is allow you to import data from various plugins like <i>Email Log</i>, <i>Mail logging - WP Mail Catcher</i>, <i>WP Mail Logging</i>, <i>WP Mail Log</i> and export the data. 
 
 == Premium Features of the plugin Check & Log Email ==
 
@@ -100,6 +107,17 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
+= v2.0 - 06/08/2024 =
+- Compatibility: Test with WordPress version 6.6 #95
+- Feature: Default Format for Message #86
+- Feature: Added small setup wizard #87
+- Feature: Log email content option #89
+- Enhancement: Hooks and actions #90
+- Enhancement: Fixed I18N Issues based on 1.0.13 helped by @alexclassroom #91
+- Fixed: Images folder missing for jquery-ui.min.css #93
+- Enhancement: Few improvement required #94
+- Feature: Email error tracker #96
+
 = v1.0.13 - 25/06/2024 =
 - Feature: Added Log Retention Period #69
 - Feature: Added Print the email log, or save it as a PDF #70
@@ -138,7 +156,5 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 = v1.0.7 - 08/03/2022 =
 - Fixed: Incompatibility with Post SMTP ( [#51]( https://github.com/WPChill/check-email/issues/51) )
 
-= v1.0.6 - 02/05/2022 =
-- Fixed: Security, sanitization and escaping
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/check-email/trunk/changelog.txt)
