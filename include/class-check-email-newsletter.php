@@ -38,7 +38,6 @@ class Check_Email_Newsletter {
 
                 $script_data = apply_filters('ck_mail_localize_filter',$script_data,'ck_mail_localize_data');
 
-                $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
                 $check_email      = wpchill_check_email();
                 $plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 
@@ -95,9 +94,9 @@ class Check_Email_Newsletter {
                    die( '-1' );  
                 }
                                 
-                $name    = isset($_POST['name'])?sanitize_text_field($_POST['name']):'';
-                $email   = isset($_POST['email'])?sanitize_text_field($_POST['email']):'';
-                $website = isset($_POST['website'])?sanitize_text_field($_POST['website']):'';
+                $name    = isset($_POST['name'])?sanitize_text_field(wp_unslash($_POST['name'])):'';
+                $email   = isset($_POST['email'])?sanitize_email(wp_unslash($_POST['email'])):'';
+                $website = isset($_POST['website'])?sanitize_text_field(wp_unslash($_POST['website'])):'';
                 
                 if($email){
                         
@@ -110,12 +109,10 @@ class Check_Email_Newsletter {
                         'type'    => 'checkmail'
                     );
                     
-                    $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-                    $response = wp_remote_retrieve_body( $response );                    
-                    echo esc_html($response, 'check-email');
+                    wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 
                 }else{
-                        echo esc_html('Email id required', 'check-email');                        
+                        echo esc_html__('Email id required', 'check-email');                        
                 }                        
 
                 wp_die();

@@ -48,6 +48,8 @@ if ( is_admin() ) {
 	require_once(CK_MAIL_PATH. "/include/class-check-email-newsletter.php" );
 }
 
+require_once 'Check_Email_SMTP_Tab.php';
+
 
 if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
 	function check_email_compatibility_notice() {
@@ -55,9 +57,7 @@ if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
 		<div class="error">
 			<p>
 				<?php
-				printf(
-					esc_html__( 'Check & Log Email requires at least PHP 5.6 to function properly. Please upgrade PHP.', 'check-email' )
-				);
+					echo esc_html__( 'Check & Log Email requires at least PHP 5.6 to function properly. Please upgrade PHP.', 'check-email' );
 				?>
 			</p>
 		</div>
@@ -164,5 +164,3 @@ function checkMail_is_plugins_page() {
     }
     return false;
 }
-
-require_once 'Check_Email_SMTP_Tab.php';

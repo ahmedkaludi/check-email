@@ -511,15 +511,15 @@ class Check_Email_Log_List_Action implements Loadie {
 			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email')));
 			wp_die();
 		}
-		$to = sanitize_text_field($_POST['ckm_to']);
-		$from = sanitize_text_field($_POST['ckm_from']);
-		$cc = sanitize_text_field($_POST['ckm_cc']);
-		$bcc = sanitize_text_field($_POST['ckm_bcc']);
-		$content_type = sanitize_text_field($_POST['ckm_content_type']);
-		$reply_to = sanitize_text_field($_POST['ckm_reply_to']);
+		$to = sanitize_text_field(wp_unslash($_POST['ckm_to']));
+		$from = sanitize_text_field(wp_unslash($_POST['ckm_from']));
+		$cc = sanitize_text_field(wp_unslash($_POST['ckm_cc']));
+		$bcc = sanitize_text_field(wp_unslash($_POST['ckm_bcc']));
+		$content_type = sanitize_text_field(wp_unslash($_POST['ckm_content_type']));
+		$reply_to = sanitize_text_field(wp_unslash($_POST['ckm_reply_to']));
 
-		$subject = sanitize_text_field($_POST['ckm_subject']);
-		$message = sanitize_textarea_field($_POST['ckm_message']);
+		$subject = sanitize_text_field(wp_unslash($_POST['ckm_subject']));
+		$message = sanitize_textarea_field(wp_unslash($_POST['ckm_message']));
 		$headers = array(
 		);
 		
@@ -589,7 +589,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		}
 		set_time_limit(300);  
         
-        $plugin_name   = isset($_POST['plugin_name'])?sanitize_text_field($_POST['plugin_name']):'';          
+        $plugin_name   = isset($_POST['plugin_name'])?sanitize_text_field(wp_unslash($_POST['plugin_name'])):'';          
         $is_plugin_active = false;
         
         switch ($plugin_name) {

@@ -60,11 +60,11 @@ function ck_mail_send_feedback() {
     // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason: in form variable.
     if( isset( $_POST['data'] ) ) {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason: in form variable.
-        parse_str( $_POST['data'], $form );
+        parse_str( wp_unslash($_POST['data']), $form );
     }
     
     if( !isset( $form['ck_mail_security_nonce'] ) || isset( $form['ck_mail_security_nonce'] ) && !wp_verify_nonce( sanitize_text_field( $form['ck_mail_security_nonce'] ), 'ck_mail_ajax_check_nonce' ) ) {
-        echo 'security_nonce_not_verified';
+        echo esc_html__('security_nonce_not_verified', 'check-email');
         die();
     }
     if ( !current_user_can( 'manage_options' ) ) {
@@ -73,7 +73,9 @@ function ck_mail_send_feedback() {
     
     $text = '';
     if( isset( $form['ck_mail_disable_text'] ) ) {
-        $text = implode( " ", $form['ck_mail_disable_text'] );
+        if (is_array($form['ck_mail_disable_text'])) {
+            $text = implode( " ", $form['ck_mail_disable_text'] );
+        }
     }
 
     $headers = array();
@@ -137,7 +139,7 @@ add_action( 'admin_enqueue_scripts', 'ck_mail_enqueue_makebetter_email_js' );
 add_action('wp_ajax_ck_mail_subscribe_newsletter','ck_mail_subscribe_for_newsletter');
 function ck_mail_subscribe_for_newsletter(){
     if( !wp_verify_nonce( sanitize_text_field( $_POST['ck_mail_security_nonce'] ), 'ck_mail_ajax_check_nonce' ) ) {
-        echo 'security_nonce_not_verified';
+        echo esc_html__('security_nonce_not_verified', 'check-email');
         die();
     }
     if ( !current_user_can( 'manage_options' ) ) {
@@ -145,14 +147,12 @@ function ck_mail_subscribe_for_newsletter(){
     }
     $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
     $api_params = array(
-        'name' => sanitize_text_field($_POST['name']),
-        'email'=> sanitize_email($_POST['email']),
-        'website'=> sanitize_text_field($_POST['website']),
+        'name' => sanitize_text_field(wp_unslash($_POST['name'])),
+        'email'=> sanitize_email(wp_unslash($_POST['email'])),
+        'website'=> sanitize_text_field(wp_unslash($_POST['website'])),
         'type'=> 'checkmail'
     );
-    $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-    $response = wp_remote_retrieve_body( $response );
-    echo esc_html($response, 'check-email');
+    wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
     die;
 }
 
@@ -318,7 +318,7 @@ function check_mail_forward_mail($atts) {
     try {
         $phpmailer->setFrom( $from_email, $from_name, false );
     } catch ( PHPMailer\PHPMailer\Exception $e ) {
-        error_log('Error in forwar email check & log : '.$e->getMessage());
+        error_log(esc_html__('Error in forwar email check & log : ', 'check-email').$e->getMessage());
         return false;
     }
 
@@ -440,7 +440,7 @@ function check_mail_forward_mail($atts) {
         $send = $phpmailer->send();
         return $send;
     } catch ( PHPMailer\PHPMailer\Exception $e ) {
-        error_log('Error in forwar email send check & log : '.$e->getMessage());
+        error_log(esc_html__('Error in forwar email send check & log : ', 'check-email').$e->getMessage());
         return false;
     }
 }

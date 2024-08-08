@@ -219,8 +219,8 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		}
 		
 		if(isset($_POST['message']) && isset($_POST['email'])){
-			$message        = sanitize_textarea_field($_POST['message']); 
-		    $email          = sanitize_email($_POST['email']);   
+			$message        = sanitize_textarea_field(wp_unslash($_POST['message'])); 
+		    $email          = sanitize_email(wp_unslash($_POST['email']));   
 		                            
 		    if(function_exists('wp_get_current_user')){
 

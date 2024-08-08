@@ -14,13 +14,13 @@ $reasons = array(
     		1 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="temporary"/>' . esc_html__('It is only temporary', 'check-email') . '</label></li>',
 		2 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="stopped showing Using"/>' . esc_html__('I stopped using check & log mail on my site', 'check-email') . '</label></li>',
 		3 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="missing feature"/>' . esc_html__('I miss a feature', 'check-email') . '</label></li>
-		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="'.esc_attr('Please describe the feature').'"/></li>',
+		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="'.esc_attr__('Please describe the feature', 'check-email').'"/></li>',
 		4 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="technical issue"/>' . esc_html__('Technical Issue', 'check-email') . '</label></li>
-		<li><textarea name="ck_mail_disable_text[]" placeholder="' . esc_html__('Can we help? Please describe your problem', 'check-email') . '"></textarea></li>',
+		<li><textarea name="ck_mail_disable_text[]" placeholder="' . esc_attr__('Can we help? Please describe your problem', 'check-email') . '"></textarea></li>',
 		5 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="'.esc_attr('other plugin').'"/>' . esc_html__('I switched to another plugin', 'check-email') .  '</label></li>
-		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="'.esc_attr('Name of the plugin').'"/></li>',
+		<li><input type="text" name="ck_mail_disable_text[]" value="" placeholder="'.esc_attr__('Name of the plugin').'"/></li>',
 		6 => '<li><label><input type="radio" name="ck_mail_disable_reason" required value="other"/>' . __('Other reason', 'check-email') . '</label></li>
-		<li><textarea name="ck_mail_disable_text[]" placeholder="' . esc_attr('Please specify, if possible', 'check-email') . '"></textarea></li>',
+		<li><textarea name="ck_mail_disable_text[]" placeholder="' . esc_attr__('Please specify, if possible', 'check-email') . '"></textarea></li>',
     );
 shuffle($reasons);
 ?>

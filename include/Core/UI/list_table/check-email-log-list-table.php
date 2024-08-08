@@ -1,5 +1,5 @@
 <?php namespace CheckEmail\Core\UI\list_table;
-
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 use CheckEmail\Util;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
