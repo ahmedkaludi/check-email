@@ -41,14 +41,14 @@ function ck_mail_is_plugins_page() {
 }
 
 add_filter('admin_footer', 'ck_mail_add_deactivation_feedback_modal');
+
 function ck_mail_add_deactivation_feedback_modal() {
 
-    if( !is_admin() && !ck_mail_is_plugins_page()) {
-        return;
+    if( is_admin() && ck_mail_is_plugins_page() ) {
+
+        require_once CK_MAIL_PATH ."/include/deactivate-feedback.php";
     }
     
-    require_once CK_MAIL_PATH ."/include/deactivate-feedback.php";
-
 }
 
 /**
@@ -114,32 +114,35 @@ function ck_mail_send_feedback() {
 add_action( 'wp_ajax_ck_mail_send_feedback', 'ck_mail_send_feedback' );
 
 
-function ck_mail_enqueue_makebetter_email_js(){
+function ck_mail_enqueue_makebetter_email_js() {
 
-    if( !is_admin() && !ck_mail_is_plugins_page()) {
-        return;
+    if ( is_admin() && ck_mail_is_plugins_page() ) {
+    
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+        wp_register_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback'. $suffix .'.js', array( 'jquery' ), CK_MAIL_VERSION, true);
+        $data = array(
+            'ajax_url'                     => admin_url( 'admin-ajax.php' ),
+            'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
+        );
+
+        $data = apply_filters( 'ck_mail_localize_filter', $data, 'eztoc_admin_data' );
+
+        wp_localize_script( 'ck_mail_make_better_js', 'cn_ck_mail_admin_data', $data );
+        wp_enqueue_script( 'ck_mail_make_better_js' );
+        wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback'. $suffix .'.css', array(), CK_MAIL_VERSION );
+
     }
-    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback'. $suffix .'.js', array( 'jquery' ));
-            $data = array(
-                'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-                'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
-            );
-
-            $data = apply_filters( 'ck_mail_localize_filter', $data, 'eztoc_admin_data' );
-
-            wp_localize_script( 'ck_mail_make_better_js', 'cn_ck_mail_admin_data', $data );
-
-    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback'. $suffix .'.css', false  );
-
-
+    
 }
 add_action( 'admin_enqueue_scripts', 'ck_mail_enqueue_makebetter_email_js' );
 
 
 add_action('wp_ajax_ck_mail_subscribe_newsletter','ck_mail_subscribe_for_newsletter');
-function ck_mail_subscribe_for_newsletter(){
-    if( !wp_verify_nonce( sanitize_text_field( $_POST['ck_mail_security_nonce'] ), 'ck_mail_ajax_check_nonce' ) ) {
+
+function ck_mail_subscribe_for_newsletter() {
+
+    if ( ! wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ) {
         echo esc_html__('security_nonce_not_verified', 'check-email');
         die();
     }
@@ -147,6 +150,7 @@ function ck_mail_subscribe_for_newsletter(){
         die();
     }
     $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
+
     $api_params = array(
         'name' => sanitize_text_field(wp_unslash($_POST['name'])),
         'email'=> sanitize_email(wp_unslash($_POST['email'])),
@@ -154,7 +158,7 @@ function ck_mail_subscribe_for_newsletter(){
         'type'=> 'checkmail'
     );
     wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-    die;
+    wp_die();
 }
 
 function ck_mail_forward_mail($atts) {
