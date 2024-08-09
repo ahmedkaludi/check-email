@@ -113,13 +113,14 @@ function ck_mail_send_feedback() {
 }
 add_action( 'wp_ajax_ck_mail_send_feedback', 'ck_mail_send_feedback' );
 
+
 function ck_mail_enqueue_makebetter_email_js(){
 
     if( !is_admin() && !ck_mail_is_plugins_page()) {
         return;
     }
     $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback'. $suffix .'.js', array( 'jquery' ), CK_MAIL_VERSION,true);
+    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback'. $suffix .'.js', array( 'jquery' ));
             $data = array(
                 'ajax_url'                     => admin_url( 'admin-ajax.php' ),
                 'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
@@ -129,7 +130,7 @@ function ck_mail_enqueue_makebetter_email_js(){
 
             wp_localize_script( 'ck_mail_make_better_js', 'cn_ck_mail_admin_data', $data );
 
-    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback'. $suffix .'.css', array(), CK_MAIL_VERSION,true );
+    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback'. $suffix .'.css', false  );
 
 
 }
