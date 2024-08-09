@@ -17,17 +17,19 @@ This WordPress plugin helps you store sent emails for auditing purposes, as well
 
 [Home](https://check-email.tech/) | [Help & Tech Support](https://check-email.tech/contact/) | [Documentation](https://check-email.tech/docs/) | [Premium Features](https://check-email.tech/pricing/#pro-feature)
 
-== New Features of the plugin check & log email 2.0 ==
+== New Features of the plugin Check & Log Email 2.0 ==
 
+- <b>Export Logs</b> - It allows to export email logs in multiple file format with date range and status. 
+- <b>More Fields</b> - Such as Cc, Bcc, Host IP, Reply To etc. 
 - <b>Log Retention Period</b> - It allows to deletes old emails when a certain amount of logs and time has passed. 
 - <b>Print or save as PDF</b> - You can print the email log, or save it as a PDF. 
 - <b>Resend email</b> - This feature allow you to modify email and resend email. 
 - <b>Forward Email</b> - By using this feature you can automatically forward a copy of all emails sent by WordPress to other email addresses <a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/">Learn More</a>. 
 - <b>Easy migration</b> - It is allow you to import data from various plugins like <i>Email Log</i>, <i>Mail logging - WP Mail Catcher</i>, <i>WP Mail Logging</i>, <i>WP Mail Log</i> and export the data. 
-- <b>Easy migration</b> - It is allow you to import data from various plugins like <i>Email Log</i>, <i>Mail logging - WP Mail Catcher</i>, <i>WP Mail Logging</i>, <i>WP Mail Log</i> and export the data. 
 - <b>Email Error Tracking</b> - You can easily see list of errors of emails and view details of error. 
 - <b>Setup Wizard</b> - Wizard setup allows you to one time setup of this plugin. 
 - <b>Default Format for Message</b> - Its allow you to Default Format for Message on view of content. 
+- <b>SMTP</b> - Its allow you to setup your own smtp through Check & Email Log SMTP form. 
 
 == Features of the plugin Check & Log Email ==
 
