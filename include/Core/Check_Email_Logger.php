@@ -193,7 +193,7 @@ class Check_Email_Logger implements Loadie {
             'created_at' => $data['sent_date'],
         );
 
-        insert_check_email_error_logs($data_to_insert);
+        check_email_insert_error_logs($data_to_insert);
 	}
 
     

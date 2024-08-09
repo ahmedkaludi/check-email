@@ -662,7 +662,7 @@ class Check_Email_Table_Manager implements Loadie {
 		return $total_items;
 	}
 
-	public function deleteLogOlderThan($timeInterval = null)
+	public function delete_log_older_than($timeInterval = null)
     {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			return;
@@ -730,7 +730,7 @@ class Check_Email_Table_Manager implements Loadie {
 	}
 
 	function check_mail_cron_execute() {
-		$this->deleteLogOlderThan();
+		$this->delete_log_older_than();
 		error_log('Cron job executed at' . gmdate('Y-m-d H:i:s'));
 	}
 

@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 class Check_Email_Settings_Page extends Check_Email_BasePage {
 
 	const PAGE_SLUG = 'check-email-settings';
+	const PAGE_HELP = 'check-email-settings&tab=support';
 	public $page_slug;
 	public function load() {
 		parent::load();
@@ -68,6 +69,15 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 			self::PAGE_SLUG,
 			array( $this, 'render_page' )
 		);
+		
+		$this->page = add_submenu_page(
+			Check_Email_Status_Page::PAGE_SLUG,
+			esc_html__( 'Help & Support', 'check-email' ),
+			esc_html__( 'Help & Support', 'check-email' ),
+			'manage_options',
+			admin_url('admin.php?page=check-email-settings&tab=support'),
+			""
+		);
 
 		global $submenu;  
 		$permalink = 'javasctipt:void(0);';
@@ -76,8 +86,6 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 			$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div onclick="window.open(\'https://check-email.tech/pricing/#pro-feature/\')">'.esc_html__( 'Premium Features', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
 		}
 
-		$help_support_url = admin_url('admin.php?page=check-email-settings&tab=support');
-		$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div onclick="window.open('."'".$help_support_url."'".')">'.esc_html__( 'Help & Support', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
 		if(!defined('CK_MAIL_PRO_VERSION')){
 			$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div style="color:rgba(245, 127, 23, 1);font-weight:bold;" onclick="window.open(\'https://check-email.tech/pricing/#pricings/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
 		}

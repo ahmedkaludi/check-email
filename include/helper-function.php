@@ -445,29 +445,36 @@ function check_mail_forward_mail($atts) {
     }
 }
 
-function create_check_email_error_logs() {
+function check_email_create_error_logs() {
 
     global $wpdb;
 
-    $table           = $wpdb->prefix . 'check_email_error_logs';
+    $table_name           = $wpdb->prefix . 'check_email_error_logs';
     $charset_collate = $wpdb->get_charset_collate();
+    // phpcs:disable.
+    if ( $wpdb->get_var( $wpdb->prepare( "show tables like %s",$wpdb->esc_like( $table_name )) ) != $table_name ) {
 
-    $sql = "CREATE TABLE IF NOT EXISTS `$table` (
-        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        `check_email_log_id` INT DEFAULT NULL,
-        `content` TEXT DEFAULT NULL,
-        `initiator` TEXT DEFAULT NULL,
-        `event_type` TINYINT UNSIGNED NOT NULL DEFAULT '0',
-        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id)
-    )
-    ENGINE='InnoDB'
-    {$charset_collate};";
+        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            `check_email_log_id` INT DEFAULT NULL,
+            `content` TEXT DEFAULT NULL,
+            `initiator` TEXT DEFAULT NULL,
+            `event_type` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+            `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id)
+        )
+        ENGINE='InnoDB'
+        {$charset_collate};";
 
-    $result = $wpdb->query( $sql ); // //phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+
+        add_option( Check_Email_Log::DB_OPTION_NAME, Check_Email_Log::DB_VERSION );
+    }
+    // phpcs:enable.
 }
 
-function insert_check_email_error_logs($data_to_insert) {
+function check_email_insert_error_logs($data_to_insert) {
 
     global $wpdb;
 

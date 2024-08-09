@@ -123,8 +123,8 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		<p>
 			<em>
-				<?php echo wp_kses_post( __( '<strong>Note:</strong> Users with the above User Roles can view Status and Logs Page.', 'check-email' ) ); ?>
-				<?php esc_html_e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
+			<?php echo '<strong>'.esc_html__('Note:', 'check-email' ).'</strong>&nbsp;'.esc_html__('Users with the above User Roles can view Status and Logs Page.', 'check-email' ); ?>
+			<?php esc_html_e( 'Administrator always has access and cannot be disabled.', 'check-email' ); ?>
 			</em>
 		</p>
 
@@ -143,21 +143,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 
 		return array_map( 'sanitize_text_field', $roles );
 	}
-	/*
-	public function render_enable_logs_settings( $args ) {
-		$option      = $this->get_value();
-		$enable_logs = $option[ $args['id'] ];
-
-		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
-		?>
-            <input id="check-email-enable-logs" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $enable_logs ); ?>>
-            <label for="check-email-enable-logs" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like to log your emails.', 'check-email' ) ?></label>
-            <?php
-	}
-
-    public function sanitize_enable_logs( $value ) {
-		return sanitize_text_field( $value );
-	} */
+	
 
 	public function render_remove_on_uninstall_settings( $args ) {
 		$option      = $this->get_value();
@@ -425,15 +411,10 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$check_email    = wpchill_check_email();
 		$logs_count     = absint( $check_email->table_manager->get_logs_count() );
 		// The values within each field are already escaped.
-		// phpcs:disable
-		$notice_message = sprintf(
-			esc_html__( 'Currently there are %1$s logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ),
-			$logs_count . esc_html(_n( ' email log', ' email logs', $logs_count, 'check-email' ))
-		);
-		// phpcs:enable
 		?>
 		<div class="notice notice-warning is-dismissible">
-			<p><?php echo wp_kses_post( $notice_message ); ?></p>
+			<p><?php echo esc_html__( 'Currently there are', 'check-email').'&nbsp;'.$logs_count.'&nbsp;'.esc_html__('logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ); 
+			?></p>
 		</div>
 		<?php
 	}
@@ -466,7 +447,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		if (!empty($field_value) && $field_value) {
-			create_check_email_error_logs();
+			check_email_create_error_logs();
 		}
 		?>
             <input id="check-email-email_error_tracking" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
@@ -659,6 +640,10 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			esc_attr( $field_value )
 			);
 	}
+
+	// This function in used only for headings
+	public function render_retention_settings(){
+	}
 	public function render_is_retention_amount_enable_settings( $args ){
 
 		$option      = $this->get_value();
@@ -692,8 +677,6 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 			esc_attr( $field_name ),
 			esc_attr( $field_value )
 			);
-	}
-	public function render_retention_settings( $args ){		
 	}
 
 	public function sanitize_log_retention_period_in_days( $value ) {

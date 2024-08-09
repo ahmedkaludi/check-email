@@ -49,11 +49,13 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 	}
 
 	public function render_page() {
+        $check_email    = wpchill_check_email();
+		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		?>
 		
         <div class="wrap_div">
             <div class="container">
-                <img src="https://check-email.tech/wp-content/uploads/2024/03/check-log-email.png" alt="Check & Log" class="logo" width="250px">
+                <img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/check-log-email.png') ?>" alt="Check & Log" class="logo" width="250px">
                 <h1><?php echo esc_html__( 'Check & Log Email', 'check-email' ); ?></h1>
                 <!-- <p class="product">a wpforms product</p> -->
                 <h2><?php echo esc_html__( 'Welcome to the Check & Log Email Setup Wizard!', 'check-email' ); ?></h2>
@@ -67,13 +69,15 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 		<?php
 	}
 	public function render_wizard_steps() {
+        $check_email    = wpchill_check_email();
+		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		?>
 		
 		<div class="cm_step_body">
             <div class="cm_step_container">
                 <div class="cm_loader" id="cm-container-loader"></div>
                 <div class="cm_logo">
-                    <img src="https://check-email.tech/wp-content/uploads/2024/03/check-log-email.png" alt="" width="100">
+                    <img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/check-log-email.png') ?>" alt="" width="100">
                 </div>
                 <div class="cm_progress">
                     <div class="active" id="cm_step1">

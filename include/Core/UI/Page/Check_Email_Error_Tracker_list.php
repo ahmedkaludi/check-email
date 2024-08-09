@@ -1,6 +1,5 @@
 <?php namespace CheckEmail\Core\UI\Page;
 
-use CheckEmail\Core\DB\Check_Email_Table_Manager;
 use CheckEmail\Core\UI\list_table\Check_Email_Error_Tracker;
 
 /**

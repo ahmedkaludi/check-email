@@ -41,7 +41,6 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 
 	protected function get_sortable_columns() {
 		$sortable_columns = array(
-			// 'created_at' => array( 'created_at', true ), // true means it's already sorted.
 			
 		);
 		return $sortable_columns;
