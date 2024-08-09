@@ -118,7 +118,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         if ($hook !== 'admin_page_check-email-wizard' && $hook !== 'admin_page_check-email-wizard-setup') {
             return;
         }
-        $suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $data['steps'] = $this->cm_wizard_steps();
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );

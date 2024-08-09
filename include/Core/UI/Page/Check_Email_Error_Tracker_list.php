@@ -46,7 +46,7 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
 	public function render_page() {
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs'. $suffix .'.css', array( 'jquery-ui-css' ), $check_email->get_version() );
 		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs'. $suffix .'.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
@@ -126,7 +126,7 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
 
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_register_style( 'jquery-ui-css', $plugin_dir_url . 'assets/vendor/jquery-ui/themes/base/jquery-ui.min.css', array(), '1.12.1' );
 

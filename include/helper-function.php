@@ -118,7 +118,7 @@ function ck_mail_enqueue_makebetter_email_js(){
     if( !is_admin() && !ck_mail_is_plugins_page()) {
         return;
     }
-    $suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
     wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback'. $suffix .'.js', array( 'jquery' ), CK_MAIL_VERSION,true);
             $data = array(
                 'ajax_url'                     => admin_url( 'admin-ajax.php' ),

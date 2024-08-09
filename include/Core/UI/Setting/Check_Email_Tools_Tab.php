@@ -18,7 +18,7 @@ class Check_Email_Tools_Tab {
 	public function load_tools_settings(){
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		add_thickbox();
 
@@ -101,7 +101,7 @@ class Check_Email_Tools_Tab {
 	public function load_tools_logs_assets(){
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		
 		wp_enqueue_script( 'check-email-export-logs', $plugin_dir_url . 'assets/js/admin/export-logs'. $suffix .'.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip', 'jquery-ui-tabs' ), $check_email->get_version(), true );
 	}

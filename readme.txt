@@ -107,7 +107,7 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
-= v2.0 - 06/08/2024 =
+= v2.0 - 09/08/2024 =
 - Compatibility: Test with WordPress version 6.6 #95
 - Feature: Default Format for Message #86
 - Feature: Added small setup wizard #87

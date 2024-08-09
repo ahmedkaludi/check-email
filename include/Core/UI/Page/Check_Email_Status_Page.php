@@ -147,7 +147,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
     }
 
     public function checkemail_assets() {
-        $suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		wp_enqueue_style( 'checkemail-css', $plugin_dir_url . 'assets/css/admin/checkemail'. $suffix .'.css', array(), $check_email->get_version() );
