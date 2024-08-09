@@ -471,10 +471,7 @@ function ck_mail_create_error_logs() {
         ENGINE='InnoDB'
         {$charset_collate};";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta( $sql );
-
-        add_option( Check_Email_Log::DB_OPTION_NAME, Check_Email_Log::DB_VERSION );
+        $wpdb->query($sql);
     }
     // phpcs:enable.
 }
