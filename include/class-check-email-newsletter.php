@@ -83,8 +83,9 @@ class Check_Email_Newsletter {
      * Process newsletter
      * @since 1.0.11
      * */
-        public function ck_mail_subscribe_to_news_letter(){
-                if(!current_user_can( 'manage_options' )){
+        public function ck_mail_subscribe_to_news_letter() {
+
+                if( ! current_user_can( 'manage_options' ) ) {
                     die( '-1' );    
                 }
                 if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
@@ -94,11 +95,11 @@ class Check_Email_Newsletter {
                    die( '-1' );  
                 }
                                 
-                $name    = isset($_POST['name'])?sanitize_text_field(wp_unslash($_POST['name'])):'';
-                $email   = isset($_POST['email'])?sanitize_email(wp_unslash($_POST['email'])):'';
-                $website = isset($_POST['website'])?sanitize_text_field(wp_unslash($_POST['website'])):'';
+                $name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+                $email   = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email']) ) : '';
+                $website = isset( $_POST['website'] ) ? sanitize_text_field( wp_unslash( $_POST['website'] ) ):'';
                 
-                if($email){
+                if ( $email ) {
                         
                     $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
 
@@ -106,13 +107,16 @@ class Check_Email_Newsletter {
                         'name'    => $name,
                         'email'   => $email,
                         'website' => $website,
-                        'type'    => 'checkmail'
+                        'type'    => 'checkmail',
                     );
                     
-                    wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+                    $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+                    $response = wp_remote_retrieve_body( $response );
+		    $response = json_decode( $response, true );
+		    echo wp_json_encode( array( 'response' => $response['response'] ) );
 
                 }else{
-                        echo esc_html__('Email id required', 'check-email');                        
+                        echo wp_json_encode( array( 'response' => esc_html__( 'Email id required', 'check-email' ) ) );
                 }                        
 
                 wp_die();
