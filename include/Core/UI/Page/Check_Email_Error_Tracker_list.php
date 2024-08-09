@@ -1,13 +1,13 @@
 <?php namespace CheckEmail\Core\UI\Page;
 
-use CheckEmail\Core\UI\list_table\Check_Email_Log_List_Table;
+use CheckEmail\Core\UI\list_table\Check_Email_Error_Tracker;
 
 /**
  * Log List Page.
  */
-class Check_Email_Log_List_Page extends Check_Email_BasePage {
+class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
 	protected $log_list_table;
-	const PAGE_SLUG = 'check-email-logs';
+	const PAGE_SLUG = 'check-email-error-tracker';
 	const LOG_LIST_ACTION_NONCE_FIELD = 'check-email-log-list-nonce-field';
 	const LOG_LIST_ACTION_NONCE = 'check-email-log-list-nonce';
     const CAPABILITY = 'manage_check_email';
@@ -20,22 +20,26 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 
 		add_filter( 'set-screen-option', array( $this, 'save_screen_options' ), 10, 3 );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_view_logs_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_error_tracker_assets' ) );
 	}
         
 	public function register_page() {
-		$this->page = add_submenu_page(
-				Check_Email_Status_Page::PAGE_SLUG,
-				esc_html__( 'Email Logs', 'check-email'),
-				esc_html__( 'Email Logs', 'check-email'),
-				'manage_check_email',
-				self::PAGE_SLUG,
-				array( $this, 'render_page' ),
-				-10
-		);
-		
-		add_action( "load-{$this->page}", array( $this, 'load_page' ) );
-		do_action( 'check_email_load_log_list_page', $this->page );
+        $option = get_option( 'check-email-log-core' );
+        
+        if ( is_array( $option ) && array_key_exists( 'email_error_tracking', $option ) && 'true' === strtolower( $option['email_error_tracking'] ) ) {  
+            $this->page = add_submenu_page(
+                    Check_Email_Status_Page::PAGE_SLUG,
+                    esc_html__( 'Error Tracker', 'check-email'),
+                    esc_html__( 'Error Tracker', 'check-email'),
+                    'manage_check_email',
+                    self::PAGE_SLUG,
+                    array( $this, 'render_page' ),
+                    2
+            );
+            
+            add_action( "load-{$this->page}", array( $this, 'load_page' ) );
+            do_action( 'check_email_load_log_list_page', $this->page );
+        } 
 
 	}
 
@@ -46,12 +50,13 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs'. $suffix .'.css', array( 'jquery-ui-css' ), $check_email->get_version() );
 		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs'. $suffix .'.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
+                if ( is_array( $option ) && array_key_exists( 'email_error_tracking', $option ) && 'true' === strtolower( $option['email_error_tracking'] ) ) { 
                     add_thickbox();
 
                     $this->log_list_table->prepare_items();
                     ?>
                     <div class="wrap">
-                            <h2><?php esc_html_e( 'Email Logs', 'check-email' ); ?></h2>
+                            <h2><?php esc_html_e( 'Error Tracker', 'check-email' ); ?></h2>
                             <?php settings_errors(); ?>
 
                             <form id="email-logs-list" method="get">
@@ -66,6 +71,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
                             </form>
                     </div>
 		<?php
+                }
 	}
 
 	public function load_page() {
@@ -80,7 +86,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 			)
 		);
 
-		$this->log_list_table = new Check_Email_Log_List_Table( $this );
+		$this->log_list_table = new Check_Email_Error_Tracker( $this );
 	}
 
 	public function get_per_page() {
@@ -116,7 +122,7 @@ class Check_Email_Log_List_Page extends Check_Email_BasePage {
 		}
 	}
 
-	public function load_view_logs_assets( $hook ) {
+	public function load_error_tracker_assets( $hook ) {
 
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
