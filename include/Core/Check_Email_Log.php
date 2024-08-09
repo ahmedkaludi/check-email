@@ -1,5 +1,5 @@
 <?php namespace CheckEmail\Core;
-
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 /**
  * The main plugin class.
  */

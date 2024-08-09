@@ -293,7 +293,7 @@ class Check_Email_Error_Tracker extends \WP_List_Table {
 	}
 	function get_file_data($file, $default_headers, $context) {
 
-		$file_data = check_mail_local_file_get_contents($file);
+		$file_data = ck_mail_local_file_get_contents($file);
 
 		foreach ($default_headers as $field => $regex) {
 			if (preg_match('/^[ \t\/*#@]*' . preg_quote($regex, '/') . ':(.*)$/mi', $file_data, $match) && $match[1]) {

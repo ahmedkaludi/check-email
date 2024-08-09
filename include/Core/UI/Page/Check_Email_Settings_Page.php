@@ -172,7 +172,8 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					);
 					$check_email      = wpchill_check_email();
 					$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-					wp_register_script( 'ce_support_settings', $plugin_dir_url . 'assets/js/admin/support-settings.js', array(), $check_email->get_version(), true );
+					$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+					wp_register_script( 'ce_support_settings', $plugin_dir_url . 'assets/js/admin/support-settings'. $suffix .'.js', array(), $check_email->get_version(), true );
 					wp_localize_script( 'ce_support_settings', 'ce_support_settings_params', $main_params );
 					wp_enqueue_script('ce_support_settings');
 			?>

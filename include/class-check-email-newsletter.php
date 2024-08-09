@@ -25,7 +25,7 @@ class Check_Email_Newsletter {
         * @since 2.4.6
         * */
         public function ck_mail_enqueue_newsletter_js(){
-                $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+                $suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
 
                 $script_data = array(
                         'using_ck_mail'         => esc_html__( 'Thanks for using Check & Log Email!', 'check-email' ),

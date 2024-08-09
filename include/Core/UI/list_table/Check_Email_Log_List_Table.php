@@ -294,15 +294,17 @@ class Check_Email_Log_List_Table extends \WP_List_Table {
 
         // Get base url.
         $email_log_page_url = $this->get_page_base_url();
-
+		$co_unt = 1;
         foreach ( $this->get_statuses() as $status => $label ) {
+			$sepratorb = $co_unt < count($this->get_statuses()) ? ' | ' : '';
             $views[ $status ] = sprintf(
-                '<a href="%1$s" %2$s>%3$s <span class="count">(%4$d)</span></a>',
+                '<a href="%1$s" %2$s>%3$s <span class="count">(%4$d)</span></a> '.$sepratorb,
                 esc_url( add_query_arg( 'status', $status, $email_log_page_url ) ),
                 $this->get_current_page_status() == $status ? 'class="current"' : '',
                 esc_html( $label ),
                 absint( $this->get_status_count($status))
             );
+			$co_unt++;
         }
 
         return $views;

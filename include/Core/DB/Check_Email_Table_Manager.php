@@ -35,8 +35,8 @@ class Check_Email_Table_Manager implements Loadie {
 
 		$option = get_option( 'check-email-log-core' );
 		if ((isset($option['is_retention_amount_enable']) &&  $option['is_retention_amount_enable']) || (isset($option['is_retention_period_enable']) && $option['is_retention_period_enable'])) {
-			add_action('admin_init',  array( $this, 'check_mail_cron_schedule' ));
-			add_action('check_mail_cron_hook',  array( $this, 'check_mail_cron_execute' ));
+			add_action('admin_init',  array( $this, 'ck_mail_cron_schedule' ));
+			add_action('check_mail_cron_hook',  array( $this, 'ck_mail_cron_execute' ));
 		}
 
 		// Do any DB upgrades.
@@ -723,13 +723,13 @@ class Check_Email_Table_Manager implements Loadie {
 		}
     }
 
-	function check_mail_cron_schedule() {
+	function ck_mail_cron_schedule() {
 		if (!wp_next_scheduled('check_mail_cron_hook')) {
 			wp_schedule_event(time(), 'daily', 'check_mail_cron_hook');
 		}
 	}
 
-	function check_mail_cron_execute() {
+	function ck_mail_cron_execute() {
 		$this->delete_log_older_than();
 		error_log('Cron job executed at' . gmdate('Y-m-d H:i:s'));
 	}

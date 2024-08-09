@@ -1,5 +1,5 @@
 <?php namespace CheckEmail\Core\Request;
-
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 use CheckEmail\Core\Loadie;
 use CheckEmail\Core\UI\Page\Check_Email_Log_List_Page;
 
@@ -13,7 +13,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		add_action( 'wp_ajax_check-email-error-tracker-detail', array( $this, 'email_tracker_details' ) );
 		add_action( 'wp_ajax_check-email-log-list-view-resend-message', array( $this, 'view_resend_message' ) );
 		add_action( 'wp_ajax_check_mail_resend_submit', array( $this, 'submit_resend_message' ) );
-		add_action('wp_ajax_check_mail_import_plugin_data', array( $this, 'check_mail_import_plugin_data' ));
+		add_action('wp_ajax_check_mail_import_plugin_data', array( $this, 'ck_mail_import_plugin_data' ));
 
 		add_action( 'check-email-log-list-delete', array( $this, 'delete_logs' ) );
 		add_action( 'check-email-log-list-delete-all', array( $this, 'delete_all_logs' ) );
@@ -573,7 +573,7 @@ class Check_Email_Log_List_Action implements Loadie {
 			die;
 	}
 
-	public function check_mail_import_plugin_data(){                  
+	public function ck_mail_import_plugin_data(){                  
     
         if ( ! current_user_can( 'manage_check_email' ) ) {
 			return;
@@ -622,7 +622,7 @@ class Check_Email_Log_List_Action implements Loadie {
                 break;
         }                             
         if($is_plugin_active){
-			$result = $this->check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name);
+			$result = $this->ck_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name);
 			echo wp_json_encode($result);
         }else{
             echo wp_json_encode(array('status'=>503, 'message'=>esc_html__( "Plugin data is not available or it is not activated",'check-email'))); 
@@ -630,7 +630,7 @@ class Check_Email_Log_List_Action implements Loadie {
         wp_die();           
 	}
 
-	public function check_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name){
+	public function ck_mail_import_email_log_plugin_data($plugin_table_name,$plugin_name){
         global $wpdb;
 		$offset = 0;
 		$total_rows = 0;

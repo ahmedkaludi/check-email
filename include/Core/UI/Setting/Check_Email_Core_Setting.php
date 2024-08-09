@@ -19,8 +19,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'remove_on_uninstall'     => '<label for="check-email-remove-on-uninstall" class="check-email-opt-labels">'.esc_html__( 'Remove Data on Uninstall?', 'check-email' ).'</label>',
 				'override_emails_from'    => '<label for="check-email-overdide-from" class="check-email-opt-labels">'.esc_html__( 'Override Emails From', 'check-email' ).'</label>',				
 				'email_from_name'         => '<label for="check-email-from_name" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Change the "from" name.', 'check-email' ).'</label>',
-				'email_from_email'        => '<label for="check-email-from_email" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Change the "from" email.', 'check-email' ).'</label>',
-				// 'enable_logs'             => '<label for="check-email-enable-logs" class="check-email-opt-labels">'.esc_html__( 'Enable Logs', 'check-email' ).'</label>',				
+				'email_from_email'        => '<label for="check-email-from_email" class="check-email-opt-labels" style="padding-left:10px;">'.esc_html__( 'Change the "from" email.', 'check-email' ).'</label>',				
 				'enable_dashboard_widget' => '<label for="check-email-enable-widget" class="check-email-opt-labels">'.esc_html__( 'Enable Dashboard Widget', 'check-email' ).'</label>',
 				'db_size_notification'    => '<label for="check-email-enable-db-notifications" class="check-email-opt-labels">'.esc_html__( 'Database Size Notification', 'check-email' ).'</label>',
 				'default_format_for_message'    => '<label for="check-email-default_format_for_message" class="check-email-opt-labels">'.esc_html__( 'Default Format for Message', 'check-email' ).'</label>',
@@ -53,8 +52,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 				'email_from_email'        => '',
 				'override_emails_from'    => false,
 				'forward_email'    => false,
-				'email_error_tracking'    => false,
-				// 'enable_logs'             => false,				
+				'email_error_tracking'    => false,				
 				'enable_dashboard_widget' => false,
 				'db_size_notification'    => array(
 					'notify'                    => false,
@@ -447,7 +445,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
 		if (!empty($field_value) && $field_value) {
-			check_email_create_error_logs();
+			ck_mail_create_error_logs();
 		}
 		?>
             <input id="check-email-email_error_tracking" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>

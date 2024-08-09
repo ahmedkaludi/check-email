@@ -23,7 +23,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 	public function load() {
 		parent::load();
         add_action( 'admin_enqueue_scripts', array( $this, 'checkemail_assets' ) );
-        add_action( 'wp_ajax_check_mail_save_wizard_data', array( $this, 'check_mail_save_wizard_data' ) );
+        add_action( 'wp_ajax_check_mail_save_wizard_data', array( $this, 'ck_mail_save_wizard_data' ) );
 	}
 
 	/**
@@ -118,12 +118,13 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         if ($hook !== 'admin_page_check-email-wizard' && $hook !== 'admin_page_check-email-wizard-setup') {
             return;
         }
+        $suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
         $data['steps'] = $this->cm_wizard_steps();
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		wp_enqueue_style( 'checkemail-css', $plugin_dir_url . 'assets/css/admin/checkemail.css', array(), $check_email->get_version() );
-		wp_enqueue_style( 'checkemail-wizard-css', $plugin_dir_url . 'assets/css/admin/checkmail_wizard.css', array(), $check_email->get_version() );
-		wp_enqueue_script( 'checkemail_wizard', $plugin_dir_url . 'assets/js/admin/check_mail_wizard.js', array( 'jquery', 'updates' ), $check_email->get_version(), true );
+		wp_enqueue_style( 'checkemail-css', $plugin_dir_url . 'assets/css/admin/checkemail'. $suffix .'.css', array(), $check_email->get_version() );
+		wp_enqueue_style( 'checkemail-wizard-css', $plugin_dir_url . 'assets/css/admin/checkmail_wizard'. $suffix .'.css', array(), $check_email->get_version() );
+		wp_enqueue_script( 'checkemail_wizard', $plugin_dir_url . 'assets/js/admin/check_mail_wizard'. $suffix .'.js', array( 'jquery', 'updates' ), $check_email->get_version(), true );
 
         $data['ajax_url'] = admin_url( 'admin-ajax.php' );
         $data['ck_mail_security_nonce'] = wp_create_nonce('ck_mail_ajax_check_nonce');
@@ -192,7 +193,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         return $html;
 	}
 
-    public function check_mail_save_wizard_data() {
+    public function ck_mail_save_wizard_data() {
 		if ( ! current_user_can( 'manage_check_email' ) ) {
 			echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','check-email')));
 			wp_die();

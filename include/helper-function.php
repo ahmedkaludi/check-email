@@ -118,8 +118,8 @@ function ck_mail_enqueue_makebetter_email_js(){
     if( !is_admin() && !ck_mail_is_plugins_page()) {
         return;
     }
-
-    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback.js', array( 'jquery' ), CK_MAIL_VERSION,true);
+    $suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+    wp_enqueue_script( 'ck_mail_make_better_js', CK_MAIL_URL . 'assets/js/admin/feedback'. $suffix .'.js', array( 'jquery' ), CK_MAIL_VERSION,true);
             $data = array(
                 'ajax_url'                     => admin_url( 'admin-ajax.php' ),
                 'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
@@ -129,7 +129,7 @@ function ck_mail_enqueue_makebetter_email_js(){
 
             wp_localize_script( 'ck_mail_make_better_js', 'cn_ck_mail_admin_data', $data );
 
-    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback.css', array(), CK_MAIL_VERSION,true );
+    wp_enqueue_style( 'ck_mail_make_better_css', CK_MAIL_URL . 'assets/css/admin/feedback'. $suffix .'.css', array(), CK_MAIL_VERSION,true );
 
 
 }
@@ -156,7 +156,7 @@ function ck_mail_subscribe_for_newsletter(){
     die;
 }
 
-function check_mail_forward_mail($atts) {
+function ck_mail_forward_mail($atts) {
     if ( isset( $atts['to'] ) ) {
 		$to = $atts['to'];
         if ( ! is_array( $to ) ) {
@@ -445,7 +445,7 @@ function check_mail_forward_mail($atts) {
     }
 }
 
-function check_email_create_error_logs() {
+function ck_mail_create_error_logs() {
 
     global $wpdb;
 
@@ -474,7 +474,7 @@ function check_email_create_error_logs() {
     // phpcs:enable.
 }
 
-function check_email_insert_error_logs($data_to_insert) {
+function ck_mail_insert_error_logs($data_to_insert) {
 
     global $wpdb;
 
@@ -482,7 +482,7 @@ function check_email_insert_error_logs($data_to_insert) {
     $wpdb->insert( $table_name, $data_to_insert ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 }
 
-function check_mail_local_file_get_contents($file_path){
+function ck_mail_local_file_get_contents($file_path){
 
     // Include WordPress Filesystem API
     if ( ! function_exists( 'WP_Filesystem' ) ) {

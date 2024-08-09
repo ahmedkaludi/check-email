@@ -46,8 +46,9 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
 	public function render_page() {
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
-		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs.css', array( 'jquery-ui-css' ), $check_email->get_version() );
+		$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
+		wp_enqueue_style( 'check-email-view-logs-css', $plugin_dir_url . 'assets/css/admin/view-logs'. $suffix .'.css', array( 'jquery-ui-css' ), $check_email->get_version() );
+		wp_enqueue_style( 'check-email-export-logs-css', $plugin_dir_url . 'assets/css/admin/export-logs'. $suffix .'.css', array( 'jquery-ui-css' ), $check_email->get_version() );
                 $option = get_option( 'check-email-log-core' );
                 if ( is_array( $option ) && array_key_exists( 'email_error_tracking', $option ) && 'true' === strtolower( $option['email_error_tracking'] ) ) { 
                     add_thickbox();
@@ -125,15 +126,16 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
 
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
+		$suffix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
 
 		wp_register_style( 'jquery-ui-css', $plugin_dir_url . 'assets/vendor/jquery-ui/themes/base/jquery-ui.min.css', array(), '1.12.1' );
 
 		wp_register_script( 'insertionQ', $plugin_dir_url . 'assets/vendor/insertion-query/insQ.min.js', array( 'jquery' ), '1.0.6', true );
 		wp_enqueue_script( 'check-email-jsPdf', $plugin_dir_url .'assets/js/admin/check-mail-jsPdf.js', array(), $check_email->get_version(), true );
 
-		wp_enqueue_script( 'check-email-view-logs', $plugin_dir_url . 'assets/js/admin/view-logs.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip', 'jquery-ui-tabs' ), $check_email->get_version(), true );
+		wp_enqueue_script( 'check-email-view-logs', $plugin_dir_url . 'assets/js/admin/view-logs'. $suffix .'.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip', 'jquery-ui-tabs' ), $check_email->get_version(), true );
 		
-		wp_enqueue_script( 'check-email-export-logs', $plugin_dir_url . 'assets/js/admin/export-logs.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip', 'jquery-ui-tabs' ), $check_email->get_version(), true );
+		wp_enqueue_script( 'check-email-export-logs', $plugin_dir_url . 'assets/js/admin/export-logs'. $suffix .'.js', array( 'insertionQ', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-tooltip', 'jquery-ui-tabs' ), $check_email->get_version(), true );
 		
 	}
 }

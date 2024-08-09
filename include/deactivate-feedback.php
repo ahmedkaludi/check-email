@@ -3,7 +3,7 @@
  * Deactivate Feedback Template
  * @since 2.0.27
  */
-
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 $current_user = wp_get_current_user();
 $email = '';
 if( $current_user instanceof WP_User ) {
