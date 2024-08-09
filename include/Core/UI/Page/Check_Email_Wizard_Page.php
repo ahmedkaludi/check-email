@@ -64,7 +64,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
             </div>
         </div>
         <div class="cm_step_footer">
-                    <a href="<?php echo esc_url(admin_url()); ?>"><?php echo esc_html__( "Go back to the Dashboard", 'check-email' ); ?></a>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=check-email-logs')); ?>"><?php echo esc_html__( "Go back to the Dashboard", 'check-email' ); ?></a>
                 </div>
 		<?php
 	}
@@ -92,7 +92,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
                     <button href="javascript:void(0)" class="cm_step_button" id="cm_nextBtn" onclick="cm_nextStep()"><?php echo esc_html__( "Save and Continue", 'check-email' ); ?> &rarr;</button>
                 </div>
                 <div class="cm_step_footer">
-                    <a href="<?php echo esc_url(admin_url()); ?>"><?php echo esc_html__( "Close and exit the Setup Wizard", 'check-email' ); ?></a>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=check-email-logs')); ?>"><?php echo esc_html__( "Close and exit the Setup Wizard", 'check-email' ); ?></a>
                 </div>
             </div>
 		</div>
