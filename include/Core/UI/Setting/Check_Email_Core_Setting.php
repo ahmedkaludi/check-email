@@ -411,7 +411,7 @@ class Check_Email_Core_Setting extends Check_Email_Setting {
 		// The values within each field are already escaped.
 		?>
 		<div class="notice notice-warning is-dismissible">
-			<p><?php echo esc_html__( 'Currently there are', 'check-email').'&nbsp;'.$logs_count.'&nbsp;'.esc_html__('logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ); 
+			<p><?php echo esc_html__( 'Currently there are', 'check-email').'&nbsp;'.esc_html($logs_count, 'check-email').'&nbsp;'.esc_html__('logged, which is more than the threshold. You can delete some logs or increase the threshold.', 'check-email' ); 
 			?></p>
 		</div>
 		<?php
