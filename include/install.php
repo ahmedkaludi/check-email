@@ -73,3 +73,4 @@ add_action( 'wpmu_new_blog', array( 'Check_Email_Log_Init', 'on_create_blog' ), 
 
 // when a blog is deleted in multisite
 add_filter( 'wpmu_drop_tables', array( 'Check_Email_Log_Init', 'on_delete_blog' ) );
+?>
