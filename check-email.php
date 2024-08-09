@@ -46,9 +46,8 @@ if ( is_admin() ) {
 
 	require_once(CK_MAIL_PATH. "/include/helper-function.php" );
 	require_once(CK_MAIL_PATH. "/include/class-check-email-newsletter.php" );
+	require_once(CK_MAIL_PATH. "/include/Check_Email_SMTP_Tab.php" );
 }
-
-require_once 'Check_Email_SMTP_Tab.php';
 
 
 if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
