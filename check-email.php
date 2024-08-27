@@ -42,9 +42,8 @@ define( 'CK_MAIL_PATH', dirname( __FILE__ ) );
 define( 'CK_MAIL_URL', plugin_dir_url( __FILE__ ) );
 define( 'CK_MAIL_VERSION', '2.0' );
 
+require_once(CK_MAIL_PATH. "/include/helper-function.php" );
 if ( is_admin() ) {
-
-	require_once(CK_MAIL_PATH. "/include/helper-function.php" );
 	require_once(CK_MAIL_PATH. "/include/class-check-email-newsletter.php" );
 	require_once(CK_MAIL_PATH. "/include/Check_Email_SMTP_Tab.php" );
 }
@@ -103,8 +102,8 @@ function check_email_log( $plugin_file ) {
 	$check_email = new \CheckEmail\Core\Check_Email_Log( $plugin_file, $loader, new \CheckEmail\Core\DB\Check_Email_Table_Manager() );
 
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Logger() );
-        $check_email->add_loadie( new \CheckEmail\Core\Check_Email_Review() );
-        $check_email->add_loadie( new \CheckEmail\Core\Check_Email_Export_Log() );
+	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Review() );
+	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Export_Log() );
 	$check_email->add_loadie( new \CheckEmail\Core\UI\Check_Email_UI_Loader() );
 
 	$check_email->add_loadie( new \CheckEmail\Core\Request\Check_Email_Nonce_Checker() );
