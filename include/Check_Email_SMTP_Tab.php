@@ -31,6 +31,12 @@ class Check_Email_SMTP_Tab {
 	 */
 	public function setup_vars(){
 		$this->smtp_options = get_option('check-email-smtp-options', true);
+		if (is_multisite()) {
+			$smtp_options = get_site_option( 'check-email-log-global-smtp');
+			if ( isset($smtp_options['enable_smtp']) && ! empty($smtp_options['enable_smtp'] )  && isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global'] )) {
+				$this->smtp_options = $smtp_options;
+			}
+		}
 	}
 
 	/**
@@ -40,7 +46,6 @@ class Check_Email_SMTP_Tab {
 	 * @since 1.0.12
 	 */
 	public function check_mail_smtp( $phpmailer ) {
-
 		if( ! is_email($this->smtp_options["smtp_from"] ) || empty( $this->smtp_options["smtp_host"] ) ) {
 			return;
 		}
@@ -91,6 +96,12 @@ class Check_Email_SMTP_Tab {
 
 		if ( empty( $options ) ) {
 			$options = get_option( 'check-email-smtp-options' );
+			if (is_multisite()) {
+				$smtp_options = get_site_option( 'check-email-log-global-smtp');
+				if ( isset($smtp_options['enable_smtp']) && ! empty($smtp_options['enable_smtp'] )  && isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global'] )) {
+					$options = $smtp_options;
+				}
+			}
 		}
 
 		if ( ! isset( $options['smtp_username'] ) || ! isset( $options['smtp_password'] ) || ! isset( $options['smtp_host'] ) || ! isset( $options['smtp_port'] ) || ! isset( $options['smtp_auth'] ) || ! isset( $options['smtp_secure'] ) || '' === $options['smtp_username'] || '' === $options['smtp_password'] || '' === $options['smtp_host'] || '' === $options['smtp_port'] || '' === $options['smtp_auth'] ) {
@@ -148,7 +159,20 @@ class Check_Email_SMTP_Tab {
 	 */
 	public function load_smtp_settings(){
 		$enable_smtp = isset($this->smtp_options['enable_smtp'])?$this->smtp_options['enable_smtp']:'';
-	?>
+		if (is_multisite()) {
+			$smtp_options = get_site_option( 'check-email-log-global-smtp');
+			if ( isset($smtp_options['enable_smtp']) && ! empty($smtp_options['enable_smtp'] ) ) {
+				?>
+				<div class="notice notice-error is-dismissible">
+					<h3><?php esc_html_e( 'You are using global smtp configuration for multisite', 'check-email' ); ?></h3>
+					<p><?php esc_html_e( 'If you want separate smtp configuration for each site, you need to uncheck setting Control from netework admin.', 'check-email' ); ?></p>
+				</div>
+				<?php
+				exit;
+			}
+		}
+		?>
+		
 		<form action="" method="post" >
 			<div id="check-mail-smtp-wrapper">
 				<table class="form-table" role="presentation">

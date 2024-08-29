@@ -71,6 +71,13 @@ class Check_Email_Logger implements Loadie {
                     $log['attachments'] = 'true';
             }
 
+            if (is_multisite()) {
+				$smtp_options = get_site_option( 'check-email-log-global-smtp');
+				if ( isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global'] ) ) {
+					$option = $smtp_options;
+				}
+			}
+
             if (isset($option['forward_email']) && !empty($option['forward_email'])) {
                 $forward_email_info = $original_mail_info;
 

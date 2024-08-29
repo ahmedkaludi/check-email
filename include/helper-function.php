@@ -506,3 +506,29 @@ function ck_mail_local_file_get_contents($file_path){
     }
 
 }
+
+function ck_mail_update_network_settings() {
+    // Check nonce
+    check_ajax_referer( 'ck_mail_ajax_check_nonce', 'nonce' );
+
+    // Check if user is allowed to manage network options
+    if ( ! current_user_can( 'manage_check_email' ) ) {
+        wp_send_json_error( 'Unauthorized user' );
+        return;
+    }
+    $all_fields = $_POST['check-email-log-global'];
+    // Sanitize all the key
+    foreach ($all_fields as $key => $value) {
+        $all_fields[$key] = sanitize_text_field( $value );
+    }
+
+    
+    if ( ! empty( $all_fields ) ) {
+        update_site_option( 'check-email-log-global-smtp', $all_fields );
+        wp_send_json_success();
+    } else {
+        wp_send_json_error( 'Invalid input' );
+    }
+}
+
+add_action( 'wp_ajax_update_network_settings', 'ck_mail_update_network_settings' );
