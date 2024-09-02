@@ -102,8 +102,8 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
     public function cm_wizard_steps(){
         return[
             [
-            'title'=> esc_html( "Step 1 of 2", "check-email" ),
-            'heading'=> esc_html( "General Settings", "check-email" ),
+            'title'=> esc_html__( "Step 1 of 2", "check-email" ),
+            'heading'=> esc_html__( "General Settings", "check-email" ),
             'content'=> $this->configure_general_settings()
             ],
             [
@@ -141,7 +141,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
         $html = "";
         $html .='<ul class="cm_checklist">
             <li>
-                <span>'. esc_html( "Administrator", "check-email" ).'</span>
+                <span>'. esc_html__( "Administrator", "check-email" ).'</span>
                 <span class="checkmark">&#10003;</span>
             </li>';
             foreach ( $available_roles as $role_id => $role ){
