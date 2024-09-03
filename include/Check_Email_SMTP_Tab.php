@@ -165,7 +165,6 @@ class Check_Email_SMTP_Tab {
 		$auth = new Auth( 'outlook' );
 		if ( $mailer == 'outlook' ) {
 			$this->smtp_options = $auth->get_mailer_option();
-			// print_r($this->smtp_options);die;
 		}
 		if (is_multisite()) {
 			$smtp_options = get_site_option( 'check-email-log-global-smtp');
@@ -178,6 +177,14 @@ class Check_Email_SMTP_Tab {
 				<?php
 				exit;
 			}
+		}
+		if (isset( $_GET['error'] ) ) {
+			$error = sanitize_text_field($_GET['error'])
+		?>	<div class="notice notice-error is-dismissible">
+				<h3><?php esc_html_e( 'Its an error to linking with microsoft 365 / outlook' ); ?></h3>
+				<p><?php echo esc_html( $error, 'check-email' ); ?></p>
+			</div>
+		<?php
 		}
 		?>
 		

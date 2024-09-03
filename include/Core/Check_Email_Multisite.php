@@ -27,7 +27,15 @@ class Check_Email_Multisite {
 			$url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
 			wp_safe_redirect( $url );
 			exit;
-		}		
+		}
+		
+		if ( isset( $_GET['error_description'] ) ) {
+			$error_message = sanitize_text_field( wp_unslash( $_GET['error_description'] ) );
+			$redirect_url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
+			$url = add_query_arg( 'error', $error_message, $redirect_url );
+			wp_safe_redirect( $url );
+			exit;
+		} 
 	}
 
 	function ck_mail_network_settings_menu() {
