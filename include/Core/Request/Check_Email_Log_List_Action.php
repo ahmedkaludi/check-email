@@ -364,7 +364,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		$type    = 'error';
 
 		if ( absint( $logs_deleted ) > 0 ) {
-			$message = $logs_deleted .' '.esc_html('email log deleted.','check-email');
+			$message = $logs_deleted .' '.esc_html__('email log deleted.','check-email');
 			// $message = sprintf(  _n( esc_html('1 email log deleted.'), '%s email logs deleted', $logs_deleted, 'check-email' ), $logs_deleted );
 			$type    = 'updated';
 		}

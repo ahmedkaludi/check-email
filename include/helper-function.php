@@ -187,7 +187,7 @@ function ck_mail_forward_mail($atts) {
 	}
 
 
-    $subject = esc_html('Forward Email Check & Log ', 'check-email').$subject;
+    $subject = esc_html__('Forward Email Check & Log ', 'check-email').$subject;
 
     if ( ! is_array( $attachments ) ) {
         $attachments = explode( "\n", str_replace( "\r\n", "\n", $attachments ) );

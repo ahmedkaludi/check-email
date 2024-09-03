@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 /**
  * Log's emails sent through `wp_mail`.
  */
+use CheckEmail\Core\Auth;
 class Check_Email_Logger implements Loadie {
 
 	public function load() {
@@ -78,6 +79,42 @@ class Check_Email_Logger implements Loadie {
 				}
 			}
 
+            $smtp_options = get_option('check-email-smtp-options', true);
+            $to_email = $log['to_email'];
+            $subject = $log['subject'];
+            $response = [];
+            if (isset($smtp_options['mailer']) && $smtp_options['mailer'] == 'outlook') {
+                $auth = new Auth('outlook');
+                if ( $auth->is_clients_saved() && ! $auth->is_auth_required() ) {
+                    $response = $auth->sendEmailByMailer(null ,$to_email, $subject, $log['message']);
+
+                   
+                    if (isset($response['error']) && $response['error'] == 1) {
+                        $log['result'] = 0;
+                        $log['error_message'] = $response['message'];
+
+                    }
+                    $mailer_options = $auth->get_mailer_option();
+                    if (isset($mailer_options['user_details']) && isset($mailer_options['user_details']['email'])) {
+                        $log_header[] = 'From: '.$mailer_options['user_details']['email'];
+                        $log_header[] = 'Content-Type: text/html; charset=UTF-8';
+                        $log['headers'] = \CheckEmail\Util\wp_chill_check_email_stringify( $log_header);
+                    }
+                }else{
+                    $log['result'] = 0;
+                    $log['error_message'] = esc_html__('Your microsoft 365 account not configured properly','check-email');
+                }
+
+                $log = apply_filters( 'check_email_email_log_before_insert', $log, $original_mail_info );
+
+                $check_email = wpchill_check_email();
+
+                $check_email->table_manager->insert_log( $log );
+                do_action( 'check_email_log_inserted' );
+                return false;
+
+            }
+
             if (isset($option['forward_email']) && !empty($option['forward_email'])) {
                 $forward_email_info = $original_mail_info;
 
@@ -106,6 +143,7 @@ class Check_Email_Logger implements Loadie {
                     }
                 }
             }
+
             $log = apply_filters( 'check_email_email_log_before_insert', $log, $original_mail_info );
             $check_email = wpchill_check_email();
             $check_email->table_manager->insert_log( $log );

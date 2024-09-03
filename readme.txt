@@ -4,7 +4,7 @@ Tags: logging, email, email log, smtp, log
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 5.6.20
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,6 +109,11 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
+= v2.0.1 - 02/09/2024 =
+- Enhancement: Added confirmation box on deletion of log email #84
+- Fixed: Conflict issue with Override Emails feature. #98
+- Fixed: PHP Fatal error #101
+
 = v2.0 - 09/08/2024 =
 - Compatibility: Test with WordPress version 6.6 #95
 - Feature: Default Format for Message #86
@@ -153,10 +158,7 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 - Enhancement: Added Support Form #56
 
 = v1.0.8 - 16/10/2023 =
-- Updated: Plugin author to reflect ownership changes. 
-
-= v1.0.7 - 08/03/2022 =
-- Fixed: Incompatibility with Post SMTP ( [#51]( https://github.com/WPChill/check-email/issues/51) )
+- Updated: Plugin author to reflect ownership changes.
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/check-email/trunk/changelog.txt)

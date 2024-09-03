@@ -1,12 +1,14 @@
 <?php
 
 namespace CheckEmail\Core;
+use CheckEmail\Core\Auth;
 
 defined('ABSPATH') || exit; // Exit if accessed directly.
 
 class Check_Email_Multisite {
 
 	public function __construct() {
+		add_action('init', [$this, 'check_mail_handle_outlook_callback']);
 		add_action('init', [$this, 'init']);
 	}
 
@@ -17,6 +19,15 @@ class Check_Email_Multisite {
 
 		add_action('network_admin_menu', [$this, 'ck_mail_network_settings_menu']);
 		add_action('admin_enqueue_scripts', [$this, 'ck_mail_network_enqueue_scripts']);
+	}
+	public function check_mail_handle_outlook_callback() {
+		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] )) {
+			$auth = new Auth( 'outlook' );
+			$auth->update_auth_code( sanitize_text_field($_GET['code']) );
+			$url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
+			wp_safe_redirect( $url );
+			exit;
+		}		
 	}
 
 	function ck_mail_network_settings_menu() {

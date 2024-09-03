@@ -1,0 +1,10 @@
+{
+    "require": {
+        "league/oauth2-client": "^2.5"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.33"
+        }
+    }
+}

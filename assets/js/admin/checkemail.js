@@ -90,7 +90,7 @@
      * On click of Trigger Data option display link to upgrade to pro
      * @since 1.0.11
      * */
-         
+    
     $(document).on('click', '#check-email-enable-smtp', function(e){
       if($(this).is(':checked')){
         $('#check-email-smtp-form').show();
@@ -139,7 +139,6 @@
           t.prop('disabled',true);
         },
         success:function(response){
-          console.log(response)
           if (response.status != 200) {
             t.parents('.cm_js_migration').find('.cm_js_error').html(response.message);
           }else{
@@ -241,4 +240,35 @@
   
 
   });
+  $(document).on('click', '.check_email_mailer_type', function(e){
+    console.log($(this).val())
+    $('tbody').hide();
+    $('.check_email_enable_smtp').show();
+    if($(this).val() == 'outlook'){
+      $('#check-email-outllook').show();
+      $('.check_email_enable_smtp').hide();
+    }
+  });
+
+  $(document).on('click', '#check_email_remove_outlook', function(e){
+    t = jQuery(this);
+    var ajaxurl = checkemail_data.ajax_url;
+    var nonce = checkemail_data.ck_mail_security_nonce;
+    jQuery.ajax({
+      url:ajaxurl,
+      method:'post',
+      dataType: "json",
+      data:{action:"check_email_remove_outlook",'ck_mail_security_nonce':nonce},
+      beforeSend: function(response){
+      },
+      success:function(response){
+        if (response.status == 200) {
+          location.reload();
+        }
+      },
+      complete:function(response){
+      }               
+    });
+  });
 })(jQuery);
+
