@@ -84,14 +84,14 @@ class Check_Email_Log_List_Action implements Loadie {
 				</tr>
                 <tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'From', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><?php echo esc_html( $headers['from'] ); ?></td>
+					<td style="padding: 5px;"><?php echo ( isset($headers['from'] ) ) ? esc_html( $headers['from'] ) : ""; ?></td>
 				</tr>
 				<?php
 					if(empty($option) || !isset( $option['reply_to']) || (isset( $option['reply_to'])) && $option['reply_to']){
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Reply To', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><?php echo esc_html( $headers['reply_to'] ); ?></td>
+					<td style="padding: 5px;"><?php echo ( isset($headers['reply_to'] ) ) ? esc_html( $headers['reply_to'] ) : ""; ?></td>
 				</tr>
 				<?php
 					}
@@ -99,7 +99,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Cc', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><?php echo esc_html( $headers['cc'] ); ?></td>
+					<td style="padding: 5px;"><?php echo ( isset($headers['cc'] ) ) ? esc_html( $headers['cc'] ) : ""; ?></td>
 				</tr>
 				<?php
 					}
@@ -107,7 +107,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				?>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Bcc', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><?php echo esc_html( $headers['bcc'] ); ?></td>
+					<td style="padding: 5px;"><?php echo ( isset($headers['bcc'] ) ) ? esc_html( $headers['bcc'] ) : ""; ?></td>
 				</tr>
 				<?php
 					}
@@ -157,7 +157,7 @@ class Check_Email_Log_List_Action implements Loadie {
 						$attachments = explode(',',$log_item['attachment_name']);
 						if ($attachments) {
 							?>
-							<h4>Attachments</h4>
+							<h4><?php esc_html_e( 'Attachments', 'check-email'); ?> </h4>
 							<?php
 							foreach ($attachments as $key => $attachment) {
 								?>
