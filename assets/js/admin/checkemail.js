@@ -241,7 +241,6 @@
 
   });
   $(document).on('click', '.check_email_mailer_type', function(e){
-    console.log($(this).val())
     $('tbody').hide();
     $('.check_email_enable_smtp').show();
     if($(this).val() == 'outlook'){
@@ -270,5 +269,23 @@
       }               
     });
   });
+
+  $("#check_mail_request_uri").on("click", function () {
+    myFunction();
+  })
+
+  function myFunction() {
+      var copyText = document.getElementById("check_mail_request_uri");
+
+      // Select the text field
+      copyText.select();
+
+      // Copy the text inside the text field
+      navigator.clipboard.writeText(copyText.value);
+
+      // Alert the copied text
+      $("#check_mail_copy_text").html("Copied!");
+  }
+
 })(jQuery);
 

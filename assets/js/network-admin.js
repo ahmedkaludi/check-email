@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
             data: data,
             success: function (response) {
                 if (response.success) {
-                    alert('Settings saved successfully!');
+                    location.reload();
                 } else {
                     alert('There was an error saving the settings.');
                 }
@@ -25,18 +25,27 @@ jQuery(document).ready(function ($) {
     if (!$("#check-email-log-global-enable-smtp").is(":checked")) {
         check_email_smtp_class.hide();
     }
-    $(document).on('click', '#check-email-log-global-enable-smtp', function (e) {
-        if ($(this).is(':checked')) {
-            $('.check_email_smtp_class').show();
-        } else {
+    $(document).on('click', '.check_email_mailer_type_multi', function (e) {
+        $('.check_email_smtp_class').show();
+        $('#check-email-outllook').hide();
+        if($(this).val() == 'outlook'){
+            $('#check-email-outllook').show();
             $('.check_email_smtp_class').hide();
         }
     });
     $(document).on('click', '#check-email-log-global-enable_global', function (e) {
         if ($(this).is(':checked')) {
+            var mailer = $('.check_email_mailer_type_multi:checked').val();
             $('#check-email-global-smtp-form').show();
+            if (mailer == 'smtp') {
+                $('.check_email_smtp_class').show();
+            }
+            if (mailer == 'outlook') {
+                $('#check-email-outllook').show();
+            }
         } else {
             $('#check-email-global-smtp-form').hide();
+            $('#check-email-outllook').hide();
         }
     });
 
@@ -65,4 +74,21 @@ jQuery(document).ready(function ($) {
             cm_global_override.hide();
         }
     });
+
+    $("#check_mail_request_uri").on("click", function () {
+        myFunction();
+    })
+
+    function myFunction() {
+        var copyText = document.getElementById("check_mail_request_uri");
+
+        // Select the text field
+        copyText.select();
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        // Alert the copied text
+        $("#check_mail_copy_text").html("Copied!");
+    }
 });

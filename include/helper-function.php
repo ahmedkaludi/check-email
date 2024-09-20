@@ -513,21 +513,33 @@ function ck_mail_update_network_settings() {
 
     // Check if user is allowed to manage network options
     if ( ! current_user_can( 'manage_check_email' ) ) {
-        wp_send_json_error( 'Unauthorized user' );
+        wp_send_json_error(esc_html__('Unauthorized user', 'check-email') );
         return;
     }
-    $all_fields = $_POST['check-email-log-global'];
-    // Sanitize all the key
-    foreach ($all_fields as $key => $value) {
-        $all_fields[$key] = sanitize_text_field( $value );
-    }
-
+    $all_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-log-global']));
     
+    // Sanitize all the key
     if ( ! empty( $all_fields ) ) {
+        foreach ($all_fields as $key => $value) {
+            $all_fields[sanitize_key( $key ) ] = sanitize_text_field( $value );
+        }
+        $all_fields['enable_smtp'] = 1;
         update_site_option( 'check-email-log-global-smtp', $all_fields );
+        if ( isset($all_fields['mailer'] ) == 'outlook') {
+            $outlook_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
+            if(isset($outlook_fields['client_id']) && !empty($outlook_fields['client_id'])){
+                $outlook_option['client_id'] = base64_encode($outlook_fields['client_id']);
+            }
+            if(isset($outlook_fields['client_secret']) && !empty($outlook_fields['client_secret'])){
+                $outlook_option['client_secret'] = base64_encode($outlook_fields['client_secret']);
+            }
+            $auth = new CheckEmail\Core\Auth( 'outlook' );
+            $auth->update_mailer_option( $outlook_option );
+        }
+        
         wp_send_json_success();
     } else {
-        wp_send_json_error( 'Invalid input' );
+        wp_send_json_error(esc_html__('Invalid input', 'check-email') );
     }
 }
 

@@ -182,7 +182,7 @@ class Check_Email_SMTP_Tab {
 			$error = sanitize_text_field($_GET['error'])
 		?>	<div class="notice notice-error is-dismissible">
 				<h3><?php esc_html_e( 'Its an error to linking with microsoft 365 / outlook' ); ?></h3>
-				<p><?php echo esc_html( $error, 'check-email' ); ?></p>
+				<p><?php echo esc_html( $error ); ?></p>
 			</div>
 		<?php
 		}
@@ -220,6 +220,15 @@ class Check_Email_SMTP_Tab {
 						    <th scope="row"><?php esc_html_e('Client Secret', 'check-email'); ?></th>
 						    <td>
 						        <input  class="regular-text" type="password" name="check-email-outlook-options[client_secret]" value="<?php echo isset($this->smtp_options['client_secret'])?esc_attr(base64_decode($this->smtp_options['client_secret'])):"" ?>">
+						    </td>
+						</tr>
+						<tr class="">
+						    <th scope="row"><?php esc_html_e('Redirect URI', 'check-email'); ?></th>
+						    <td>
+								
+								<input class="regular-text" type="text" readonly id="check_mail_request_uri" value="<?php echo (is_network_admin()) ? esc_url(network_admin_url()):esc_url(admin_url()) ?>" ><small id="check_mail_copy_text"></small>
+								<p><?php esc_html_e('This is the page on your site that you will be redirected to after you have authenticated with Microsoft.
+You need to copy this URL into "Authentication > Redirect URIs" web field for your application on Microsoft Azure site for your project there.','check-email'); ?></p>
 						    </td>
 						</tr>
 						<tr class="">

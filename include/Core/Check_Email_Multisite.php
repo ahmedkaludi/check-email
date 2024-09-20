@@ -24,14 +24,23 @@ class Check_Email_Multisite {
 		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] )) {
 			$auth = new Auth( 'outlook' );
 			$auth->update_auth_code( sanitize_text_field($_GET['code']) );
-			$url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
+			$smtp_options = get_site_option('check-email-log-global-smtp');
+			if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
+				$url = network_admin_url('admin.php?page=check-mail-global-settings&tab=smtp' );
+			}else{
+				$url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
+			}
 			wp_safe_redirect( $url );
 			exit;
 		}
 		
 		if ( isset( $_GET['error_description'] ) ) {
 			$error_message = sanitize_text_field( wp_unslash( $_GET['error_description'] ) );
-			$redirect_url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
+			if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
+				$redirect_url = network_admin_url('admin.php?page=check-mail-global-settings&tab=smtp' );
+			}else{
+				$redirect_url = admin_url('admin.php?page=check-email-settings&tab=smtp' );
+			}
 			$url = add_query_arg( 'error', $error_message, $redirect_url );
 			wp_safe_redirect( $url );
 			exit;
@@ -45,28 +54,46 @@ class Check_Email_Multisite {
 			'manage_check_email',
 			'check-mail-global-settings',
 			[$this, 'render_page'],
-			'dashicons-admin-generic',
+			'dashicons-email-alt',
 			26
 		);
 	}
 
 	function render_page() {
 		$smtp_options = [];
+		$outlook_smtp = [];
 		$enable_smtp = "";
+		$enable_global = "";
+		$mailer = "smtp";
+		$auth = new Auth( 'outlook' );
 		$tab = isset( $_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 		if (! empty(get_site_option( 'check-email-log-global-smtp') ) ) {
 			$smtp_options = get_site_option( 'check-email-log-global-smtp');
 			$enable_smtp = isset($smtp_options['enable_smtp'])? $smtp_options['enable_smtp'] : '';
 			$enable_global = isset($smtp_options['enable_global'])? $smtp_options['enable_global'] : '';
+			$mailer = isset($smtp_options['mailer'])?$smtp_options['mailer']:'smtp';
+			if ( $mailer == 'outlook' ) {
+				$outlook_smtp = $auth->get_mailer_option();
+			}
 		}?>
+		
 		<div class="wrap">
 			<nav class="nav-tab-wrapper">
 				<a href="?page=check-mail-global-settings" class="nav-tab <?php if( 'general' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
 				<a href="?page=check-mail-global-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
 			</nav>
 			<div class="tab-content">
-			
-				<h1><?php esc_html_e('Check & Log Global Settings', 'check-email'); ?></h1>
+				<h1><?php esc_html_e('Check & Log Network Settings', 'check-email'); ?></h1>
+				<?php
+				if (isset( $_GET['error_description'] ) ) {
+					$error_message = sanitize_text_field( wp_unslash( $_GET['error_description'] ) );
+				?>	<div class="notice notice-error is-dismissible">
+						<h3><?php esc_html_e( 'Its an error to linking with microsoft 365 / outlook' ); ?></h3>
+						<p><?php echo esc_html( $error_message ); ?></p>
+					</div>
+				<?php
+					}
+				?>
 				<form method="post" id="my-network-settings-form">
 					<?php wp_nonce_field('update_network_settings', 'ck_mail_ajax_check_nonce'); ?>
 					<table class="form-table">
@@ -125,9 +152,14 @@ class Check_Email_Multisite {
 
 					<?php if( 'smtp' == $tab ) : ?>
 						<tbody id="check-email-global-smtp-form" style="<?php echo $enable_global != 'on' ? "display: none" : ''; ?>">
-							<tr valign="top">
-								<th scope="row"><label for="my_network_option"><?php esc_html_e('Enable SMTP', 'check-email'); ?></label></th>
-								<td><input type="checkbox" id="check-email-log-global-enable-smtp" name="check-email-log-global[enable_smtp]" <?php echo $enable_smtp == 'on' ? "checked" : ''; ?> class="regular-text" /><?php esc_html_e('SMTP helps you to send emails via SMTP instead of the PHP mail()', 'check-email'); ?></td>
+							<tr class="check_email_mailer">
+								<th scope="row"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
+								<td>
+									<input class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?> id="check-email-mailer-general-smtp">
+									<label for="check-email-mailer-general-smtp" class="check-email-opt-labels"><?php esc_html_e('General SMTP','check-email'); ?></label>
+									<input class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?> id="check-email-mailer-outlook">
+									<label for="check-email-mailer-outlook" class="check-email-opt-labels"><?php esc_html_e('365 / Outlook','check-email'); ?></label>
+								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
 								<th scope="row"><?php esc_html_e('From', 'check-email'); ?></th>
@@ -219,6 +251,74 @@ class Check_Email_Multisite {
 								</td>
 							</tr>
 						</tbody>
+
+						<tbody id="check-email-outllook" style="<?php echo $enable_global != 'on' || $mailer != 'outlook' ? "display: none" : ''; ?>">	
+						<tr class="check_email_smtp_from">
+						    <th scope="row"><?php esc_html_e('Application ID', 'check-email'); ?></th>
+						    <td>
+						        <input class="regular-text" type="text" name="check-email-outlook-options[client_id]" value="<?php echo isset($outlook_smtp['client_id'])?esc_attr(base64_decode($outlook_smtp['client_id'])):"" ?>" >
+						    </td>
+						</tr>
+						<tr class="">
+						    <th scope="row"><?php esc_html_e('Client Secret', 'check-email'); ?></th>
+						    <td>
+						        <input  class="regular-text" type="password" name="check-email-outlook-options[client_secret]" value="<?php echo isset($outlook_smtp['client_secret'])?esc_attr(base64_decode($outlook_smtp['client_secret'])):"" ?>">
+						    </td>
+						</tr>
+						<tr class="">
+						    <th scope="row"><?php esc_html_e('Redirect URI', 'check-email'); ?></th>
+						    <td>
+								
+								<input class="regular-text" type="text" readonly id="check_mail_request_uri" value="<?php echo (is_network_admin()) ? esc_url(network_admin_url()):esc_url(admin_url()) ?>" ><small id="check_mail_copy_text"></small>
+								<p><?php esc_html_e('This is the page on your site that you will be redirected to after you have authenticated with Microsoft.
+You need to copy this URL into "Authentication > Redirect URIs" web field for your application on Microsoft Azure site for your project there.','check-email'); ?></p>
+						    </td>
+						</tr>
+						<tr class="">
+							<td colspan="2">
+						<?php
+
+						if (  $auth->is_clients_saved() ) :
+							if ( $auth->is_auth_required() ) : ?>
+								<a href="<?php echo esc_url( $auth->get_auth_url() ); ?>" class="button button-secondary">
+									<?php esc_html_e( 'Allow plugin to send emails using your Microsoft account', 'check-email' ); ?>
+								</a>
+
+							<?php else : ?>
+
+								<button class="button" id="check_email_remove_outlook">
+									<?php esc_html_e( 'Remove OAuth Connection', 'check-email' ); ?>
+								</button>
+								<span class="">
+									<?php
+									$user = (isset( $outlook_smtp['user_details'] )) ? $outlook_smtp['user_details'] : [];
+
+									if ( isset( $user['email'] ) &&  isset( $user['display_name'] ) && ! empty( $user['email'] ) && ! empty( $user['display_name'] ) ) {
+										printf(
+											/* translators: %s - Display name and email, as received from oAuth provider. */
+											esc_html__( 'Connected as %s', 'check-email' ),
+											'<code>' . esc_html( $user['display_name'] . ' <' . $user['email'] . '>' ) . '</code>'
+										);
+									}
+									?>
+								</span>
+								<p class="desc">
+									<?php esc_html_e( 'Removing the OAuth connection will give you an ability to redo the OAuth connection or link to another Microsoft account.', 'check-email' ); ?>
+								</p>
+
+							<?php endif; ?>
+
+						<?php else : ?>
+							<p class="notice inline-notice inline-error" style="padding:5px 0 5px 5px;">
+								<?php esc_html_e( 'To access this section, please add an Application ID and Application Password, then click the Save button.', 'check-email' ); ?>
+							</p>
+
+						<?php
+						endif;
+						?>
+							</td>
+						</tr>
+					</tbody>
 					
 					
 					<?php endif; ?>

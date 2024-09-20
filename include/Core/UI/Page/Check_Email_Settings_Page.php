@@ -133,6 +133,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<a href="?page=check-email-settings&tab=logging" class="nav-tab <?php if( 'logging' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Logging', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
 				<a href="https://check-email.tech/contact/" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
+				<a href="?page=check-email-settings&tab=email-encode" class="nav-tab <?php if( 'email-encode' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Email Encode', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=tools" class="nav-tab <?php if( 'tools' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Tools', 'check-email' ); ?></a>
 				<?php do_action('ck_mail_add_license_tab'); ?>
 				<a href="?page=check-email-settings&tab=support" class="nav-tab <?php if( 'support' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Help & Support', 'check-email' ); ?></a>
@@ -149,9 +150,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<h2><?php esc_html_e( 'Logging', 'check-email' ); ?></h2>
 			<?php elseif( 'smtp' == $tab ): ?>
 				<h2><?php esc_html_e( 'SMTP Configuration', 'check-email' ); ?></h2>
+			<?php elseif( 'email-encode' == $tab ): ?>
+				<h2><?php esc_html_e( 'Email Encode', 'check-email' ); ?></h2>
 			<?php endif; ?>
 
-			<?php if( 'smtp' !== $tab && 'support' !== $tab && 'tools' !== $tab && 'license' !== $tab ): ?>
+			<?php if( 'email-encode' !== $tab && 'smtp' !== $tab && 'support' !== $tab && 'tools' !== $tab && 'license' !== $tab ): ?>
 				<?php $submit_url = ( '' != $tab ) ? add_query_arg( 'tab', $tab, admin_url( 'options.php' ) ) : 'options.php'; ?>
 				<form method="post" action="<?php echo esc_url( $submit_url ); ?>">
 					<?php
@@ -201,6 +204,8 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				        </div>
 					</div>
 				<?php  
+				elseif('email-encode' == $tab):
+					do_action('check_mail_email_encode');
 				elseif('tools' == $tab):
 					global $check_email;
 					$check_email->add_loadie( new \CheckEmail\Core\UI\Setting\Check_Email_Tools_Tab() );

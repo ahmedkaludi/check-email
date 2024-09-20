@@ -60,11 +60,12 @@ class Auth
 	}
 	public function update_mailer_option($options_to_update)
 	{
+		
 		$smtp_options = get_site_option('check-email-log-global-smtp');
 		if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
 			$site_option = get_site_option('check-email-log-' . $this->mailer . '-options');
 			$mailer_options = array_merge((array)$site_option, (array)$options_to_update);
-			update_site_option('check-email-log-' . $this->mailer . 'options', $mailer_options);
+			update_site_option('check-email-log-' . $this->mailer . '-options', $mailer_options);
 		} else {
 			$site_option = empty(get_option('check-email-log-' . $this->mailer . '-options')) ? [] : get_option('check-email-log-' . $this->mailer . '-options');
 			$mailer_options = array_merge((array)$site_option, (array)$options_to_update);
@@ -195,8 +196,12 @@ class Auth
 
 	public static function get_plugin_auth_url()
 	{
-
-		return admin_url();
+		$smtp_options = get_site_option('check-email-log-global-smtp');
+		if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
+			return network_admin_url();
+		} else {
+			return admin_url();
+		}
 	}
 
 
