@@ -76,10 +76,10 @@ jQuery(document).ready(function ($) {
     });
 
     $("#check_mail_request_uri").on("click", function () {
-        myFunction();
+        check_email_copy_code_multi();
     })
 
-    function myFunction() {
+    function check_email_copy_code_multi() {
         var copyText = document.getElementById("check_mail_request_uri");
 
         // Select the text field

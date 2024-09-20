@@ -271,10 +271,10 @@
   });
 
   $("#check_mail_request_uri").on("click", function () {
-    myFunction();
+    check_email_copy_code();
   })
 
-  function myFunction() {
+  function check_email_copy_code() {
       var copyText = document.getElementById("check_mail_request_uri");
 
       // Select the text field
