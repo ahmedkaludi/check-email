@@ -60,7 +60,7 @@ function ck_mail_send_feedback() {
     // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason: in form variable.
     if( isset( $_POST['data'] ) ) {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Reason: in form variable.
-        parse_str( wp_unslash($_POST['data']), $form );
+        parse_str( sanitize_text_field( wp_unslash($_POST['data'])), $form );
     }
     
     if( !isset( $form['ck_mail_security_nonce'] ) || isset( $form['ck_mail_security_nonce'] ) && !wp_verify_nonce( sanitize_text_field( $form['ck_mail_security_nonce'] ), 'ck_mail_ajax_check_nonce' ) ) {
@@ -141,23 +141,28 @@ add_action( 'admin_enqueue_scripts', 'ck_mail_enqueue_makebetter_email_js' );
 add_action('wp_ajax_ck_mail_subscribe_newsletter','ck_mail_subscribe_for_newsletter');
 
 function ck_mail_subscribe_for_newsletter() {
-
-    if ( ! wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ) {
+    if ( ! isset( $_POST['ck_mail_security_nonce'] ) ){
+        echo esc_html__('security_nonce_not_verified', 'check-email');
+        die();
+    }
+    if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ck_mail_security_nonce'] ) ), 'ck_mail_ajax_check_nonce' ) ) {
         echo esc_html__('security_nonce_not_verified', 'check-email');
         die();
     }
     if ( !current_user_can( 'manage_options' ) ) {
         die();
     }
-    $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
-
-    $api_params = array(
-        'name' => sanitize_text_field(wp_unslash($_POST['name'])),
-        'email'=> sanitize_email(wp_unslash($_POST['email'])),
-        'website'=> sanitize_text_field(wp_unslash($_POST['website'])),
-        'type'=> 'checkmail'
-    );
-    wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+    if (isset( $_POST['name'] ) && isset( $_POST['email'] ) && isset( $_POST['website'] )) {
+        $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
+    
+        $api_params = array(
+            'name' => sanitize_text_field(wp_unslash($_POST['name'])),
+            'email'=> sanitize_email(wp_unslash($_POST['email'])),
+            'website'=> sanitize_text_field(wp_unslash($_POST['website'])),
+            'type'=> 'checkmail'
+        );
+        wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+    }
     wp_die();
 }
 
@@ -516,28 +521,29 @@ function ck_mail_update_network_settings() {
         wp_send_json_error(esc_html__('Unauthorized user', 'check-email') );
         return;
     }
-    $all_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-log-global']));
+    if ( isset( $_POST['check-email-log-global'] ) ) {
+        $all_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-log-global']));
     
     // Sanitize all the key
-    if ( ! empty( $all_fields ) ) {
-        foreach ($all_fields as $key => $value) {
-            $all_fields[sanitize_key( $key ) ] = sanitize_text_field( $value );
-        }
-        $all_fields['enable_smtp'] = 1;
-        update_site_option( 'check-email-log-global-smtp', $all_fields );
-        if ( isset($all_fields['mailer'] ) == 'outlook') {
-            $outlook_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
-            if(isset($outlook_fields['client_id']) && !empty($outlook_fields['client_id'])){
-                $outlook_option['client_id'] = base64_encode($outlook_fields['client_id']);
+        if ( ! empty( $all_fields ) ) {
+            foreach ($all_fields as $key => $value) {
+                $all_fields[sanitize_key( $key ) ] = sanitize_text_field( $value );
             }
-            if(isset($outlook_fields['client_secret']) && !empty($outlook_fields['client_secret'])){
-                $outlook_option['client_secret'] = base64_encode($outlook_fields['client_secret']);
+            $all_fields['enable_smtp'] = 1;
+            update_site_option( 'check-email-log-global-smtp', $all_fields );
+            if ( isset($all_fields['mailer'] ) == 'outlook' && isset( $_POST['check-email-outlook-options'] ) ) {
+                $outlook_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
+                if(isset($outlook_fields['client_id']) && !empty($outlook_fields['client_id'])){
+                    $outlook_option['client_id'] = base64_encode($outlook_fields['client_id']);
+                }
+                if(isset($outlook_fields['client_secret']) && !empty($outlook_fields['client_secret'])){
+                    $outlook_option['client_secret'] = base64_encode($outlook_fields['client_secret']);
+                }
+                $auth = new CheckEmail\Core\Auth( 'outlook' );
+                $auth->update_mailer_option( $outlook_option );
             }
-            $auth = new CheckEmail\Core\Auth( 'outlook' );
-            $auth->update_mailer_option( $outlook_option );
+            wp_send_json_success();
         }
-        
-        wp_send_json_success();
     } else {
         wp_send_json_error(esc_html__('Invalid input', 'check-email') );
     }

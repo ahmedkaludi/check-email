@@ -21,9 +21,12 @@ class Check_Email_Multisite {
 		add_action('admin_enqueue_scripts', [$this, 'ck_mail_network_enqueue_scripts']);
 	}
 	public function check_mail_handle_outlook_callback() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] )) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 			$auth = new Auth( 'outlook' );
-			$auth->update_auth_code( sanitize_text_field($_GET['code']) );
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
+			$auth->update_auth_code( sanitize_text_field( wp_unslash( $_GET['code'] ) ) );
 			$smtp_options = get_site_option('check-email-log-global-smtp');
 			if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
 				$url = network_admin_url('admin.php?page=check-mail-global-settings&tab=smtp' );
@@ -33,8 +36,9 @@ class Check_Email_Multisite {
 			wp_safe_redirect( $url );
 			exit;
 		}
-		
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 		if ( isset( $_GET['error_description'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 			$error_message = sanitize_text_field( wp_unslash( $_GET['error_description'] ) );
 			if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
 				$redirect_url = network_admin_url('admin.php?page=check-mail-global-settings&tab=smtp' );
@@ -66,6 +70,7 @@ class Check_Email_Multisite {
 		$enable_global = "";
 		$mailer = "smtp";
 		$auth = new Auth( 'outlook' );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 		$tab = isset( $_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 		if (! empty(get_site_option( 'check-email-log-global-smtp') ) ) {
 			$smtp_options = get_site_option( 'check-email-log-global-smtp');
@@ -85,7 +90,9 @@ class Check_Email_Multisite {
 			<div class="tab-content">
 				<h1><?php esc_html_e('Check & Log Network Settings', 'check-email'); ?></h1>
 				<?php
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 				if (isset( $_GET['error_description'] ) ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 					$error_message = sanitize_text_field( wp_unslash( $_GET['error_description'] ) );
 				?>	<div class="notice notice-error is-dismissible">
 						<h3><?php esc_html_e( 'Its an error to linking with microsoft 365 / outlook' ); ?></h3>

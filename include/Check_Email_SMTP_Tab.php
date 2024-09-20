@@ -178,8 +178,10 @@ class Check_Email_SMTP_Tab {
 				exit;
 			}
 		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		if (isset( $_GET['error'] ) ) {
-			$error = sanitize_text_field($_GET['error'])
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+			$error = sanitize_text_field( wp_unslash( $_GET['error'] ) );
 		?>	<div class="notice notice-error is-dismissible">
 				<h3><?php esc_html_e( 'Its an error to linking with microsoft 365 / outlook' ); ?></h3>
 				<p><?php echo esc_html( $error ); ?></p>
@@ -389,39 +391,40 @@ You need to copy this URL into "Authentication > Redirect URIs" web field for yo
 		    	return;
 		    }
 
-		    if ( !wp_verify_nonce( $_POST['check_mail_smtp_nonce'], 'check_mail_smtp_nonce' ) ){
+		    if ( !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['check_mail_smtp_nonce'] ) ), 'check_mail_smtp_nonce' ) ){
 	       		return;  
 	    	}
 
 			if ( ! current_user_can( 'manage_check_email' ) ) {
 				return;
 			}
-
-			$smtp_opt = array_map('sanitize_text_field', wp_unslash($_POST['check-email-smtp-options']));
-			$outlook_option = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
-			if ( $smtp_opt['mailer'] == 'outlook' ) {				
-				$outlook_option = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
-				if(isset($outlook_option['client_id']) && !empty($outlook_option['client_id'])){
-					$outlook_option['client_id'] = base64_encode($outlook_option['client_id']);
+			if ( isset( $_POST['check-email-smtp-options']) ) {
+				$smtp_opt = array_map('sanitize_text_field', wp_unslash($_POST['check-email-smtp-options']));
+				
+				if ( $smtp_opt['mailer'] == 'outlook' && isset( $_POST['check-email-outlook-options'] ) ) {				
+					$outlook_option = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
+					if(isset($outlook_option['client_id']) && !empty($outlook_option['client_id'])){
+						$outlook_option['client_id'] = base64_encode($outlook_option['client_id']);
+					}
+					if(isset($outlook_option['client_secret']) && !empty($outlook_option['client_secret'])){
+						$outlook_option['client_secret'] = base64_encode($outlook_option['client_secret']);
+					}
+					$auth = new Auth( 'outlook' );
+					$auth->update_mailer_option( $outlook_option );
+				}else{
+					if(isset($smtp_opt['smtp_username']) && !empty($smtp_opt['smtp_username'])){
+						$smtp_opt['smtp_username'] = base64_encode($smtp_opt['smtp_username']);
+					}
+					if(isset($smtp_opt['smtp_password']) && !empty($smtp_opt['smtp_password'])){
+						$smtp_opt['smtp_password'] = base64_encode($smtp_opt['smtp_password']);
+					}
 				}
-				if(isset($outlook_option['client_secret']) && !empty($outlook_option['client_secret'])){
-					$outlook_option['client_secret'] = base64_encode($outlook_option['client_secret']);
-				}
-				$auth = new Auth( 'outlook' );
-				$auth->update_mailer_option( $outlook_option );
-			}else{
-				if(isset($smtp_opt['smtp_username']) && !empty($smtp_opt['smtp_username'])){
-					$smtp_opt['smtp_username'] = base64_encode($smtp_opt['smtp_username']);
-				}
-				if(isset($smtp_opt['smtp_password']) && !empty($smtp_opt['smtp_password'])){
-					$smtp_opt['smtp_password'] = base64_encode($smtp_opt['smtp_password']);
-				}
+				update_option('check-email-smtp-options', $smtp_opt);
+				delete_option( 'check_email_smtp_status' );
+				do_action( 'check_mail_smtp_admin_update' );
+	
+				wp_safe_redirect(admin_url('admin.php?page=check-email-settings&tab=smtp'));
 			}
-			update_option('check-email-smtp-options', $smtp_opt);
-			delete_option( 'check_email_smtp_status' );
-			do_action( 'check_mail_smtp_admin_update' );
-
-			wp_safe_redirect(admin_url('admin.php?page=check-email-settings&tab=smtp'));
 		}
 	}	
 	
@@ -451,9 +454,8 @@ You need to copy this URL into "Authentication > Redirect URIs" web field for yo
 		if(!isset($_POST['ck_mail_security_nonce'])){
 			return;
 		}
-		
 
-		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_security_nonce' ) ){
+		if ( !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ck_mail_security_nonce'] ) ), 'ck_mail_security_nonce' ) ){
 			return;  
 		}
 		

@@ -202,7 +202,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email'))); 
 			wp_die();
 		}
-		if ( !wp_verify_nonce( $_POST['ck_mail_security_nonce'], 'ck_mail_ajax_check_nonce' ) ){
+		if ( !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ck_mail_security_nonce'] ) ), 'ck_mail_ajax_check_nonce' ) ){
 			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email')));
 			wp_die();
 		}
@@ -217,7 +217,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 
 		$step = 'last';
 		if (isset($_POST['default_format_for_message']) && !empty($_POST['default_format_for_message'])) {
-			$from_data['default_format_for_message']= sanitize_text_field($_POST['default_format_for_message']);
+			$from_data['default_format_for_message']= sanitize_text_field( wp_unslash( $_POST['default_format_for_message'] ) );
 			$step = 'first';
 
 			if (!isset($_POST['enable_dashboard_widget'])) {

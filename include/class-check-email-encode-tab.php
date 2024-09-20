@@ -66,7 +66,7 @@ class Check_Email_Encode_Tab {
 		    	return;
 		    }
 
-		    if ( !wp_verify_nonce( $_POST['check_mail_email_encode_nonce'], 'check_mail_email_encode_nonce' ) ){
+		    if ( !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['check_mail_email_encode_nonce'] ) ), 'check_mail_email_encode_nonce' ) ){
 	       		return;  
 	    	}
 

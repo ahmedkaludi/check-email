@@ -353,147 +353,16 @@ class Auth
 		}
 	}
 
-
-	function sendEmailByMailer_old($to_email, $subject, $body)
-	{
-
-		// Get the access token
-		$access_token_array = $this->options['access_token'];
-		$from_email = null;
-		if (isset($this->options['user_details']) && isset($this->options['user_details']['email'])) {
-			$from_email = $this->options['user_details']['email'];
-		}
-		$access_token = $access_token_array['access_token'];
-		// print_r($access_token);die;
-
-		// Graph API URL
-		$url = "https://graph.microsoft.com/v1.0/me/sendMail";
-		$setting_options = get_option('check-email-log-core');
-
-		if (isset($setting_options['forward_email']) && !empty($setting_options['forward_email'])) {
-			if (isset($setting_options['forward_to']) && !empty($setting_options['forward_to'])) {
-				$to_email = explode(',', $setting_options['forward_to']);
-
-				$toRecipients = [];
-				foreach ((array) $to_email as $email) {
-					$toRecipients[] = [
-						"emailAddress" => [
-							"address" => $email,
-						],
-					];
-				}
-			}
-
-			$ccRecipients = [];
-			if (isset($setting_options['forward_cc']) && !empty($setting_options['forward_cc'])) {
-				$copy_to = explode(',', $setting_options['forward_cc']);
-				foreach ((array) $copy_to as $email) {
-					$ccRecipients[] = [
-						"emailAddress" => [
-							"address" => $email,
-						],
-					];
-				}
-			}
-
-			if (isset($setting_options['forward_bcc']) && !empty($setting_options['forward_bcc'])) {
-				$bcc_to = explode(',', $setting_options['forward_bcc']);
-				foreach ($bcc_to as $email) {
-					$forward_header[] = 'Bcc: ' . $email;
-				}
-				$bcc_to = [];
-				foreach ((array) $bcc_to as $email) {
-					$bccRecipients[] = [
-						"emailAddress" => [
-							"address" => $email,
-						],
-					];
-				}
-				$forward_email_info['headers'] = \CheckEmail\Util\wp_chill_check_email_stringify($forward_header);
-				if (function_exists('ck_mail_forward_mail')) {
-					ck_mail_forward_mail($forward_email_info);
-				}
-			}
-		}
-
-		// The message structure
-		$message = [
-			"message" => [
-				"subject" => $subject,
-				"body" => [
-					"contentType" => "Text",
-					"content" => $body,
-				],
-				"toRecipients" => [
-					[
-						"emailAddress" => [
-							"address" => $to_email,
-						],
-					],
-				],
-				"from" => [
-					"emailAddress" => [
-						"address" => $from_email,
-					],
-				],
-			],
-			"saveToSentItems" => "true",
-		];
-
-		$headers = [
-			"Authorization: Bearer $access_token",
-			'Content-Type: application/json',
-		];
-
-		// The message structure
-		$message = [
-			"message" => [
-				"subject" => $subject,
-				"body" => [
-					"contentType" => "HTML",
-					"content" => $body,
-				],
-				"toRecipients" => [
-					[
-						"emailAddress" => [
-							"address" => $to_email,
-						],
-					],
-				],
-				"from" => [
-					"emailAddress" => [
-						"address" => $from_email,
-					],
-				],
-			],
-			"saveToSentItems" => "true",
-		];
-
-		// cURL request
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-		// Execute and close
-		$response = curl_exec($ch);
-		curl_close($ch);
-
-		return json_decode($response, true);
-	}
-
 	function sendEmailByMailer($from_email, $to_email, $subject, $body) {
 
-		// Get the access token
+		// Get the access token from options
 		$access_token_array = $this->options['access_token'];
 		$access_token = $access_token_array['access_token'];
-		
-
-		// Graph API URL
+	
+		// Graph API URL for sending mail
 		$url = "https://graph.microsoft.com/v1.0/me/sendMail";
-
+	
+		// Email message structure
 		$message = [
 			"message" => [
 				"subject" => $subject,
@@ -509,39 +378,44 @@ class Auth
 					],
 				],
 			],
-			"saveToSentItems" => "true",
+			"saveToSentItems" => "true", // Save a copy to Sent Items folder
 		];
-
-		// Arguments for the request
+	
+		// Request arguments
 		$args = [
 			'headers' => [
-				"Authorization" => "Bearer $access_token",
-				'Content-Type' => 'application/json',
+				"Authorization" => "Bearer $access_token", // Authorization header
+				'Content-Type' => 'application/json', // JSON content type
 			],
-			'body' => wp_json_encode($message),
+			'body' => wp_json_encode($message), // JSON encode the message
+			'timeout' => 45, // Optional timeout, increase if necessary
+			'sslverify' => true, // Verify SSL (set to false only if you're sure)
 		];
-
+	
+		// Make the API request using wp_remote_post
 		$response = wp_remote_post($url, $args);
-
-		// Check for errors
+	
+		// Check for errors in the response
 		if (is_wp_error($response)) {
 			return [
 				'error' => 1,
-				'message' => $response->get_error_message(),
+				'message' => $response->get_error_message(), // Return the error message
 			];
 		}
-
+	
+		// Optional: Check the email log and forward if necessary
 		$setting_options = get_option('check-email-log-core');
-
 		if (isset($setting_options['forward_email']) && !empty($setting_options['forward_email'])) {
 			$this->forward_email_by_mailer($to_email, $subject, $body);
 		}
-
+	
+		// If everything is fine, return success
 		return [
 			'error' => 0,
-			'message' => "",
+			'message' => "", // Empty message means no errors
 		];
 	}
+	
 
 	function forward_email_by_mailer($to_email, $subject, $body) {
 		// Get the access token
@@ -588,10 +462,6 @@ class Auth
 							"address" => $email,
 						],
 					];
-				}
-				$forward_email_info['headers'] = \CheckEmail\Util\wp_chill_check_email_stringify($forward_header);
-				if (function_exists('ck_mail_forward_mail')) {
-					ck_mail_forward_mail($forward_email_info);
 				}
 			}
 		}

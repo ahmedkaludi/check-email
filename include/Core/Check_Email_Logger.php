@@ -71,7 +71,7 @@ class Check_Email_Logger implements Loadie {
             } else {
                     $log['attachments'] = 'true';
             }
-
+            $smtp_options = get_option('check-email-smtp-options', true);
             if (is_multisite()) {
 				$smtp_options = get_site_option( 'check-email-log-global-smtp');
 				if ( isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global'] ) ) {
@@ -79,7 +79,7 @@ class Check_Email_Logger implements Loadie {
 				}
 			}
 
-            $smtp_options = get_option('check-email-smtp-options', true);
+            
             $to_email = $log['to_email'];
             $subject = $log['subject'];
             $response = [];
