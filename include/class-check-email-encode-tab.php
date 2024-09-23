@@ -147,6 +147,9 @@ if ( $is_enable && $email_using == 'filters' ) {
 		add_filter( $filter, 'check_email_e_encode_emails', CHECK_EMAIL_E_FILTER_PRIORITY );
 	}
 }
+if ( $is_enable && $email_using == 'full_page' ) {
+	add_action( 'wp', 'check_email_full_page_scanner',999 );
+}
 
 add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 	/**
@@ -266,5 +269,14 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		}
 
 		return preg_replace_callback( $regexp, $callback, $string );
+	}
+
+	function check_email_full_page_scanner() {
+		if(!is_admin() ) {
+			ob_start('check_email_full_page_callback');
+		}
+	}
+	function check_email_full_page_callback($string) {
+		return check_email_e_encode_emails($string);
 	}
 
