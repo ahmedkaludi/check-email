@@ -248,6 +248,13 @@
       $('.check_email_enable_smtp').hide();
     }
   });
+  $(document).on('click', '#check-email-email-encode-options-is_enable', function(e){
+    if ($(this).is(":checked")) {
+      $('.check-email-etr').show();
+    } else {
+      $('.check-email-etr').hide();
+    }
+  });
 
   $(document).on('click', '#check_email_remove_outlook', function(e){
     t = jQuery(this);
