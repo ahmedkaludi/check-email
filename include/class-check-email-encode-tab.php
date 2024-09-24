@@ -19,6 +19,7 @@ class Check_Email_Encode_Tab {
 
 		add_action( 'check_mail_email_encode', array($this, 'load_email_encode_settings'));
 		add_action('admin_init', array($this, 'smtp_form_submission_handler'));
+		
 	}
 
 	/**
@@ -30,8 +31,6 @@ class Check_Email_Encode_Tab {
 	public function setup_vars(){
 		$this->encode_options = get_option('check-email-email-encode-options', true);
 	}
-
-	
 	
 	public function load_email_encode_settings(){
 		?>
@@ -47,7 +46,7 @@ class Check_Email_Encode_Tab {
 							</td>
 						</tr>
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
-							<th scope="row"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Search for emails using', 'check-email' ); ?></label></th>
+							<th scope="row" style="padding-left: 10px;;"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Search for emails using', 'check-email' ); ?></label></th>
 							<td>
 							<input id="check-email-email-encode-options-filter" type="radio" name="check-email-email-encode-options[email_using]" value="filters" <?php echo (isset($this->encode_options['email_using'])) && $this->encode_options['email_using'] == 'filters' ? "checked" : ''; ?>>
 							<label for="check-email-email-encode-options-filter" class="check-email-opt-labels"><?php esc_html_e( 'WordPress filters', 'check-email' ); ?></label>&nbsp;&nbsp;
@@ -55,6 +54,17 @@ class Check_Email_Encode_Tab {
 							<label for="check-email-email-encode-options-full_page" class="check-email-opt-labels"><?php esc_html_e( 'Full-page scanner', 'check-email' ); ?></label>&nbsp;&nbsp;
 							<input id="check-email-email-encode-options-nothing" type="radio" name="check-email-email-encode-options[email_using]" value="nothing" <?php echo (isset($this->encode_options['email_using'])) && $this->encode_options['email_using'] == 'nothing' ? "checked" : ''; ?>>
 							<label for="check-email-email-encode-options-nothing" class="check-email-opt-labels"><?php esc_html_e( 'Turns off email protection', 'check-email' ); ?></label>
+							</td>
+						</tr>
+						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
+							<th scope="row" style="padding-left: 10px;;"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Protect emails using', 'check-email' ); ?></label></th>
+							<td>
+							<input id="check-email-email-encode-options-html-entities" type="radio" name="check-email-email-encode-options[email_technique]" value="html_entities" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'html_entities' ? "checked" : ''; ?>>
+							<label for="check-email-email-encode-options-html-entities" class="check-email-opt-labels"><?php esc_html_e( 'Html Entities', 'check-email' ); ?></label>&nbsp;&nbsp;
+							<input id="check-email-email-encode-options-css_direction" type="radio" name="check-email-email-encode-options[email_technique]" value="css_direction" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'css_direction' ? "checked" : ''; ?>>
+							<label for="check-email-email-encode-options-css_direction" class="check-email-opt-labels"><?php esc_html_e( 'CSS Direction', 'check-email' ); ?></label>&nbsp;&nbsp;
+							<input id="check-email-email-encode-options-rot_13" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_13" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'rot_13' ? "checked" : ''; ?>>
+							<label for="check-email-email-encode-options-rot_13" class="check-email-opt-labels"><?php esc_html_e( 'ROT13 Encoding', 'check-email' ); ?></label>
 							</td>
 						</tr>
 					</thead>
@@ -96,6 +106,11 @@ class Check_Email_Encode_Tab {
 			}else{
 				$email_encode_option['email_using'] = 'filters';
 			}
+			if ( isset($_POST['check-email-email-encode-options']['email_technique'] ) ) {
+				$email_encode_option['email_technique'] = sanitize_text_field( wp_unslash( $_POST['check-email-email-encode-options']['email_technique'] ) );
+			}else{
+				$email_encode_option['email_technique'] = 'html_entities';
+			}
 			
 			update_option('check-email-email-encode-options', $email_encode_option);
 
@@ -117,34 +132,34 @@ if ( ! defined( 'CHECK_EMAIL_E_FILTER_PRIORITY' ) ) {
 	);
 }
 
-/**
- * Define regular expression constant, unless it has already been defined.
- */
 if ( ! defined( 'CHECK_EMAIL_E_REGEXP' ) ) {
-	define(
-		'CHECK_EMAIL_E_REGEXP',
-		'{
-			(?:mailto:)?
-			(?:
-				[-!#$%&*+/=?^_`.{|}~\w\x80-\xFF]+
-			|
-				".*?"
-			)
-			\@
-			(?:
-				[-a-z0-9\x80-\xFF]+(\.[-a-z0-9\x80-\xFF]+)*\.[a-z]+
-			|
-				\[[\d.a-fA-F:]+\]
-			)
-		}xi'
-	);
+    define(
+        'CHECK_EMAIL_E_REGEXP',
+        '{
+            \s               # Ensures exactly one space before the email
+            (?:mailto:)?      # Optional mailto:
+            (?:
+                [-!#$%&*+/=?^_`.{|}~\w\x80-\xFF]+  # Local part before @
+            |
+                ".*?"                               # Quoted local part
+            )
+            \@               # At sign (@)
+            (?:
+                [-a-z0-9\x80-\xFF]+(\.[-a-z0-9\x80-\xFF]+)*\.[a-z]+   # Domain name
+            |
+                \[[\d.a-fA-F:]+\]                                     # IPv4/IPv6 address
+            )
+        }xi'
+    );
 }
+
 $encode_options = get_option('check-email-email-encode-options', true);
 $is_enable = ( isset( $encode_options['is_enable'] ) ) ? $encode_options['is_enable'] : 0;
 $email_using = ( isset( $encode_options['email_using'] ) ) ? $encode_options['email_using'] : "";
 if ( $is_enable && $email_using == 'filters' ) {
 	foreach ( array( 'the_content', 'the_excerpt', 'widget_text', 'comment_text', 'comment_excerpt' ) as $filter ) {
 		add_filter( $filter, 'check_email_e_encode_emails', CHECK_EMAIL_E_FILTER_PRIORITY );
+		add_filter( $filter, 'check_email_e_anchor_encode_emails', CHECK_EMAIL_E_FILTER_PRIORITY );
 	}
 }
 if ( $is_enable && $email_using == 'full_page' ) {
@@ -163,7 +178,65 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		}
 	}
 
-	function check_email_e_encode_str( $string, $hex = false ) {
+	function check_email_encode_str( $string, $hex = false ) {
+		$encode_options = get_option('check-email-email-encode-options', true);
+		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
+		switch ($email_technique) {
+			case 'css_direction':
+				$reversed_email = strrev($string);
+				// Wrap it with the span and necessary CSS
+				return ' <span style="direction: rtl; unicode-bidi: bidi-override;">' . esc_html($reversed_email) . '</span>';
+				break;
+			case 'rot_13':
+				$encoded_email = str_rot13($string);
+				return ' <span class="check-email-encoded-email" >' . esc_html($encoded_email).' </span>';
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+    
+		
+		$chars = str_split( $string );
+		$seed = mt_rand( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
+		
+
+		foreach ( $chars as $key => $char ) {
+			$ord = ord( $char );
+
+			if ( $ord < 128 ) { // ignore non-ascii chars
+				$r = ( $seed * ( 1 + $key ) ) % 100; // pseudo "random function"
+
+				if ( $r > 75 && $char !== '@' && $char !== '.' ); // plain character (not encoded), except @-signs and dots
+				else if ( $hex && $r < 25 ) $chars[ $key ] = '%' . bin2hex( $char ); // hex
+				else if ( $r < 45 ) $chars[ $key ] = '&#x' . dechex( $ord ) . ';'; // hexadecimal
+				else $chars[ $key ] = "&#{$ord};"; // decimal (ascii)
+			}
+		}
+
+		return implode( '', $chars );
+	}
+	function check_email_anchor_encode_str( $string, $hex = false ) {
+		$string = str_replace('mailto:', '', $string);
+		$encode_options = get_option('check-email-email-encode-options', true);
+		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
+		switch ($email_technique) {
+			case 'css_direction':
+				$reversed_email = strrev($string);
+				// Wrap it with the span and necessary CSS
+				return 'mailto:'.esc_html($reversed_email);
+				break;
+			case 'rot_13':
+				$encoded_email = str_rot13($string);
+				return 'mailto:'.esc_html($encoded_email);
+				break;
+			
+			default:
+				# code...
+				break;
+		}    
+		
 		$chars = str_split( $string );
 		$seed = mt_rand( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
 		
@@ -184,16 +257,6 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		return implode( '', $chars );
 	}
 
-	
-
-	/**
-	 * The [encode] shortcode callback function. Returns encoded shortcode content.
-	 *
-	 * @param array $attributes Shortcode attributes
-	 * @param string $string Shortcode content
-	 *
-	 * @return string Encoded given text
-	 */
 	function check_email_e_shortcode( $attributes, $content = '' ) {
 		$atts = shortcode_atts( array(
 			'link' => null,
@@ -201,7 +264,7 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		), $attributes, 'encode' );
 
 		// override encoding function with the 'check_email_e_method' filter
-		$method = apply_filters( 'check_email_e_method', 'check_email_e_encode_str' );
+		$method = apply_filters( 'check_email_e_method', 'check_email_encode_str' );
 
 		if ( ! empty( $atts[ 'link' ] ) ) {
 			$link = esc_url( $atts[ 'link' ], null, 'shortcode' );
@@ -229,18 +292,30 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		return $method( $content );
 	}
 
-	/**
-	 * Searches for plain email addresses in given $string and
-	 * encodes them (by default) with the help of check_email_e_encode_str().
-	 *
-	 * Regular expression is based on based on John Gruber's Markdown.
-	 * http://daringfireball.net/projects/markdown/
-	 *
-	 * @param string $string Text with email addresses to encode
-	 *
-	 * @return string Given text with encoded email addresses
-	 */
 	function check_email_e_encode_emails( $string ) {
+		if ( ! is_string( $string ) ) {
+			return $string;
+		}
+		// abort if `check_email_e_at_sign_check` is true and `$string` doesn't contain a @-sign
+		if ( apply_filters( 'check_email_e_at_sign_check', true ) && strpos( $string, '@' ) === false ) {
+			return $string;
+		}
+
+		
+		// override encoding function with the 'check_email_e_method' filter
+		$method = apply_filters( 'check_email_e_method', 'check_email_encode_str' );
+
+		// override regular expression with the 'check_email_e_regexp' filter
+
+		$regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP );
+
+		$callback = function ( $matches ) use ( $method ) {
+			return $method( $matches[ 0 ] );
+		};
+
+		return preg_replace_callback( $regexp, $callback, $string );
+	}
+	function check_email_e_anchor_encode_emails( $string ) {
 		if ( ! is_string( $string ) ) {
 			return $string;
 		}
@@ -252,21 +327,15 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 
 		
 		// override encoding function with the 'check_email_e_method' filter
-		$method = apply_filters( 'check_email_e_method', 'check_email_e_encode_str' );
+		$method = apply_filters( 'check_email_e_method', 'check_email_anchor_encode_str' );
 
 		// override regular expression with the 'check_email_e_regexp' filter
-		$regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP );
-		
+		// $regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP );
+		$regexp = '/mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/';
+
 		$callback = function ( $matches ) use ( $method ) {
 			return $method( $matches[ 0 ] );
 		};
-		
-
-		// override callback method with the 'check_email_e_email_callback' filter
-		if ( has_filter( 'check_email_e_email_callback' ) ) {
-			$callback = apply_filters( 'check_email_e_email_callback', $callback, $method );
-			return preg_replace_callback( $regexp, $callback, $string );
-		}
 
 		return preg_replace_callback( $regexp, $callback, $string );
 	}
@@ -278,5 +347,26 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 	}
 	function check_email_full_page_callback($string) {
 		return check_email_e_encode_emails($string);
+	}
+
+	if ( ! is_admin() ) {
+		add_action( 'init', 'ck_mail_enqueue_encoder_js' );
+	}
+
+	function ck_mail_enqueue_encoder_js() {
+		$check_email    = wpchill_check_email();
+		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
+		wp_enqueue_script( 'checkemail_encoder', $plugin_dir_url . 'assets/js/check-email-front.js', array(), $check_email->get_version(), true );
+
+		$encode_options = get_option('check-email-email-encode-options', true);
+		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
+		$is_enable = ( isset( $encode_options['is_enable'] ) ) ? $encode_options['is_enable'] : 0;
+		$email_using = ( isset( $encode_options['email_using'] ) ) ? $encode_options['email_using'] : "";
+
+		$data['email_using'] = $email_using;
+		$data['is_enable'] = $is_enable;
+		$data['email_technique'] = $email_technique;
+
+        wp_localize_script( 'checkemail_encoder', 'checkemail_encoder_data', $data );
 	}
 
