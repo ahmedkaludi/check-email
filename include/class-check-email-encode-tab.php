@@ -64,7 +64,9 @@ class Check_Email_Encode_Tab {
 							<input id="check-email-email-encode-options-css_direction" type="radio" name="check-email-email-encode-options[email_technique]" value="css_direction" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'css_direction' ? "checked" : ''; ?>>
 							<label for="check-email-email-encode-options-css_direction" class="check-email-opt-labels"><?php esc_html_e( 'CSS Direction', 'check-email' ); ?></label>&nbsp;&nbsp;
 							<input id="check-email-email-encode-options-rot_13" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_13" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'rot_13' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-rot_13" class="check-email-opt-labels"><?php esc_html_e( 'ROT13 Encoding', 'check-email' ); ?></label>
+							<label for="check-email-email-encode-options-rot_13" class="check-email-opt-labels"><?php esc_html_e( 'ROT13 Encoding', 'check-email' ); ?></label>&nbsp;&nbsp;
+							<input id="check-email-email-encode-options-rot_47" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_47" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'rot_47' ? "checked" : ''; ?>>
+							<label for="check-email-email-encode-options-rot_47" class="check-email-opt-labels"><?php esc_html_e( 'Polymorphous ROT47/CSS', 'check-email' ); ?></label>
 							</td>
 						</tr>
 					</thead>
@@ -167,15 +169,24 @@ if ( $is_enable && $email_using == 'full_page' ) {
 }
 
 add_action( 'init', 'check_email_e_register_shortcode', 2000 );
-	/**
-	 * Register the [encode] shortcode, if it doesn't exist.
-	 *
-	 * @return void
-	 */
+	
 	function check_email_e_register_shortcode() {
 		if ( ! shortcode_exists( 'encode' ) ) {
 			add_shortcode( 'encode', 'check_email_e_shortcode' );
 		}
+	}
+
+	function check_email_rot47($str) {
+		$rotated = '';
+		foreach (str_split($str) as $char) {
+			$ascii = ord($char);
+			if ($ascii >= 33 && $ascii <= 126) {
+				$rotated .= chr(33 + (($ascii + 14) % 94));
+			} else {
+				$rotated .= $char;
+			}
+		}
+		return $rotated;
 	}
 
 	function check_email_encode_str( $string, $hex = false ) {
@@ -190,6 +201,10 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 			case 'rot_13':
 				$encoded_email = str_rot13($string);
 				return ' <span class="check-email-encoded-email" >' . esc_html($encoded_email).' </span>';
+				break;
+			case 'rot_47':
+				$encoded_email = check_email_rot47($string);
+				return ' <span class="check-email-rot47-email" >' . esc_html($encoded_email).' </span>';
 				break;
 			
 			default:
@@ -229,6 +244,10 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 				break;
 			case 'rot_13':
 				$encoded_email = str_rot13($string);
+				return 'mailto:'.esc_html($encoded_email);
+				break;
+			case 'rot_47':
+				$encoded_email = check_email_rot47($string);
 				return 'mailto:'.esc_html($encoded_email);
 				break;
 			
@@ -312,6 +331,10 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		$callback = function ( $matches ) use ( $method ) {
 			return $method( $matches[ 0 ] );
 		};
+		if ( has_filter( 'check_email_e_callback' ) ) {
+			$callback = apply_filters( 'check_email_e_callback', $callback, $method );
+			return preg_replace_callback( $regexp, $callback, $string );
+		}
 
 		return preg_replace_callback( $regexp, $callback, $string );
 	}
@@ -336,6 +359,11 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		$callback = function ( $matches ) use ( $method ) {
 			return $method( $matches[ 0 ] );
 		};
+
+		if ( has_filter( 'check_email_e_anchor_callback' ) ) {
+			$callback = apply_filters( 'check_email_e_anchor_callback', $callback, $method );
+			return preg_replace_callback( $regexp, $callback, $string );
+		}
 
 		return preg_replace_callback( $regexp, $callback, $string );
 	}
