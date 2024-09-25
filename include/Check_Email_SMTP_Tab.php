@@ -160,8 +160,11 @@ class Check_Email_SMTP_Tab {
 	 * @since 1.0.12
 	 */
 	public function load_smtp_settings(){
+		$check_email    = wpchill_check_email();
+		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		$enable_smtp = isset($this->smtp_options['enable_smtp'])?$this->smtp_options['enable_smtp']:'';
 		$mailer = isset($this->smtp_options['mailer'])?$this->smtp_options['mailer']:'smtp';
+		
 		$auth = new Auth( 'outlook' );
 		if ( $mailer == 'outlook' ) {
 			$this->smtp_options = $auth->get_mailer_option();
@@ -194,24 +197,33 @@ class Check_Email_SMTP_Tab {
 			<div id="check-mail-smtp-wrapper">
 				<table class="form-table" role="presentation">
 					<thead>
-						<tr class="check_email_mailer">
-						    <th scope="row"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
-						    <td>
-						        <input class="check_email_mailer_type" type="radio" name="check-email-smtp-options[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?>>
-						        <label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e('SMTP','check-email'); ?></label>
-						        <input class="check_email_mailer_type" type="radio" name="check-email-smtp-options[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?>>
-						        <label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e('365 / Outlook','check-email'); ?></label>
-						    </td>
-						</tr>
-						<tr class="check_email_enable_smtp" style="<?php echo $mailer != 'smtp' ? "display: none" : ''; ?>" >
+						<tr class="check_email_enable_smtp" >
 						    <th scope="row"><label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e( 'SMTP', 'check-email' ); ?></label></th>
 						    <td>
 						        <input id="check-email-enable-smtp" type="checkbox" name="check-email-smtp-options[enable_smtp]" <?php echo $enable_smtp == 'on' ? "checked" : ''; ?>>
 						        <label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e('SMTP helps you to send emails via SMTP instead of the PHP mail()','check-email'); ?></label>
 						    </td>
 						</tr>
+						<tr class="check_email_mailer check_email_all_smtp" style="<?php echo $enable_smtp != 'on' ? "display: none" : ''; ?>">
+						    <th scope="row"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
+						    <td>
+								<div class="ce_radio-container">
+									<label class="ce_radio-label">
+										<input class="check_email_mailer_type" type="radio" name="check-email-smtp-options[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?>>
+										<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/smtp.svg') ?>" alt="SMTP Icon">
+										<div class="ce_radio-title"><?php esc_html_e('General SMTP','check-email'); ?></div>
+									</label>
+
+									<label class="ce_radio-label" >
+										<input class="check_email_mailer_type" type="radio" name="check-email-smtp-options[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?>>
+										<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/microsoft.svg') ?>" alt="Outlook Icon">
+										<div class="ce_radio-title"><?php esc_html_e('365 / Outlook','check-email'); ?></div>
+									</label>
+								</div>
+						    </td>
+						</tr>
 					</thead>
-					<tbody id="check-email-outllook" style="<?php echo $mailer != 'outlook' ? "display: none" : ''; ?>">	
+					<tbody id="check-email-outllook" class="check_email_all_smtp" style="<?php echo $enable_smtp != 'on' || $mailer != 'outlook' ? "display: none" : ''; ?>">	
 						<tr class="check_email_smtp_from">
 						    <th scope="row"><?php esc_html_e('Application ID', 'check-email'); ?></th>
 						    <td>
@@ -229,8 +241,7 @@ class Check_Email_SMTP_Tab {
 						    <td>
 								
 								<input class="regular-text" type="text" readonly id="check_mail_request_uri" value="<?php echo (is_network_admin()) ? esc_url(network_admin_url()):esc_url(admin_url()) ?>" ><small id="check_mail_copy_text"></small>
-								<p><?php esc_html_e('This is the page on your site that you will be redirected to after you have authenticated with Microsoft.
-You need to copy this URL into "Authentication > Redirect URIs" web field for your application on Microsoft Azure site for your project there.','check-email'); ?></p>
+								<p><?php esc_html_e('This is the page on your site that you will be redirected to after you have authenticated with Microsoft. You need to copy this URL into "Authentication > Redirect URIs" web field for your application on Microsoft Azure site for your project there.','check-email'); ?></p>
 						    </td>
 						</tr>
 						<tr class="">
@@ -279,7 +290,7 @@ You need to copy this URL into "Authentication > Redirect URIs" web field for yo
 						</tr>
 					</tbody>
 					
-					<tbody id="check-email-smtp-form" style="<?php echo $enable_smtp != 'on' || $mailer != 'smtp' ? "display: none" : ''; ?>">	
+					<tbody id="check-email-smtp-form" class="check_email_all_smtp" style="<?php echo $enable_smtp != 'on' || $mailer != 'smtp' ? "display: none" : ''; ?>">	
 						<tr class="check_email_smtp_from">
 						    <th scope="row"><?php esc_html_e('From', 'check-email'); ?></th>
 						    <td>

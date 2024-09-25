@@ -40,7 +40,7 @@ class Check_Email_Encode_Tab {
 				<table class="form-table" role="presentation">
 					<thead>
 						<tr>
-							<th scope="row"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Enable Email Address Encoder', 'check-email' ); ?></label></th>
+							<th scope="row"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Email Encoder', 'check-email' ); ?></label></th>
 							<td>
 							<input class="" type="checkbox" id="check-email-email-encode-options-is_enable" name="check-email-email-encode-options[is_enable]" value="1" <?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "checked" : ''; ?>>
 							</td>

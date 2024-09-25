@@ -64,6 +64,8 @@ class Check_Email_Multisite {
 	}
 
 	function render_page() {
+		$check_email    = wpchill_check_email();
+		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		$smtp_options = [];
 		$outlook_smtp = [];
 		$enable_smtp = "";
@@ -107,7 +109,7 @@ class Check_Email_Multisite {
 						<thead>
 						<tr valign="top">
 							<th scope="row"><label for="check-email-log-global-enable_global"><?php esc_html_e('Setting Control', 'check-email'); ?></label></th>
-							<td><input type="checkbox" id="check-email-log-global-enable_global" name="check-email-log-global[enable_global]" <?php echo $enable_global == 'on' ? "checked" : ''; ?> class="regular-text" /><?php esc_html_e('Make the plugin settings global network-wide', 'check-email'); ?></td>
+							<td><input type="checkbox" id="check-email-log-global-enable_global" name="check-email-log-global[enable_global]" <?php echo $enable_global == 'on' ? "checked" : ''; ?> class="regular-text" /><label for="check-email-log-global-enable_global"><?php esc_html_e('Make the plugin settings global network-wide', 'check-email'); ?></label></td>
 						</tr>
 						</thead>
 					<?php if( 'general' == $tab ) : ?>
@@ -160,34 +162,43 @@ class Check_Email_Multisite {
 					<?php if( 'smtp' == $tab ) : ?>
 						<tbody id="check-email-global-smtp-form" style="<?php echo $enable_global != 'on' ? "display: none" : ''; ?>">
 							<tr class="check_email_mailer">
-								<th scope="row"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
+								<th scope="row" style="padding-left: 10px;"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
 								<td>
-									<input class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?> id="check-email-mailer-general-smtp">
-									<label for="check-email-mailer-general-smtp" class="check-email-opt-labels"><?php esc_html_e('General SMTP','check-email'); ?></label>
-									<input class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?> id="check-email-mailer-outlook">
-									<label for="check-email-mailer-outlook" class="check-email-opt-labels"><?php esc_html_e('365 / Outlook','check-email'); ?></label>
+									<div class="ce_radio-container">
+										<label class="ce_radio-label">
+											<input  class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?> id="check-email-mailer-general-smtp">
+											<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/smtp.svg') ?>" alt="SMTP Icon">
+											<div class="ce_radio-title"><?php esc_html_e('General SMTP','check-email'); ?></div>
+										</label>
+
+										<label class="ce_radio-label" >
+											<input class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?> id="check-email-mailer-outlook">
+											<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/microsoft.svg') ?>" alt="Outlook Icon">
+											<div class="ce_radio-title"><?php esc_html_e('365 / Outlook','check-email'); ?></div>
+										</label>
+									</div>
 								</td>
 							</tr>
-							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('From', 'check-email'); ?></th>
+							<tr class="check_email_smtp_class" style="padding-left: 10px;">
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('From', 'check-email'); ?></th>
 								<td>
 									<input id="check-email-smtp-from" type="text" name="check-email-log-global[smtp_from]" value="<?php echo isset($smtp_options['smtp_from']) ? esc_attr($smtp_options['smtp_from']) : "" ?>" size="35">
 								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('From Name', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('From Name', 'check-email'); ?></th>
 								<td>
 									<input id="check-email-smtp-from-name" type="text" name="check-email-log-global[smtp_from_name]" size="35" value="<?php echo isset($smtp_options['smtp_from_name']) ? esc_attr($smtp_options['smtp_from_name']) : "" ?>">
 								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('SMTP Host', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('SMTP Host', 'check-email'); ?></th>
 								<td>
 									<input id="check-email-smtp-host" type="text" name="check-email-log-global[smtp_host]" value="<?php echo isset($smtp_options['smtp_host']) ? esc_attr($smtp_options['smtp_host']) : "" ?>" size="35">
 								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('SMTP Secure', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('SMTP Secure', 'check-email'); ?></th>
 								<td>
 									<?php
 									$secure_array = array('None' => '', 'SSL' => 'ssl', 'TLS' => 'tls');
@@ -214,13 +225,13 @@ class Check_Email_Multisite {
 							</tr>
 							<tr class="check_email_smtp_class">
 								<?php $smtp_port = isset($smtp_options['smtp_port']) ? $smtp_options['smtp_port'] : ""; ?>
-								<th scope="row"><?php esc_html_e('SMTP Port', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('SMTP Port', 'check-email'); ?></th>
 								<td>
 									<input id="check-email-smtp-port" type="text" name="check-email-log-global[smtp_port]" value="<?php echo esc_attr($smtp_port) ?>" size="35">
 								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('SMTP Authentication', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('SMTP Authentication', 'check-email'); ?></th>
 								<td>
 									<?php
 									$secure_array = array('No' => 'no', 'Yes' => 'yes');
@@ -244,14 +255,14 @@ class Check_Email_Multisite {
 								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('Username', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('Username', 'check-email'); ?></th>
 								<?php $smtp_username = isset($smtp_options['smtp_username']) ? base64_decode($smtp_options['smtp_username']) : ''; ?>
 								<td>
 									<input id="check-email-smtp-username" type="text" name="check-email-log-global[smtp_username]" value="<?php echo esc_attr($smtp_username); ?>" size="35">
 								</td>
 							</tr>
 							<tr class="check_email_smtp_class">
-								<th scope="row"><?php esc_html_e('Password', 'check-email'); ?></th>
+								<th scope="row" style="padding-left: 10px;"><?php esc_html_e('Password', 'check-email'); ?></th>
 								<?php $smtp_password = isset($smtp_options['smtp_password']) ? base64_decode($smtp_options['smtp_password']) : ''; ?>
 								<td>
 									<input id="check-email-smtp-password" type="password" name="check-email-log-global[smtp_password]" value="<?php echo esc_attr($smtp_password); ?>" size="35">
@@ -261,19 +272,19 @@ class Check_Email_Multisite {
 
 						<tbody id="check-email-outllook" style="<?php echo $enable_global != 'on' || $mailer != 'outlook' ? "display: none" : ''; ?>">	
 						<tr class="check_email_smtp_from">
-						    <th scope="row"><?php esc_html_e('Application ID', 'check-email'); ?></th>
+						    <th scope="row" style="padding-left: 10px;"><?php esc_html_e('Application ID', 'check-email'); ?></th>
 						    <td>
 						        <input class="regular-text" type="text" name="check-email-outlook-options[client_id]" value="<?php echo isset($outlook_smtp['client_id'])?esc_attr(base64_decode($outlook_smtp['client_id'])):"" ?>" >
 						    </td>
 						</tr>
 						<tr class="">
-						    <th scope="row"><?php esc_html_e('Client Secret', 'check-email'); ?></th>
+						    <th scope="row" style="padding-left: 10px;"><?php esc_html_e('Client Secret', 'check-email'); ?></th>
 						    <td>
 						        <input  class="regular-text" type="password" name="check-email-outlook-options[client_secret]" value="<?php echo isset($outlook_smtp['client_secret'])?esc_attr(base64_decode($outlook_smtp['client_secret'])):"" ?>">
 						    </td>
 						</tr>
 						<tr class="">
-						    <th scope="row"><?php esc_html_e('Redirect URI', 'check-email'); ?></th>
+						    <th scope="row" style="padding-left: 10px;"><?php esc_html_e('Redirect URI', 'check-email'); ?></th>
 						    <td>
 								
 								<input class="regular-text" type="text" readonly id="check_mail_request_uri" value="<?php echo (is_network_admin()) ? esc_url(network_admin_url()):esc_url(admin_url()) ?>" ><small id="check_mail_copy_text"></small>
