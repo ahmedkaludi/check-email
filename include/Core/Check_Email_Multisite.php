@@ -90,7 +90,6 @@ class Check_Email_Multisite {
 				<a href="?page=check-mail-global-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
 			</nav>
 			<div class="tab-content">
-				<h1><?php esc_html_e('Check & Log Network Settings', 'check-email'); ?></h1>
 				<?php
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
 				if (isset( $_GET['error_description'] ) ) {
@@ -108,50 +107,51 @@ class Check_Email_Multisite {
 					<table class="form-table">
 						<thead>
 						<tr valign="top">
-							<th scope="row"><label for="check-email-log-global-enable_global"><?php esc_html_e('Setting Control', 'check-email'); ?></label></th>
-							<td><input type="checkbox" id="check-email-log-global-enable_global" name="check-email-log-global[enable_global]" <?php echo $enable_global == 'on' ? "checked" : ''; ?> class="regular-text" /><label for="check-email-log-global-enable_global"><?php esc_html_e('Make the plugin settings global network-wide', 'check-email'); ?></label></td>
+							<th scope="row"><label for="check-email-log-global-enable_global" class="check-email-opt-labels"><?php esc_html_e('Setting Control', 'check-email'); ?></label></th>
+							<td><input type="checkbox" id="check-email-log-global-enable_global" name="check-email-log-global[enable_global]" <?php echo $enable_global == 'on' ? "checked" : ''; ?> class="regular-text" /><label for="check-email-log-global-enable_global" class="check-email-opt-labels"><?php esc_html_e('Make the plugin settings global network-wide', 'check-email'); ?></label></td>
 						</tr>
 						</thead>
 					<?php if( 'general' == $tab ) : ?>
 						<tbody id="check-email-global-smtp-form" style="<?php echo $enable_global != 'on' ? "display: none" : ''; ?>">
 						<tr>
-								<th scope="row"><label for="check-email-global-override_emails_from" ><?php esc_html_e('Override Emails From', 'check-email'); ?></label></th>
+								<th scope="row"><label for="check-email-global-override_emails_from" class="check-email-opt-labels" ><?php esc_html_e('Override Emails From', 'check-email'); ?></label></th>
 								<td>
-								<input id="check-email-global-override_emails_from" type="checkbox" name="check-email-log-global[override_emails_from]" value="true"> <?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?>
+								<input id="check-email-global-override_emails_from" type="checkbox" name="check-email-log-global[override_emails_from]" value="true" /> 
+								<label for="check-email-global-override_emails_from" class="check-email-opt-labels" ><?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?> </label>
 								</td>
 							</tr>
 							<tr class="cm_global_override">
-								<th scope="row"> <label for="check-email-log-global-email_from_name" style="padding-left:10px;"><?php esc_html_e('Change the "from" name', 'check-email'); ?> </label></th>
+								<th scope="row"> <label for="check-email-log-global-email_from_name" style="padding-left:10px;" class="check-email-opt-labels"><?php esc_html_e('Change the "from" name', 'check-email'); ?> </label></th>
 								<td>
 								<input id="check-email-log-global-email_from_name" placeholder="<?php esc_html_e('Change the "from" name', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_name]" value="" class="regular-text">
 								</td>
 							</tr>
 							<tr class="cm_global_override">
-								<th scope="row"> <label for="check-email-log-global-email_from_email" style="padding-left:10px;"><?php esc_html_e('Change the "from" email', 'check-email'); ?></th>
+								<th scope="row"> <label for="check-email-log-global-email_from_email" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Change the "from" email', 'check-email'); ?></th>
 								<td>
 								<input id="check-email-log-global-email_from_email" placeholder="<?php esc_html_e('Change the "from" email', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_email]" value="" class="regular-text">
 								</td>
 							</tr>
 							<tr>
-								<th scope="row"><label for="check-email-global-forward_email"><?php esc_html_e('Forward Email', 'check-email'); ?></label></th>
+								<th scope="row"><label for="check-email-global-forward_email" class="check-email-opt-labels"><?php esc_html_e('Forward Email', 'check-email'); ?></label></th>
 								<td>
-								<input id="check-email-global-forward_email" type="checkbox" name="check-email-log-global[forward_email]" value="true"> <?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?><a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></a>
+								<input id="check-email-global-forward_email" type="checkbox" name="check-email-log-global[forward_email]" value="true" /> <label for="check-email-global-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?> </label><a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></a>
 								</td>
 							</tr>
 							<tr class="cm_global_forward">
-								<th scope="row"> <label for="check-email-log-global-forward_to" style="padding-left:10px;"><?php esc_html_e('Forward To', 'check-email'); ?> </label></th>
+								<th scope="row"> <label for="check-email-log-global-forward_to" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward To', 'check-email'); ?> </label></th>
 								<td>
 								<input id="check-email-log-global-forward_to" placeholder="<?php esc_html_e('Forward To Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_to]" value="" class="regular-text">
 								</td>
 							</tr>
 							<tr class="cm_global_forward">
-								<th scope="row"> <label for="check-email-log-global-forward_cc" style="padding-left:10px;"><?php esc_html_e('Forward Cc', 'check-email'); ?></th>
+								<th scope="row"> <label for="check-email-log-global-forward_cc" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward Cc', 'check-email'); ?></th>
 								<td>
 								<input id="check-email-log-global-forward_cc" placeholder="<?php esc_html_e('Forward Cc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_cc]" value="" class="regular-text">
 								</td>
 							</tr>
 							<tr class="cm_global_forward">
-								<th scope="row"> <label for="check-email-log-global-forward_bcc" style="padding-left:10px;"><?php esc_html_e('Forward Bcc', 'check-email'); ?></th>
+								<th scope="row"> <label for="check-email-log-global-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward Bcc', 'check-email'); ?></th>
 								<td>
 								<input id="check-email-log-global-forward_bcc" placeholder="<?php esc_html_e('Forward Bcc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_bcc]" value="" class="regular-text">
 								</td>

@@ -33,6 +33,16 @@ class Check_Email_Encode_Tab {
 	}
 	
 	public function load_email_encode_settings(){
+		if (isset($this->encode_options['email_using']) && !empty( isset( $this->encode_options['email_using'] ) ) ) {
+			$email_using_radio = $this->encode_options['email_using'];
+		}else{
+			$email_using_radio = 'filters';
+		}
+		if (isset($this->encode_options['email_technique']) && !empty( isset( $this->encode_options['email_technique'] ) ) ) {
+			$email_technique_radio = $this->encode_options['email_technique'];
+		}else{
+			$email_technique_radio = 'html_entities';
+		}
 		?>
 		
 		<form action="" method="post" >
@@ -46,27 +56,38 @@ class Check_Email_Encode_Tab {
 							</td>
 						</tr>
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
-							<th scope="row" style="padding-left: 10px;;"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Search for emails using', 'check-email' ); ?></label></th>
+							<th scope="row" style="padding-left: 10px;;"><label class="check-email-opt-labels"><?php esc_html_e( 'Search for emails using', 'check-email' ); ?></label></th>
 							<td>
-							<input id="check-email-email-encode-options-filter" type="radio" name="check-email-email-encode-options[email_using]" value="filters" <?php echo (isset($this->encode_options['email_using'])) && $this->encode_options['email_using'] == 'filters' ? "checked" : ''; ?>>
+							<input id="check-email-email-encode-options-filter" type="radio" name="check-email-email-encode-options[email_using]" value="filters" <?php echo $email_using_radio == 'filters' ? "checked" : ''; ?>>
 							<label for="check-email-email-encode-options-filter" class="check-email-opt-labels"><?php esc_html_e( 'WordPress filters', 'check-email' ); ?></label>&nbsp;&nbsp;
-							<input id="check-email-email-encode-options-full_page" type="radio" name="check-email-email-encode-options[email_using]" value="full_page" <?php echo (isset($this->encode_options['email_using'])) && $this->encode_options['email_using'] == 'full_page' ? "checked" : ''; ?>>
+							<input id="check-email-email-encode-options-full_page" type="radio" name="check-email-email-encode-options[email_using]" value="full_page" <?php echo $email_using_radio == 'full_page' ? "checked" : ''; ?>>
 							<label for="check-email-email-encode-options-full_page" class="check-email-opt-labels"><?php esc_html_e( 'Full-page scanner', 'check-email' ); ?></label>&nbsp;&nbsp;
-							<input id="check-email-email-encode-options-nothing" type="radio" name="check-email-email-encode-options[email_using]" value="nothing" <?php echo (isset($this->encode_options['email_using'])) && $this->encode_options['email_using'] == 'nothing' ? "checked" : ''; ?>>
+							<input id="check-email-email-encode-options-nothing" type="radio" name="check-email-email-encode-options[email_using]" value="nothing" <?php echo $email_using_radio == 'nothing' ? "checked" : ''; ?>>
 							<label for="check-email-email-encode-options-nothing" class="check-email-opt-labels"><?php esc_html_e( 'Turns off email protection', 'check-email' ); ?></label>
 							</td>
 						</tr>
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
-							<th scope="row" style="padding-left: 10px;;"><label for="check-email-email-encode-options-is_enable" class="check-email-opt-labels"><?php esc_html_e( 'Protect emails using', 'check-email' ); ?></label></th>
+							<th scope="row" style="padding-left: 10px;;"><label class="check-email-opt-labels"><?php esc_html_e( 'Protect emails using', 'check-email' ); ?></label></th>
 							<td>
-							<input id="check-email-email-encode-options-html-entities" type="radio" name="check-email-email-encode-options[email_technique]" value="html_entities" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'html_entities' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-html-entities" class="check-email-opt-labels"><?php esc_html_e( 'Html Entities', 'check-email' ); ?></label>&nbsp;&nbsp;
-							<input id="check-email-email-encode-options-css_direction" type="radio" name="check-email-email-encode-options[email_technique]" value="css_direction" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'css_direction' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-css_direction" class="check-email-opt-labels"><?php esc_html_e( 'CSS Direction', 'check-email' ); ?></label>&nbsp;&nbsp;
-							<input id="check-email-email-encode-options-rot_13" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_13" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'rot_13' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-rot_13" class="check-email-opt-labels"><?php esc_html_e( 'ROT13 Encoding', 'check-email' ); ?></label>&nbsp;&nbsp;
-							<input id="check-email-email-encode-options-rot_47" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_47" <?php echo (isset($this->encode_options['email_technique'])) && $this->encode_options['email_technique'] == 'rot_47' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-rot_47" class="check-email-opt-labels"><?php esc_html_e( 'Polymorphous ROT47/CSS', 'check-email' ); ?></label>
+							<label for="check-email-email-encode-options-html-entities" class="check-email-opt-labels-encoder">
+							<input id="check-email-email-encode-options-html-entities" type="radio" name="check-email-email-encode-options[email_technique]" value="html_entities" <?php echo $email_technique_radio == 'html_entities' ? "checked" : ''; ?>>
+							<?php esc_html_e( 'Html Entities', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small> 
+
+
+
+							<label for="check-email-email-encode-options-css_direction" class="check-email-opt-labels-encoder">
+							<input id="check-email-email-encode-options-css_direction" type="radio" name="check-email-email-encode-options[email_technique]" value="css_direction" <?php echo $email_technique_radio == 'css_direction' ? "checked" : ''; ?>><?php esc_html_e( 'CSS Direction', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
+
+							<label for="check-email-email-encode-options-rot_13" class="check-email-opt-labels-encoder">
+							<input id="check-email-email-encode-options-rot_13" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_13" <?php echo $email_technique_radio == 'rot_13' ? "checked" : ''; ?>> <?php esc_html_e( 'ROT13 Encoding', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
+
+							<label for="check-email-email-encode-options-rot_47" class="check-email-opt-labels-encoder">
+							<input id="check-email-email-encode-options-rot_47" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_47" <?php echo $email_technique_radio == 'rot_47' ? "checked" : ''; ?>>
+							<?php esc_html_e( 'Polymorphous ROT47/CSS', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
 							</td>
 						</tr>
 					</thead>
@@ -384,7 +405,8 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 	function ck_mail_enqueue_encoder_js() {
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
-		wp_enqueue_script( 'checkemail_encoder', $plugin_dir_url . 'assets/js/check-email-front.js', array(), $check_email->get_version(), true );
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_enqueue_script( 'checkemail_encoder', $plugin_dir_url . 'assets/js/check-email-front'. $suffix .'.js', array(), $check_email->get_version(), true );
 
 		$encode_options = get_option('check-email-email-encode-options', true);
 		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";

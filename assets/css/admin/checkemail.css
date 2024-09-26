@@ -268,3 +268,9 @@
 .ce_radio-label:hover {
     border-color: #ccc; /* Light border on hover */
 }
+
+.check-email-opt-labels-encoder {
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+}
