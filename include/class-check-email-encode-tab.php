@@ -58,12 +58,17 @@ class Check_Email_Encode_Tab {
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
 							<th scope="row" style="padding-left: 10px;;"><label class="check-email-opt-labels"><?php esc_html_e( 'Search for emails using', 'check-email' ); ?></label></th>
 							<td>
+							<label for="check-email-email-encode-options-filter" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-filter" type="radio" name="check-email-email-encode-options[email_using]" value="filters" <?php echo $email_using_radio == 'filters' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-filter" class="check-email-opt-labels"><?php esc_html_e( 'WordPress filters', 'check-email' ); ?></label>&nbsp;&nbsp;
+							<?php esc_html_e( 'WordPress filters', 'check-email' ); ?></label>
+
+							<label for="check-email-email-encode-options-full_page" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-full_page" type="radio" name="check-email-email-encode-options[email_using]" value="full_page" <?php echo $email_using_radio == 'full_page' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-full_page" class="check-email-opt-labels"><?php esc_html_e( 'Full-page scanner', 'check-email' ); ?></label>&nbsp;&nbsp;
+							<?php esc_html_e( 'Full-page scanner', 'check-email' ); ?></label>
+
+							<label for="check-email-email-encode-options-nothing" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-nothing" type="radio" name="check-email-email-encode-options[email_using]" value="nothing" <?php echo $email_using_radio == 'nothing' ? "checked" : ''; ?>>
-							<label for="check-email-email-encode-options-nothing" class="check-email-opt-labels"><?php esc_html_e( 'Turns off email protection', 'check-email' ); ?></label>
+							<?php esc_html_e( 'Turns off email protection', 'check-email' ); ?></label>
 							</td>
 						</tr>
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
@@ -88,6 +93,17 @@ class Check_Email_Encode_Tab {
 							<input id="check-email-email-encode-options-rot_47" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_47" <?php echo $email_technique_radio == 'rot_47' ? "checked" : ''; ?>>
 							<?php esc_html_e( 'Polymorphous ROT47/CSS', 'check-email' ); ?></label>
 							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label class="check-email-opt-labels"><?php esc_html_e( 'Mobile Number Encoder', 'check-email' ); ?></label></th>
+							<td>
+								<p><?php esc_html_e( 'Other content (like phone numbers) can be protected using [checkmail-encode] shortcode', 'check-email' ); ?></p></br>
+								<code>
+								[checkmail-encode]+1 (555) 123-4569[/checkmail-encode]</code> <br/>
+								<code>
+								[checkmail-encode link="tel:+15551234569"]+1 (555) 123-4569[/checkmail-encode]
+								</code>
 							</td>
 						</tr>
 					</thead>
