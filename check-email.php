@@ -47,7 +47,6 @@ if ( is_admin() ) {
 	require_once(CK_MAIL_PATH. "/include/class-check-email-newsletter.php" );
 	require_once(CK_MAIL_PATH. "/include/Check_Email_SMTP_Tab.php" );
 }
-require_once(CK_MAIL_PATH. "/include/class-check-email-encode-tab.php" );
 
 
 if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
@@ -103,6 +102,7 @@ function check_email_log( $plugin_file ) {
 	$check_email = new \CheckEmail\Core\Check_Email_Log( $plugin_file, $loader, new \CheckEmail\Core\DB\Check_Email_Table_Manager() );
 
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Multisite() );
+	$check_email->add_loadie( new \CheckEmail\Check_Email_Encode_Tab() );
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Logger() );
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Review() );
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Export_Log() );
