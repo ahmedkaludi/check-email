@@ -74,10 +74,6 @@ class Check_Email_Encode_Tab {
 							<label for="check-email-email-encode-options-full_page" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-full_page" type="radio" name="check-email-email-encode-options[email_using]" value="full_page" <?php echo $email_using_radio == 'full_page' ? "checked" : ''; ?>>
 							<?php esc_html_e( 'Full-page scanner', 'check-email' ); ?></label>
-
-							<label for="check-email-email-encode-options-nothing" class="check-email-opt-labels-encoder">
-							<input id="check-email-email-encode-options-nothing" type="radio" name="check-email-email-encode-options[email_using]" value="nothing" <?php echo $email_using_radio == 'nothing' ? "checked" : ''; ?>>
-							<?php esc_html_e( 'Turns off email protection', 'check-email' ); ?></label>
 							</td>
 						</tr>
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
