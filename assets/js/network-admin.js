@@ -26,11 +26,16 @@ jQuery(document).ready(function ($) {
         check_email_smtp_class.hide();
     }
     $(document).on('click', '.check_email_mailer_type_multi', function (e) {
-        $('.check_email_smtp_class').show();
-        $('#check-email-outllook').hide();
+        $('.ck_radio_selected').removeClass('ck_radio_selected');
         if($(this).val() == 'outlook'){
             $('#check-email-outllook').show();
             $('.check_email_smtp_class').hide();
+            $(this).parents('.ce_radio-label').addClass('ck_radio_selected');
+        }
+        if($(this).val() == 'smtp'){
+            $('#check-email-outllook').hide();
+            $('.check_email_smtp_class').show();
+            $(this).parents('.ce_radio-label').addClass('ck_radio_selected');
         }
     });
     $(document).on('click', '#check-email-log-global-enable_global', function (e) {

@@ -208,8 +208,8 @@ if ( $is_enable && $email_using == 'full_page' ) {
 add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 	
 	function check_email_e_register_shortcode() {
-		if ( ! shortcode_exists( 'encode' ) ) {
-			add_shortcode( 'encode', 'check_email_e_shortcode' );
+		if ( ! shortcode_exists( 'checkmail-encode' ) ) {
+			add_shortcode( 'checkmail-encode', 'check_email_e_shortcode' );
 		}
 	}
 
@@ -317,10 +317,10 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		$atts = shortcode_atts( array(
 			'link' => null,
 			'class' => null,
-		), $attributes, 'encode' );
+		), $attributes, 'checkmail-encode' );
 
 		// override encoding function with the 'check_email_e_method' filter
-		$method = apply_filters( 'check_email_e_method', 'check_email_encode_str' );
+		$method = apply_filters( 'check_email_e_method', 'check_email_anchor_encode_str' );
 
 		if ( ! empty( $atts[ 'link' ] ) ) {
 			$link = esc_url( $atts[ 'link' ], null, 'shortcode' );

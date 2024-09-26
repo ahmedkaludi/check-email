@@ -263,6 +263,9 @@
     border-color: #0078D7; /* Border around the entire label */
     color: #0078D7
 }
+.ck_radio_selected {
+    border-color: #0078D7;
+}
 
 /* Optional: Add a hover effect */
 .ce_radio-label:hover {

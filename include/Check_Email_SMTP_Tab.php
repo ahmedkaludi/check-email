@@ -208,13 +208,13 @@ class Check_Email_SMTP_Tab {
 						    <th scope="row"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
 						    <td>
 								<div class="ce_radio-container">
-									<label class="ce_radio-label">
+									<label class="ce_radio-label <?php echo $mailer == 'smtp' ? "ck_radio_selected" : ''; ?>">
 										<input class="check_email_mailer_type" type="radio" name="check-email-smtp-options[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?>>
 										<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/smtp.svg') ?>" alt="SMTP Icon">
 										<div class="ce_radio-title"><?php esc_html_e('General SMTP','check-email'); ?></div>
 									</label>
 
-									<label class="ce_radio-label" >
+									<label class="ce_radio-label <?php echo $mailer == 'outlook' ? "ck_radio_selected" : ''; ?>" >
 										<input class="check_email_mailer_type" type="radio" name="check-email-smtp-options[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?>>
 										<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/microsoft.svg') ?>" alt="Outlook Icon">
 										<div class="ce_radio-title"><?php esc_html_e('365 / Outlook','check-email'); ?></div>

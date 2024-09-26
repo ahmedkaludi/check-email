@@ -165,13 +165,13 @@ class Check_Email_Multisite {
 								<th scope="row" style="padding-left: 10px;"><label for="check-email-mailer" class="check-email-opt-labels"><?php esc_html_e( 'Mailer', 'check-email' ); ?></label></th>
 								<td>
 									<div class="ce_radio-container">
-										<label class="ce_radio-label">
+										<label class="ce_radio-label <?php echo $mailer == 'smtp' ? "ck_radio_selected" : ''; ?>">
 											<input  class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="smtp" <?php echo $mailer == 'smtp' ? "checked" : ''; ?> id="check-email-mailer-general-smtp">
 											<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/smtp.svg') ?>" alt="SMTP Icon">
 											<div class="ce_radio-title"><?php esc_html_e('General SMTP','check-email'); ?></div>
 										</label>
 
-										<label class="ce_radio-label" >
+										<label class="ce_radio-label <?php echo $mailer == 'outlook' ? "ck_radio_selected" : ''; ?>" >
 											<input class="check_email_mailer_type_multi" type="radio" name="check-email-log-global[mailer]" value="outlook" <?php echo $mailer == 'outlook' ? "checked" : ''; ?> id="check-email-mailer-outlook">
 											<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/microsoft.svg') ?>" alt="Outlook Icon">
 											<div class="ce_radio-title"><?php esc_html_e('365 / Outlook','check-email'); ?></div>

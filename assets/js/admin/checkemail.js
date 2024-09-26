@@ -243,14 +243,17 @@
   });
   
   
-  $(document).on('click', '.check_email_mailer_type', function(e){    
+  $(document).on('click', '.check_email_mailer_type', function(e){  
+    $(".ck_radio_selected").removeClass('ck_radio_selected');
     if($(this).val() == 'outlook'){
       $('#check-email-outllook').show();
       $('#check-email-smtp-form').hide();
+      $(this).parents('.ce_radio-label').addClass('ck_radio_selected');
     }
     if($(this).val() == 'smtp'){
       $('#check-email-outllook').hide();
       $('#check-email-smtp-form').show();
+      $(this).parents('.ce_radio-label').addClass('ck_radio_selected');
     }
   });
   $(document).on('click', '#check-email-email-encode-options-is_enable', function(e){
