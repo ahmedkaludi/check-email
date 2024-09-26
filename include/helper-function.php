@@ -567,7 +567,6 @@ if ( ! defined( 'CHECK_EMAIL_E_REGEXP' ) ) {
     define(
         'CHECK_EMAIL_E_REGEXP',
         '{
-            \s               # Ensures exactly one space before the email
             (?:mailto:)?      # Optional mailto:
             (?:
                 [-!#$%&*+/=?^_`.{|}~\w\x80-\xFF]+  # Local part before @
@@ -584,25 +583,6 @@ if ( ! defined( 'CHECK_EMAIL_E_REGEXP' ) ) {
     );
 }
 
-if ( ! defined( 'CHECK_EMAIL_E_REGEXP_ENTITIES' ) ) {
-    define(
-        'CHECK_EMAIL_E_REGEXP_ENTITIES',
-        '{
-            (?:mailto:)?      # Optional mailto:
-            (?:
-                [-!#$%&*+/=?^_`.{|}~\w\x80-\xFF]+  # Local part before @
-            |
-                ".*?"                               # Quoted local part
-            )
-            \@               # At sign (@)
-            (?:
-                [-a-z0-9\x80-\xFF]+(\.[-a-z0-9\x80-\xFF]+)*\.[a-z]+   # Domain name
-            |
-                \[[\d.a-fA-F:]+\]                                     # IPv4/IPv6 address
-            )
-        }xi'
-    );
-}
 
 
 
@@ -612,7 +592,6 @@ $email_using = ( isset( $encode_options['email_using'] ) ) ? $encode_options['em
 if ( $is_enable && $email_using == 'filters' ) {
 	foreach ( array( 'the_content', 'the_excerpt', 'widget_text', 'comment_text', 'comment_excerpt' ) as $filter ) {
 		add_filter( $filter, 'check_email_e_encode_emails', CHECK_EMAIL_E_FILTER_PRIORITY );
-		add_filter( $filter, 'check_email_e_anchor_encode_emails', CHECK_EMAIL_E_FILTER_PRIORITY );
 	}
 }
 if ( $is_enable && $email_using == 'full_page' ) {
@@ -643,112 +622,49 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 	function check_email_encode_str( $string, $hex = false ) {
 		$encode_options = get_option('check-email-email-encode-options', true);
 		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
-		switch ($email_technique) {
-			case 'css_direction':
-				$reversed_email = strrev($string);
-				// Wrap it with the span and necessary CSS
-				return ' <span style="direction: rtl; unicode-bidi: bidi-override;">' . esc_html($reversed_email) . '</span>';
-				break;
-			case 'rot_13':
-				$encoded_email = check_email_rot13($string);
-				return ' <span class="check-email-encoded-email" >' . esc_html($encoded_email).' </span>';
-				break;
-			case 'rot_47':
-				$encoded_email = check_email_rot47($string);
-				return ' <span class="check-email-rot47-email" >' . esc_html($encoded_email).' </span>';
-				break;
-			
-			default:
-				# code...
-				break;
-		}
+        if (strpos($string, 'mailto:') !== false) {
+            $string = str_replace('mailto:', '', $string);
+            switch ($email_technique) {
+                case 'css_direction':
+                    $reversed_email = strrev($string);
+                    // Wrap it with the span and necessary CSS
+                    return 'mailto:'.esc_html($reversed_email);
+                    break;
+                case 'rot_13':
+                    $encoded_email = check_email_rot13($string);
+                    return 'mailto:'.esc_html($encoded_email);
+                    break;
+                case 'rot_47':
+                    $encoded_email = check_email_rot47($string);
+                    return 'mailto:'.esc_html($encoded_email);
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+        }else{
+            switch ($email_technique) {
+                case 'css_direction':
+                    $reversed_email = strrev($string);
+                    // Wrap it with the span and necessary CSS
+                    return ' <span style="direction: rtl; unicode-bidi: bidi-override;">' . esc_html($reversed_email) . '</span>';
+                    break;
+                case 'rot_13':
+                    $encoded_email = check_email_rot13($string);
+                    return ' <span class="check-email-encoded-email" >' . esc_html($encoded_email).' </span>';
+                    break;
+                case 'rot_47':
+                    $encoded_email = check_email_rot47($string);
+                    return ' <span class="check-email-rot47-email" >' . esc_html($encoded_email).' </span>';
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+        }
     
-		
-		$chars = str_split( $string );
-		$seed = wp_rand( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
-		
-
-		foreach ( $chars as $key => $char ) {
-			$ord = ord( $char );
-
-			if ( $ord < 128 ) { // ignore non-ascii chars
-				$r = ( $seed * ( 1 + $key ) ) % 100; // pseudo "random function"
-
-				if ( $r > 75 && $char !== '@' && $char !== '.' ); // plain character (not encoded), except @-signs and dots
-				else if ( $hex && $r < 25 ) $chars[ $key ] = '%' . bin2hex( $char ); // hex
-				else if ( $r < 45 ) $chars[ $key ] = '&#x' . dechex( $ord ) . ';'; // hexadecimal
-				else $chars[ $key ] = "&#{$ord};"; // decimal (ascii)
-			}
-		}
-
-		return implode( '', $chars );
-	}
-	function check_email_anchor_encode_str( $string, $hex = false) {
-		$string = str_replace('mailto:', '', $string);
-		$encode_options = get_option('check-email-email-encode-options', true);
-		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
-		switch ($email_technique) {
-			case 'css_direction':
-				$reversed_email = strrev($string);
-				// Wrap it with the span and necessary CSS
-				return 'mailto:'.esc_html($reversed_email);
-				break;
-			case 'rot_13':
-				$encoded_email = check_email_rot13($string);
-				return 'mailto:'.esc_html($encoded_email);
-				break;
-			case 'rot_47':
-				$encoded_email = check_email_rot47($string);
-				return 'mailto:'.esc_html($encoded_email);
-				break;
-			
-			default:
-				# code...
-				break;
-		}    
-		
-		$chars = str_split( $string );
-		$seed = wp_rand( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
-		
-
-		foreach ( $chars as $key => $char ) {
-			$ord = ord( $char );
-
-			if ( $ord < 128 ) { // ignore non-ascii chars
-				$r = ( $seed * ( 1 + $key ) ) % 100; // pseudo "random function"
-
-				if ( $r > 75 && $char !== '@' && $char !== '.' ); // plain character (not encoded), except @-signs and dots
-				else if ( $hex && $r < 25 ) $chars[ $key ] = '%' . bin2hex( $char ); // hex
-				else if ( $r < 45 ) $chars[ $key ] = '&#x' . dechex( $ord ) . ';'; // hexadecimal
-				else $chars[ $key ] = "&#{$ord};"; // decimal (ascii)
-			}
-		}
-
-		return implode( '', $chars );
-	}
-	function check_email_anchor_shortcode_encode_str( $string, $hex = false) {
-		$string = str_replace('mailto:', '', $string);
-		$encode_options = get_option('check-email-email-encode-options', true);
-		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
-		switch ($email_technique) {
-			case 'css_direction':
-				$reversed_email = strrev($string);
-				// Wrap it with the span and necessary CSS
-				return esc_html($reversed_email);
-				break;
-			case 'rot_13':
-				$encoded_email = check_email_rot13($string);
-				return esc_html($encoded_email);
-				break;
-			case 'rot_47':
-				$encoded_email = check_email_rot47($string);
-				return esc_html($encoded_email);
-				break;
-			
-			default:
-				# code...
-				break;
-		}    
 		
 		$chars = str_split( $string );
 		$seed = wp_rand( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
@@ -777,7 +693,7 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		), $attributes, 'checkmail-encode' );
 
 		
-		$method = apply_filters( 'check_email_e_method', 'check_email_anchor_shortcode_encode_str' );
+		$method = apply_filters( 'check_email_e_method', 'check_email_encode_str' );
 
 		if ( ! empty( $atts[ 'link' ] ) ) {
 			$link = esc_url( $atts[ 'link' ], null, 'shortcode' );
@@ -813,56 +729,17 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		if ( apply_filters( 'check_email_e_at_sign_check', true ) && strpos( $string, '@' ) === false ) {
 			return $string;
 		}
-
-		
-
-		
 		// override encoding function with the 'check_email_e_method' filter
 		$method = apply_filters( 'check_email_e_method', 'check_email_encode_str' );
-
-		// override regular expression with the 'check_email_e_regexp' filter
-		$encode_options = get_option('check-email-email-encode-options', true);
-		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "html_entities";
-		$regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP_ENTITIES );
-		if ($email_technique != 'html_entities') {
-			$regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP );
-		}
-
+		
+		$regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP );
+		
 		$callback = function ( $matches ) use ( $method ) {
 			return $method( $matches[ 0 ] );
 		};
+        
 		if ( has_filter( 'check_email_e_callback' ) ) {
 			$callback = apply_filters( 'check_email_e_callback', $callback, $method );
-			return preg_replace_callback( $regexp, $callback, $string );
-		}
-
-		return preg_replace_callback( $regexp, $callback, $string );
-	}
-	function check_email_e_anchor_encode_emails( $string ) {
-		if ( ! is_string( $string ) ) {
-			return $string;
-		}
-
-		// abort if `check_email_e_at_sign_check` is true and `$string` doesn't contain a @-sign
-		if ( apply_filters( 'check_email_e_at_sign_check', true ) && strpos( $string, '@' ) === false ) {
-			return $string;
-		}
-		
-
-		
-		// override encoding function with the 'check_email_e_method' filter
-		$method = apply_filters( 'check_email_e_method', 'check_email_anchor_encode_str' );
-
-		// override regular expression with the 'check_email_e_regexp' filter
-		// $regexp = apply_filters( 'check_email_e_regexp', CHECK_EMAIL_E_REGEXP );
-		$regexp = '/mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/';
-
-		$callback = function ( $matches ) use ( $method ) {
-			return $method( $matches[ 0 ] );
-		};
-
-		if ( has_filter( 'check_email_e_anchor_callback' ) ) {
-			$callback = apply_filters( 'check_email_e_anchor_callback', $callback, $method );
 			return preg_replace_callback( $regexp, $callback, $string );
 		}
 
