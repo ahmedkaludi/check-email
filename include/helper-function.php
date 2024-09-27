@@ -584,8 +584,6 @@ if ( ! defined( 'CHECK_EMAIL_E_REGEXP' ) ) {
 }
 
 
-
-
 $encode_options = get_option('check-email-email-encode-options', true);
 $is_enable = ( isset( $encode_options['is_enable'] ) ) ? $encode_options['is_enable'] : 0;
 $email_using = ( isset( $encode_options['email_using'] ) ) ? $encode_options['email_using'] : "";
@@ -755,32 +753,37 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		return check_email_e_encode_emails($string);
 	}
 
-	if ( ! is_admin() ) {
-		add_action( 'init', 'ck_mail_enqueue_encoder_js' );
-	}
+	
+	add_action( 'wp_enqueue_scripts', 'ck_mail_enqueue_encoder_js' );
+	
 
 	function ck_mail_enqueue_encoder_js() {
+
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url( $check_email->get_plugin_file() );
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( 'checkemail_encoder', $plugin_dir_url . 'assets/js/check-email-front'. $suffix .'.js', array(), $check_email->get_version(), true );
+		wp_register_script( 'checkemail_encoder', $plugin_dir_url . 'assets/js/check-email-front'. $suffix .'.js', array(), $check_email->get_version(), true );
 
 		$encode_options = get_option('check-email-email-encode-options', true);
 		$email_technique = ( isset( $encode_options['email_technique'] ) ) ? $encode_options['email_technique'] : "";
 		$is_enable = ( isset( $encode_options['is_enable'] ) ) ? $encode_options['is_enable'] : 0;
 		$email_using = ( isset( $encode_options['email_using'] ) ) ? $encode_options['email_using'] : "";
 
+        $data = array();
 		$data['email_using'] = $email_using;
 		$data['is_enable'] = $is_enable;
 		$data['email_technique'] = $email_technique;
 
         wp_localize_script( 'checkemail_encoder', 'checkemail_encoder_data', $data );
+        wp_enqueue_script( 'checkemail_encoder' );
 	}
 
-    function check_email_rot13($string) {
+    function check_email_rot13( $string ) {
+
         $from = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $to   = 'nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM';
-        return strtr($string, $from, $to);
+
+        return strtr( $string, $from, $to );
     }
     
 // email and phone encoding end
