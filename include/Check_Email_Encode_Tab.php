@@ -69,11 +69,13 @@ class Check_Email_Encode_Tab {
 							<td>
 							<label for="check-email-email-encode-options-filter" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-filter" type="radio" name="check-email-email-encode-options[email_using]" value="filters" <?php echo $email_using_radio == 'filters' ? "checked" : ''; ?>>
-							<?php esc_html_e( 'WordPress filters', 'check-email' ); ?></label>
+							<?php esc_html_e( 'WordPress Filters', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Scan for protection in wordpress filters only.', 'check-email' ); ?></small>
 
 							<label for="check-email-email-encode-options-full_page" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-full_page" type="radio" name="check-email-email-encode-options[email_using]" value="full_page" <?php echo $email_using_radio == 'full_page' ? "checked" : ''; ?>>
-							<?php esc_html_e( 'Full-page scanner', 'check-email' ); ?></label>
+							<?php esc_html_e( 'Full-Page Scanner', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Scan for protection on entire page.', 'check-email' ); ?></small>
 							</td>
 						</tr>
 						<tr class="check-email-etr" style="<?php echo (isset($this->encode_options['is_enable'])) && $this->encode_options['is_enable'] ? "" : 'display:none;'; ?>">
@@ -82,28 +84,28 @@ class Check_Email_Encode_Tab {
 							<label for="check-email-email-encode-options-html-entities" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-html-entities" type="radio" name="check-email-email-encode-options[email_technique]" value="html_entities" <?php echo $email_technique_radio == 'html_entities' ? "checked" : ''; ?>>
 							<?php esc_html_e( 'Html Entities', 'check-email' ); ?></label>
-							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small> 
+							<small><?php esc_html_e( 'Provides reliable protection and suits most situations.', 'check-email' ); ?></small> 
 
 
 
 							<label for="check-email-email-encode-options-css_direction" class="check-email-opt-labels-encoder">
-							<input id="check-email-email-encode-options-css_direction" type="radio" name="check-email-email-encode-options[email_technique]" value="css_direction" <?php echo $email_technique_radio == 'css_direction' ? "checked" : ''; ?>><?php esc_html_e( 'CSS Direction', 'check-email' ); ?></label>
-							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
+							<input id="check-email-email-encode-options-css_direction" type="radio" name="check-email-email-encode-options[email_technique]" value="css_direction" <?php echo $email_technique_radio == 'css_direction' ? "checked" : ''; ?>> <?php esc_html_e( 'CSS Direction', 'check-email' ); ?></label>
+							<small><?php esc_html_e( 'Shields from intelligent bots without requiring JavaScript.', 'check-email' ); ?></small>
 
 							<label for="check-email-email-encode-options-rot_13" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-rot_13" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_13" <?php echo $email_technique_radio == 'rot_13' ? "checked" : ''; ?>> <?php esc_html_e( 'ROT13 Encoding', 'check-email' ); ?></label>
-							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
+							<small><?php esc_html_e( 'Shields from intelligent bots but needs JavaScript.', 'check-email' ); ?></small>
 
 							<label for="check-email-email-encode-options-rot_47" class="check-email-opt-labels-encoder">
 							<input id="check-email-email-encode-options-rot_47" type="radio" name="check-email-email-encode-options[email_technique]" value="rot_47" <?php echo $email_technique_radio == 'rot_47' ? "checked" : ''; ?>>
 							<?php esc_html_e( 'Polymorphous ROT47/CSS', 'check-email' ); ?></label>
-							<small><?php esc_html_e( 'Allow to protection and works in most scenarios.', 'check-email' ); ?></small>
+							<small><?php esc_html_e( 'Top-tier security against sophisticated bots, but JavaScript is necessary.', 'check-email' ); ?></small>
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label class="check-email-opt-labels"><?php esc_html_e( 'Mobile Number Encoder', 'check-email' ); ?></label></th>
+							<th scope="row"><label class="check-email-opt-labels"><?php esc_html_e( 'Mobile / Phone Encoder', 'check-email' ); ?></label></th>
 							<td>
-								<p><?php esc_html_e( 'Other content (like phone numbers) can be protected using [checkmail-encode] shortcode', 'check-email' ); ?></p></br>
+								<p><?php esc_html_e( 'Other content ( like phone numbers ) can be protected using [checkmail-encode] shortcode', 'check-email' ); ?></p></br>
 								<code>
 								[checkmail-encode]+1 (555) 123-4569[/checkmail-encode]</code> <br/>
 								<code>

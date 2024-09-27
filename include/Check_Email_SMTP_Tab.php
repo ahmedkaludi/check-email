@@ -201,7 +201,7 @@ class Check_Email_SMTP_Tab {
 						    <th scope="row"><label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e( 'SMTP', 'check-email' ); ?></label></th>
 						    <td>
 						        <input id="check-email-enable-smtp" type="checkbox" name="check-email-smtp-options[enable_smtp]" <?php echo $enable_smtp == 'on' ? "checked" : ''; ?>>
-						        <label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e('SMTP helps you to send emails via SMTP instead of the PHP mail()','check-email'); ?></label>
+						        <label for="check-email-enable-smtp" class="check-email-opt-labels"><?php esc_html_e('Configure your own SMTP instead of the PHP mail()','check-email'); ?></label>
 						    </td>
 						</tr>
 						<tr class="check_email_mailer check_email_all_smtp" style="<?php echo $enable_smtp != 'on' ? "display: none" : ''; ?>">
@@ -276,13 +276,7 @@ class Check_Email_SMTP_Tab {
 									<?php esc_html_e( 'Removing the OAuth connection will give you an ability to redo the OAuth connection or link to another Microsoft account.', 'check-email' ); ?>
 								</p>
 
-							<?php endif; ?>
-
-						<?php else : ?>
-							<p class="notice inline-notice inline-error" style="padding:5px 0 5px 5px;">
-								<?php esc_html_e( 'To access this section, please add an Application ID and Application Password, then click the Save button.', 'check-email' ); ?>
-							</p>
-
+							<?php endif; ?>													
 						<?php
 						endif;
 						?>

@@ -324,13 +324,7 @@ You need to copy this URL into "Authentication > Redirect URIs" web field for yo
 									<?php esc_html_e( 'Removing the OAuth connection will give you an ability to redo the OAuth connection or link to another Microsoft account.', 'check-email' ); ?>
 								</p>
 
-							<?php endif; ?>
-
-						<?php else : ?>
-							<p class="notice inline-notice inline-error" style="padding:5px 0 5px 5px;">
-								<?php esc_html_e( 'To access this section, please add an Application ID and Application Password, then click the Save button.', 'check-email' ); ?>
-							</p>
-
+							<?php endif; ?>						
 						<?php
 						endif;
 						?>
