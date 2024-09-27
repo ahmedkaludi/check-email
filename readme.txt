@@ -4,7 +4,7 @@ Tags: logging, email, email log, smtp, log
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 5.6.20
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -113,7 +113,13 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
-= v2.0.1 - 02/09/2024 =
+= v2.0.2 - 27/09/2024 =
+- Feature: Added an option to use one SMTP settings for multisite #97
+- Feature: Added encoding of email and phone #55
+- Feature: Added integration with Microsoft SMTP that requires oAuth authentication. #100
+- Fixed: Some warnings appear while viewing the email log #104
+
+= v2 - 02/09/2024 =
 - Enhancement: Added confirmation box on deletion of log email #84
 - Fixed: Conflict issue with Override Emails feature. #98
 - Fixed: PHP Fatal error #101
@@ -160,9 +166,5 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 = v1.0.9 - 07/03/2024 =
 - Fixed: php8.2 deprecation warning #53
 - Enhancement: Added Support Form #56
-
-= v1.0.8 - 16/10/2023 =
-- Updated: Plugin author to reflect ownership changes.
-
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/check-email/trunk/changelog.txt)
