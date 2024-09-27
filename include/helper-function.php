@@ -530,7 +530,14 @@ function ck_mail_update_network_settings() {
                 $all_fields[sanitize_key( $key ) ] = sanitize_text_field( $value );
             }
             $all_fields['enable_smtp'] = 1;
-            update_site_option( 'check-email-log-global-smtp', $all_fields );
+            $old_settings = get_site_option('check-email-log-global-smtp');
+
+            if ( ! empty( $old_settings ) && is_array( $old_settings ) ) {
+                $updated_settings = array_merge( $old_settings, $all_fields );
+            } else {
+                $updated_settings = $all_fields;
+            }
+            update_site_option( 'check-email-log-global-smtp', $updated_settings );
             if ( isset($all_fields['mailer'] ) == 'outlook' && isset( $_POST['check-email-outlook-options'] ) ) {
                 $outlook_fields = array_map('sanitize_text_field', wp_unslash($_POST['check-email-outlook-options']));
                 if(isset($outlook_fields['client_id']) && !empty($outlook_fields['client_id'])){

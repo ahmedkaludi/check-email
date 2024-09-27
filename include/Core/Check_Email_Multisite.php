@@ -51,7 +51,7 @@ class Check_Email_Multisite {
 		} 
 	}
 
-	function ck_mail_network_settings_menu() {
+	public function ck_mail_network_settings_menu() {
 		add_menu_page(
 			esc_html__('Check & Log Email', 'check-email'),
 			esc_html__('Check & Log Email', 'check-email'),
@@ -111,52 +111,98 @@ class Check_Email_Multisite {
 							<td><input type="checkbox" id="check-email-log-global-enable_global" name="check-email-log-global[enable_global]" <?php echo $enable_global == 'on' ? "checked" : ''; ?> class="regular-text" /><label for="check-email-log-global-enable_global" class="check-email-opt-labels"><?php esc_html_e('Make the plugin settings global network-wide', 'check-email'); ?></label></td>
 						</tr>
 						</thead>
-					<?php if( 'general' == $tab ) : ?>
-						<tbody id="check-email-global-smtp-form" style="<?php echo $enable_global != 'on' ? "display: none" : ''; ?>">
+						<?php if( 'general' == $tab ) : ?>
+
+					<tbody id="check-email-global-smtp-form" style="<?php echo $enable_global != 'on' ? "display: none" : ''; ?>">
+
+					<tr>
+
+							<th scope="row"><label for="check-email-global-override_emails_from" class="check-email-opt-labels" ><?php esc_html_e('Override Emails From', 'check-email'); ?></label></th>
+
+							<td>
+
+							<input id="check-email-global-override_emails_from" type="checkbox" name="check-email-log-global[override_emails_from]" value="true" <?php echo (isset($smtp_options['override_emails_from'])) && $smtp_options['override_emails_from'] == true ? "checked" : ''; ?> /> 
+
+							<label for="check-email-global-override_emails_from" class="check-email-opt-labels" ><?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?> </label>
+
+							</td>
+
+						</tr>
+
+						<tr class="cm_global_override">
+
+							<th scope="row"> <label for="check-email-log-global-email_from_name" style="padding-left:10px;" class="check-email-opt-labels"><?php esc_html_e('Change the "from" name', 'check-email'); ?> </label></th>
+
+							<td>
+
+							<input id="check-email-log-global-email_from_name" placeholder="<?php esc_html_e('Change the "from" name', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_name]" value="<?php echo (isset($smtp_options['email_from_name'])) ? $smtp_options['email_from_name'] : ''; ?>" class="regular-text">
+
+							</td>
+
+						</tr>
+
+						<tr class="cm_global_override">
+
+							<th scope="row"> <label for="check-email-log-global-email_from_email" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Change the "from" email', 'check-email'); ?></th>
+
+							<td>
+
+							<input id="check-email-log-global-email_from_email" placeholder="<?php esc_html_e('Change the "from" email', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_email]" value="<?php echo (isset($smtp_options['email_from_email'])) ? $smtp_options['email_from_email'] : ''; ?>" class="regular-text">
+
+							</td>
+
+						</tr>
+
 						<tr>
-								<th scope="row"><label for="check-email-global-override_emails_from" class="check-email-opt-labels" ><?php esc_html_e('Override Emails From', 'check-email'); ?></label></th>
-								<td>
-								<input id="check-email-global-override_emails_from" type="checkbox" name="check-email-log-global[override_emails_from]" value="true" /> 
-								<label for="check-email-global-override_emails_from" class="check-email-opt-labels" ><?php esc_html_e( 'Check this box if you would like override wordpress default from email and name.', 'check-email' ) ?> </label>
-								</td>
-							</tr>
-							<tr class="cm_global_override">
-								<th scope="row"> <label for="check-email-log-global-email_from_name" style="padding-left:10px;" class="check-email-opt-labels"><?php esc_html_e('Change the "from" name', 'check-email'); ?> </label></th>
-								<td>
-								<input id="check-email-log-global-email_from_name" placeholder="<?php esc_html_e('Change the "from" name', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_name]" value="" class="regular-text">
-								</td>
-							</tr>
-							<tr class="cm_global_override">
-								<th scope="row"> <label for="check-email-log-global-email_from_email" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Change the "from" email', 'check-email'); ?></th>
-								<td>
-								<input id="check-email-log-global-email_from_email" placeholder="<?php esc_html_e('Change the "from" email', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_email]" value="" class="regular-text">
-								</td>
-							</tr>
-							<tr>
-								<th scope="row"><label for="check-email-global-forward_email" class="check-email-opt-labels"><?php esc_html_e('Forward Email', 'check-email'); ?></label></th>
-								<td>
-								<input id="check-email-global-forward_email" type="checkbox" name="check-email-log-global[forward_email]" value="true" /> <label for="check-email-global-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?> </label><a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></a>
-								</td>
-							</tr>
-							<tr class="cm_global_forward">
-								<th scope="row"> <label for="check-email-log-global-forward_to" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward To', 'check-email'); ?> </label></th>
-								<td>
-								<input id="check-email-log-global-forward_to" placeholder="<?php esc_html_e('Forward To Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_to]" value="" class="regular-text">
-								</td>
-							</tr>
-							<tr class="cm_global_forward">
-								<th scope="row"> <label for="check-email-log-global-forward_cc" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward Cc', 'check-email'); ?></th>
-								<td>
-								<input id="check-email-log-global-forward_cc" placeholder="<?php esc_html_e('Forward Cc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_cc]" value="" class="regular-text">
-								</td>
-							</tr>
-							<tr class="cm_global_forward">
-								<th scope="row"> <label for="check-email-log-global-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward Bcc', 'check-email'); ?></th>
-								<td>
-								<input id="check-email-log-global-forward_bcc" placeholder="<?php esc_html_e('Forward Bcc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_bcc]" value="" class="regular-text">
-								</td>
-							</tr>
-						</tbody>
+
+							<th scope="row"><label for="check-email-global-forward_email" class="check-email-opt-labels"><?php esc_html_e('Forward Email', 'check-email'); ?></label></th>
+
+							<td>
+
+							<input id="check-email-global-forward_email" type="checkbox" name="check-email-log-global[forward_email]" value="true" <?php echo (isset($smtp_options['forward_email'])) && $smtp_options['forward_email'] == true ? "checked" : ''; ?> /> <label for="check-email-global-forward_email" class="check-email-opt-labels"><?php esc_html_e( 'Automatically forward a copy of all emails sent by WordPress to other email addresses ', 'check-email' ) ?> </label><a href=" https://check-email.tech/docs/knowledge-base/forward-email-option-in-the-check-log-email-plugin/"><?php esc_html_e( 'Learn More', 'check-email' ) ?></a>
+
+							</td>
+
+						</tr>
+
+						<tr class="cm_global_forward">
+
+							<th scope="row"> <label for="check-email-log-global-forward_to" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward To', 'check-email'); ?> </label></th>
+
+							<td>
+
+							<input id="check-email-log-global-forward_to" placeholder="<?php esc_html_e('Forward To Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_to]" value="<?php echo (isset($smtp_options['forward_to'])) ? $smtp_options['forward_to'] : ''; ?>" class="regular-text">
+
+							</td>
+
+						</tr>
+
+						<tr class="cm_global_forward">
+
+							<th scope="row"> <label for="check-email-log-global-forward_cc" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward Cc', 'check-email'); ?></th>
+
+							<td>
+
+							<input id="check-email-log-global-forward_cc" placeholder="<?php esc_html_e('Forward Cc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_cc]" value="<?php echo (isset($smtp_options['forward_cc'])) ? $smtp_options['forward_cc'] : ''; ?>" class="regular-text">
+
+							</td>
+
+						</tr>
+
+						<tr class="cm_global_forward">
+
+							<th scope="row"> <label for="check-email-log-global-forward_bcc" class="check-email-opt-labels" style="padding-left:10px;"><?php esc_html_e('Forward Bcc', 'check-email'); ?></th>
+
+							<td>
+
+							<input id="check-email-log-global-forward_bcc" placeholder="<?php esc_html_e('Forward Bcc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_bcc]" value="<?php echo (isset($smtp_options['forward_bcc'])) ? $smtp_options['forward_bcc'] : ''; ?>" class="regular-text">
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
 					<?php endif; ?>
 
 					<?php if( 'smtp' == $tab ) : ?>
@@ -346,13 +392,13 @@ You need to copy this URL into "Authentication > Redirect URIs" web field for yo
 
 
 
-	function ck_mail_network_enqueue_scripts() {
+	public function ck_mail_network_enqueue_scripts() {
 		$check_email      = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url($check_email->get_plugin_file());
-
-		wp_enqueue_script(
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script(
 			'ck-network-admin-js',
-			$plugin_dir_url . 'assets/js/network-admin.js',
+			$plugin_dir_url . 'assets/js/network-admin'. $suffix .'.js',
 			array(),
 			$check_email->get_version(),
 			true
@@ -363,5 +409,6 @@ You need to copy this URL into "Authentication > Redirect URIs" web field for yo
 			'ajaxUrl' =>	admin_url('admin-ajax.php'),
 			'nonce'   => wp_create_nonce('ck_mail_ajax_check_nonce'),
 		));
+		wp_enqueue_script( 'ck-network-admin-js' );
 	}
 }

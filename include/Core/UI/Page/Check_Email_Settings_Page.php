@@ -83,11 +83,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		$permalink = 'javasctipt:void(0);';
 		
 		if(!defined('CK_MAIL_PRO_VERSION')){
-			$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div onclick="window.open(\'https://check-email.tech/pricing/#pro-feature/\')">'.esc_html__( 'Premium Features', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
+			$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div onclick="window.open(\'https://check-email.tech/pricing/#pro-feature/\')">'.esc_html__( 'Premium Features', 'check-email' ).'</div>', 'manage_options', $permalink);
 		}
 
 		if(!defined('CK_MAIL_PRO_VERSION')){
-			$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div style="color:rgba(245, 127, 23, 1);font-weight:bold;" onclick="window.open(\'https://check-email.tech/pricing/#pricings/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
+			$submenu[Check_Email_Status_Page::PAGE_SLUG][] = array( '<div style="color:rgba(245, 127, 23, 1);font-weight:bold;" onclick="window.open(\'https://check-email.tech/pricing/#pricings/\')">'.esc_html__( 'Upgrade To Premium', 'check-email' ).'</div>', 'manage_options', $permalink);
 		}
 
 	}
