@@ -760,8 +760,9 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
 		return check_email_e_encode_emails($string);
 	}
 
-	
-	add_action( 'wp_enqueue_scripts', 'ck_mail_enqueue_encoder_js' );
+	if( ! is_admin() ) {
+	    add_action( 'wp_enqueue_scripts', 'ck_mail_enqueue_encoder_js' );
+    }
 	
 
 	function ck_mail_enqueue_encoder_js() {

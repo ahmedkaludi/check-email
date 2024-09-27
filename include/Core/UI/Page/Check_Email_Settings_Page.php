@@ -132,11 +132,11 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 				<a href="?page=check-email-settings" class="nav-tab <?php if( 'general' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'General', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=logging" class="nav-tab <?php if( 'logging' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Logging', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=smtp" class="nav-tab <?php if( 'smtp' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'SMTP', 'check-email' ); ?></a>
-				<a href="https://check-email.tech/contact/" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=email-encode" class="nav-tab <?php if( 'email-encode' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Encoding', 'check-email' ); ?></a>
 				<a href="?page=check-email-settings&tab=tools" class="nav-tab <?php if( 'tools' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Tools', 'check-email' ); ?></a>
 				<?php do_action('ck_mail_add_license_tab'); ?>
 				<a href="?page=check-email-settings&tab=support" class="nav-tab <?php if( 'support' == $tab ):?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Help & Support', 'check-email' ); ?></a>
+				<a href="https://check-email.tech/contact/" target="_blank" class="nav-tab"><span class="dashicons dashicons-external"></span><?php esc_html_e( 'Suggest a feature', 'check-email' ); ?></a>
 				<?php if(!defined('CK_MAIL_PRO_VERSION')){ ?>
 					<a href="https://check-email.tech/pricing/#pricings" class="nav-tab check-email-bg-color check-email-pro-btn <?php if( 'pro' == $tab ):?>nav-tab-active<?php endif; ?>" target="_blank"><?php esc_html_e( 'Upgrade to Pro', 'check-email' ); ?></a>
 				<?php } ?>
