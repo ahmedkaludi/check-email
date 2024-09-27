@@ -30,6 +30,9 @@ This WordPress plugin helps you store sent emails for auditing purposes, as well
 - <strong>Setup Wizard</strong> - Wizard setup allows you to one time setup of this plugin. 
 - <strong>Default Format for Message</strong> - Its allow you to Default Format for Message on view of content. 
 - <strong>SMTP</strong> - Its allow you to setup your own smtp through Check & Email Log SMTP form. 
+- <strong>Multisite Configure</strong> - Its allow to configure global setting for all your sites. 
+- <strong>Encoding</strong> - Its allow to encode emails and phone in page content. 
+- <strong>Outlook / MS 360</strong> - Its allow to send email using 360 / outlook configuration. 
 
 == Features of the plugin Check & Log Email ==
 
@@ -70,6 +73,7 @@ Bug reports for Check & Log Email are [welcomed on GitHub](https://github.com/ah
 
 <strong>Credits</strong><br>
 * jsPDF used https://github.com/parallax/jsPDF - License URI: https://github.com/parallax/jsPDF/blob/master/LICENSE
+* league/oauth2-client used https://github.com/thephpleague/oauth2-client - License URI: https://github.com/thephpleague/oauth2-client/blob/master/LICENSE
 
 == Frequently Asked Questions ==
 

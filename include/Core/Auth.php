@@ -1,14 +1,6 @@
 <?php
 
 
-
-
-
-// use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-// use League\OAuth2\Client\Provider\GenericProvider;
-// use League\OAuth2\Client\Token\AccessToken;
-// use League\OAuth2\Client\Token\AccessTokenInterface;
-
 namespace CheckEmail\Core;
 
 $check_email      = wpchill_check_email();
