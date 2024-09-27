@@ -135,7 +135,7 @@ class Check_Email_Multisite {
 
 							<td>
 
-							<input id="check-email-log-global-email_from_name" placeholder="<?php esc_html_e('Change the "from" name', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_name]" value="<?php echo (isset($smtp_options['email_from_name'])) ? $smtp_options['email_from_name'] : ''; ?>" class="regular-text">
+							<input id="check-email-log-global-email_from_name" placeholder="<?php esc_html_e('Change the "from" name', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_name]" value="<?php echo (isset($smtp_options['email_from_name'])) ? esc_html( $smtp_options['email_from_name'] ) : ''; ?>" class="regular-text">
 
 							</td>
 
@@ -147,7 +147,7 @@ class Check_Email_Multisite {
 
 							<td>
 
-							<input id="check-email-log-global-email_from_email" placeholder="<?php esc_html_e('Change the "from" email', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_email]" value="<?php echo (isset($smtp_options['email_from_email'])) ? $smtp_options['email_from_email'] : ''; ?>" class="regular-text">
+							<input id="check-email-log-global-email_from_email" placeholder="<?php esc_html_e('Change the "from" email', 'check-email'); ?>" type="text" name="check-email-log-global[email_from_email]" value="<?php echo (isset($smtp_options['email_from_email'])) ? esc_html( $smtp_options['email_from_email'] ) : ''; ?>" class="regular-text">
 
 							</td>
 
@@ -171,7 +171,7 @@ class Check_Email_Multisite {
 
 							<td>
 
-							<input id="check-email-log-global-forward_to" placeholder="<?php esc_html_e('Forward To Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_to]" value="<?php echo (isset($smtp_options['forward_to'])) ? $smtp_options['forward_to'] : ''; ?>" class="regular-text">
+							<input id="check-email-log-global-forward_to" placeholder="<?php esc_html_e('Forward To Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_to]" value="<?php echo (isset($smtp_options['forward_to'])) ? esc_html( $smtp_options['forward_to'] ) : ''; ?>" class="regular-text">
 
 							</td>
 
@@ -183,7 +183,7 @@ class Check_Email_Multisite {
 
 							<td>
 
-							<input id="check-email-log-global-forward_cc" placeholder="<?php esc_html_e('Forward Cc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_cc]" value="<?php echo (isset($smtp_options['forward_cc'])) ? $smtp_options['forward_cc'] : ''; ?>" class="regular-text">
+							<input id="check-email-log-global-forward_cc" placeholder="<?php esc_html_e('Forward Cc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_cc]" value="<?php echo (isset($smtp_options['forward_cc'])) ? esc_html( $smtp_options['forward_cc'] ) : ''; ?>" class="regular-text">
 
 							</td>
 
@@ -195,7 +195,7 @@ class Check_Email_Multisite {
 
 							<td>
 
-							<input id="check-email-log-global-forward_bcc" placeholder="<?php esc_html_e('Forward Bcc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_bcc]" value="<?php echo (isset($smtp_options['forward_bcc'])) ? $smtp_options['forward_bcc'] : ''; ?>" class="regular-text">
+							<input id="check-email-log-global-forward_bcc" placeholder="<?php esc_html_e('Forward Bcc Email', 'check-email'); ?>" type="text" name="check-email-log-global[forward_bcc]" value="<?php echo (isset($smtp_options['forward_bcc'])) ? esc_html( $smtp_options['forward_bcc'] ) : ''; ?>" class="regular-text">
 
 							</td>
 
