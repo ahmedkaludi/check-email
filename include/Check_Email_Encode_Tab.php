@@ -41,17 +41,18 @@ class Check_Email_Encode_Tab {
 	}
 	
 	public function load_email_encode_settings(){
-		// var_dump('hello');
-		if (isset($this->encode_options['email_using']) && !empty( isset( $this->encode_options['email_using'] ) ) ) {
+		
+		if (isset($this->encode_options['email_using']) && !empty( $this->encode_options['email_using'] ) ) {
 			$email_using_radio = $this->encode_options['email_using'];
 		}else{
 			$email_using_radio = 'filters';
 		}
-		if (isset($this->encode_options['email_technique']) && !empty( isset( $this->encode_options['email_technique'] ) ) ) {
+		if (isset($this->encode_options['email_technique']) && !empty( $this->encode_options['email_technique'] ) ) {
 			$email_technique_radio = $this->encode_options['email_technique'];
 		}else{
 			$email_technique_radio = 'html_entities';
 		}
+		
 		?>
 		
 		<form action="" method="post" >
@@ -131,6 +132,7 @@ class Check_Email_Encode_Tab {
 	 */
 
 	public function check_mail_encode_submission_handler(){
+
 		if(isset($_POST['check_mail_email_encode_submit']) && $_POST['check_mail_email_encode_submit'] == 'Save'){
 			if(!isset($_POST['check_mail_email_encode_nonce'])){
 		    	return;
@@ -162,11 +164,6 @@ class Check_Email_Encode_Tab {
 
 			wp_safe_redirect(admin_url('admin.php?page=check-email-settings&tab=email-encode'));
 		}
-	}
-
-	
+	}	
 
 }
-// new Check_Email_Encode_Tab();
-
-
