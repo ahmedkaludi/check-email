@@ -229,6 +229,12 @@ class Check_Email_Multisite {
 											<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/microsoft.svg') ?>" alt="Outlook Icon">
 											<div class="ce_radio-title"><?php esc_html_e('365 / Outlook','check-email'); ?></div>
 										</label>
+
+										<label class="ce_radio-label <?php echo $mailer == 'gmail' ? "ck_radio_selected" : ''; ?>" >
+										<input class="check_email_mailer_type_multi" type="radio" name="check-email-smtp-options[mailer]" value="gmail" <?php echo $mailer == 'gmail' ? "checked" : ''; ?>>
+										<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/gmail.png') ?>" alt="Gmail Icon">
+										<div class="ce_radio-title"><?php esc_html_e('Gmail','check-email'); ?></div>
+									</label>
 									</div>
 								</td>
 							</tr>

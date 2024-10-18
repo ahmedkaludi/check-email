@@ -222,8 +222,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 320px;
-    max-width: 350px;
+    width: 540px;
+    max-width: 570px;
 }
 
 .ce_radio-label {
