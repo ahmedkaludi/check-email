@@ -794,3 +794,38 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
     
 // email and phone encoding end
 
+function check_email_track_email_open() {
+    if (isset($_GET['action']) && $_GET['action'] === 'check_email_track_email_open' && isset($_GET['open_tracking_id'])) {
+        $open_tracking_id = absint($_GET['open_tracking_id']);
+
+        if ($open_tracking_id) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'check_email_log';
+
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$table_name} WHERE open_tracking_id = %s",
+                $open_tracking_id
+            );
+            
+            $record = $wpdb->get_row($query);
+
+            if ($record) {
+                $data_to_update = [
+                    'open_count' => $record->open_count + 1
+                ];
+                $where = [
+                    'open_tracking_id' => $open_tracking_id,
+                ];
+                $wpdb->update( $table_name, $data_to_update, $where );
+                header("Content-Type: image/png");
+                echo base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAptL0ygAAAAASUVORK5CYII=');
+                exit;
+            }
+
+        }
+    }
+    
+}
+add_action('init', 'check_email_track_email_open');
+
+

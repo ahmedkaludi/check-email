@@ -82,6 +82,16 @@ class Check_Email_Logger implements Loadie {
             
             $to_email = $log['to_email'];
             $subject = $log['subject'];
+
+            $email_content = $log['message'];
+
+            // Regular expression to match the open_tracking_id parameter
+            preg_match('/open_tracking_id=(\d+)/', $email_content, $matches);
+            $open_tracking_id = "";
+            if (isset($matches[1])) {
+                $open_tracking_id = $matches[1];
+            }
+            $log['open_tracking_id'] = $open_tracking_id;
             $response = [];
             if (isset($smtp_options['mailer']) && $smtp_options['mailer'] == 'outlook') {
                 $auth = new Auth('outlook');
