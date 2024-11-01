@@ -126,7 +126,7 @@ class Check_Email_Log_List_Action implements Loadie {
 				</tr>
 				<tr style="background: #eee;">
 					<td style="padding: 5px;"><b><?php esc_html_e( 'Email Opened', 'check-email' ); ?></b>:</td>
-					<td style="padding: 5px;"><?php echo ($log_item['open_count']) ?  esc_html( $log_item['open_count'] ) : 0; ?></td>
+					<td style="padding: 5px;"><?php echo ($log_item['open_count']) ?  esc_html( $log_item['open_count'] ) : 0 .esc_html_e( 'time', 'check-email' );; ?></td>
 				</tr>
 
 				<?php do_action( 'check_email_view_log_after_headers', $log_item ); ?>
