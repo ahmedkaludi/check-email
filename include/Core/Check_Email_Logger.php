@@ -90,7 +90,13 @@ class Check_Email_Logger implements Loadie {
             $open_tracking_id = "";
             if (isset($matches[1])) {
                 $open_tracking_id = $matches[1];
+            }else{
+                $timestamp = current_time('timestamp');
+                $tracking_content = $this->get_email_content_with_tracking($timestamp);
+                $log['message'] = $log['message'].$tracking_content;
+                $open_tracking_id = $timestamp;
             }
+            
             $log['open_tracking_id'] = $open_tracking_id;
             $response = [];
             if (isset($smtp_options['mailer']) && $smtp_options['mailer'] == 'outlook') {
@@ -164,6 +170,21 @@ class Check_Email_Logger implements Loadie {
         
         return $original_mail_info;
 	}
+
+    function get_email_content_with_tracking($open_tracking_id) {
+        $tracking_url = add_query_arg(
+            array(
+                'open_tracking_id' => $open_tracking_id,
+                'action' => 'track_email_open',
+            ),
+            site_url('/check-email-tracking/')
+        );
+    
+        $email_content = "
+            <img src='$tracking_url' class='check-email-tracking' alt='' width='1' height='1' style='display:none;' />
+        ";
+        return $email_content;
+    }
 	
 	/**
      * Get the details of the method that originally triggered wp_mail
