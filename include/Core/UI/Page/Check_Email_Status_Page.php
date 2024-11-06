@@ -144,26 +144,11 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             $title = esc_html__( "Test email from", "check-email").' '.esc_url( get_bloginfo( "url" ));
             $body  = esc_html__( 'This test email proves that your WordPress installation at', "check-email" ).' '.esc_url( get_bloginfo( "url" ) ). esc_html__( ' can send emails. Sent: ', "check-email" ).gmdate( "r" ) ;
             
-            $tracking_content = $this->get_email_content_with_tracking($timestamp);
+            $tracking_content = check_email_content_with_tracking($timestamp);
             $body = $body.$tracking_content;
             wp_mail( $to, $title, $body, $headers );
 
             return $headers;
-    }
-
-    function get_email_content_with_tracking($open_tracking_id) {
-        $tracking_url = add_query_arg(
-            array(
-                'open_tracking_id' => $open_tracking_id,
-                'action' => 'check_email_track_email_open',
-            ),
-            site_url('/check-email-tracking/')
-        );
-    
-        $email_content = "
-            <img src='$tracking_url' class='check-email-tracking' alt='' width='1' height='1' style='display:none;' />
-        ";
-        return $email_content;
     }
     
 

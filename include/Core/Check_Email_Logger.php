@@ -73,7 +73,7 @@ class Check_Email_Logger implements Loadie {
             }
             if ( isset( $option['email_open_tracking'] )  && $option['email_open_tracking'] ) {
                 $timestamp = current_time('timestamp');
-                $tracking_content = $this->get_email_content_with_tracking($timestamp);
+                $tracking_content = check_email_content_with_tracking($timestamp);
                 $original_mail_info['message'] = $original_mail_info['message'].$tracking_content;
                 $open_tracking_id = $timestamp;
                 $log['open_tracking_id'] = $open_tracking_id;
@@ -161,21 +161,6 @@ class Check_Email_Logger implements Loadie {
         
         return $original_mail_info;
 	}
-
-    function get_email_content_with_tracking($open_tracking_id) {
-        $tracking_url = add_query_arg(
-            array(
-                'open_tracking_id' => $open_tracking_id,
-                'action' => 'check_email_track_email_open',
-            ),
-            site_url('/check-email-tracking/')
-        );
-    
-        $email_content = "
-            <img src='$tracking_url' class='check-email-tracking' alt='' width='1' height='1' style='display:none;' />
-        ";
-        return $email_content;
-    }
 	
 	/**
      * Get the details of the method that originally triggered wp_mail

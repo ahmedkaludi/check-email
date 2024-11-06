@@ -289,7 +289,7 @@ class Check_Email_SMTP_Tab {
 						</tr>
 					</tbody>
 					
-					<tbody id="check-email-smtp-form" class="check_email_all_smtp" style="<?php echo $enable_smtp == 'on' || $mailer == 'smtp' || $mailer == 'gmail' ? "" : 'display: none'; ?>">	
+					<tbody id="check-email-smtp-form" class="check_email_all_smtp" style="<?php echo $enable_smtp == 'on' && ($mailer == 'smtp' || $mailer == 'gmail') ? "" : 'display: none'; ?>">	
 						<tr class="check_email_smtp_from">
 						    <th scope="row"><?php esc_html_e('From', 'check-email'); ?></th>
 						    <td>
