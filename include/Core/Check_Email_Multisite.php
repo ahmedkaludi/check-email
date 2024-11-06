@@ -22,8 +22,11 @@ class Check_Email_Multisite {
 	}
 	public function check_mail_handle_outlook_callback() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
-		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] )) {
-			$nonce = $_GET['state'];
+		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] ) && strpos($_GET['state'], 'check-email-nonce_') !== false ) {
+
+			
+			$state = preg_replace('/check-email-nonce_[^\s]+/', '', $_GET['state']);
+			$nonce = $state;
 			$smtp_options = get_site_option('check-email-log-global-smtp');
 			if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
 				$redirect_url = network_admin_url('admin.php?page=check-mail-global-settings&tab=smtp' );
@@ -229,6 +232,12 @@ class Check_Email_Multisite {
 											<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/microsoft.svg') ?>" alt="Outlook Icon">
 											<div class="ce_radio-title"><?php esc_html_e('365 / Outlook','check-email'); ?></div>
 										</label>
+
+										<label class="ce_radio-label <?php echo $mailer == 'gmail' ? "ck_radio_selected" : ''; ?>" >
+										<input class="check_email_mailer_type_multi" type="radio" name="check-email-smtp-options[mailer]" value="gmail" <?php echo $mailer == 'gmail' ? "checked" : ''; ?>>
+										<img src="<?php echo esc_attr($plugin_dir_url . 'assets/images/gmail.png') ?>" alt="Gmail Icon">
+										<div class="ce_radio-title"><?php esc_html_e('Gmail','check-email'); ?></div>
+									</label>
 									</div>
 								</td>
 							</tr>
