@@ -22,10 +22,8 @@ class Check_Email_Multisite {
 	}
 	public function check_mail_handle_outlook_callback() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form
-		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] ) && strpos($_GET['state'], 'check-email-nonce_') !== false ) {
-
-			
-			$state = preg_replace('/check-email-nonce_[^\s]+/', '', $_GET['state']);
+		if ( isset( $_GET['code'] ) && !empty( $_GET['code'] ) && isset( $_GET['state'] ) && !empty( $_GET['state'] ) && strpos($_GET['state'], 'check-email-nonce_') !== false ) {			
+			$state = str_replace("check-email-nonce_", "", $_GET['state']);
 			$nonce = $state;
 			$smtp_options = get_site_option('check-email-log-global-smtp');
 			if (isset($smtp_options['enable_global']) && ! empty($smtp_options['enable_global']) && is_multisite()) {
