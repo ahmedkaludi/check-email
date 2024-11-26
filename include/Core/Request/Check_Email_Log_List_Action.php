@@ -529,7 +529,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		$reply_to = ( isset($_POST['ckm_reply_to'] ) ) ? sanitize_text_field(wp_unslash($_POST['ckm_reply_to'])) : "";
 
 		$subject = ( isset($_POST['ckm_subject'] ) ) ? sanitize_text_field(wp_unslash($_POST['ckm_subject'])) : "";
-		$message = ( isset($_POST['ckm_message'] ) ) ? sanitize_textarea_field(wp_unslash($_POST['ckm_message'])) : "";
+		$message = ( isset($_POST['ckm_message'] ) ) ? wp_unslash($_POST['ckm_message']) : "";
 		$headers = array(
 		);
 		
@@ -545,7 +545,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		if ( !empty( $bcc ) ){
 			$headers[] ='BCC: '.$bcc;
 		}
-		if ( !empty( $bcc ) ){
+		if ( !empty( $content_type ) ){
 			$headers[] ='Content-Type: '.$content_type;
 		}
 		if ( empty( $to )  || empty( $subject )){
