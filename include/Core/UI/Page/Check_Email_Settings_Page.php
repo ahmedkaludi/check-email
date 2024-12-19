@@ -181,7 +181,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 					wp_enqueue_script('ce_support_settings');
 			?>
 					<div class="ce-support-container">
-						<p><?php esc_html_e('If you have any query, please write the query in below box or email us at', 'check-email') ?> <a href="mailto:team@magazine3.in"><?php esc_html_e('team@magazine3.in'); ?></a>. <?php esc_html_e('We will reply to your email address shortly', 'check-email') ?></p>
+						<p><?php esc_html_e('If you have any query, please write the query in below box or email us at', 'check-email') ?> <a href="mailto:team@magazine3.in"><?php echo esc_html('team@magazine3.in'); ?></a>. <?php esc_html_e('We will reply to your email address shortly', 'check-email') ?></p>
 
 						<div class="ce-support-div-form">
 				            <ul>

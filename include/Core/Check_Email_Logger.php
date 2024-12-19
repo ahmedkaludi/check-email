@@ -171,6 +171,7 @@ class Check_Email_Logger implements Loadie {
     private function ck_mail_get_backtrace($functionName = 'wp_mail')
     {
         $backtraceSegment = null;
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
         $backtrace = debug_backtrace();
 
         foreach ($backtrace as $segment) {

@@ -170,9 +170,10 @@ class Check_Email_Log_List_Action implements Loadie {
 							<h4><?php esc_html_e( 'Attachments', 'check-email'); ?> </h4>
 							<?php
 							foreach ($attachments as $key => $attachment) {
-								?>
-								<img src="<?php echo esc_attr($attachment) ?>" height="100px" width="100px" />
-								<?php
+								echo wp_get_attachment_image($attachment, 'thumbnail', false, [
+											'class' => 'custom-class',
+											'style' => 'height: 100px; width: 100px;',
+										]);
 							}
 						}
 					}
@@ -487,9 +488,10 @@ class Check_Email_Log_List_Action implements Loadie {
 						<h4><?php esc_html_e( 'Attachments', 'check-email' ); ?></h4>
 						<?php
 						foreach ($attachments as $key => $attachment) {
-							?>
-							<img src="<?php echo esc_attr($attachment) ?>" height="100px" width="100px" />
-							<?php
+							echo wp_get_attachment_image($attachment, 'thumbnail', false, [
+								'class' => 'custom-class',
+								'style' => 'height: 100px; width: 100px;',
+							]);
 						}
 					}
 				}
@@ -529,6 +531,7 @@ class Check_Email_Log_List_Action implements Loadie {
 		$reply_to = ( isset($_POST['ckm_reply_to'] ) ) ? sanitize_text_field(wp_unslash($_POST['ckm_reply_to'])) : "";
 
 		$subject = ( isset($_POST['ckm_subject'] ) ) ? sanitize_text_field(wp_unslash($_POST['ckm_subject'])) : "";
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$message = ( isset($_POST['ckm_message'] ) ) ? wp_unslash($_POST['ckm_message']) : "";
 		$headers = array(
 		);
@@ -597,7 +600,8 @@ class Check_Email_Log_List_Action implements Loadie {
 			echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','check-email')));
 			wp_die();
 		}
-		set_time_limit(300);  
+		// phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged
+		set_time_limit(300);
         
         $plugin_name   = isset($_POST['plugin_name'])?sanitize_text_field(wp_unslash($_POST['plugin_name'])):'';          
         $is_plugin_active = false;

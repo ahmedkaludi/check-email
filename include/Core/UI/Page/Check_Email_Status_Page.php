@@ -38,7 +38,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
         add_action('wp_ajax_ck_email_verify', array( $this, 'ck_email_verify' ));
 	}
 
-    public function ck_email_verify() {		
+    public function ck_email_verify() {
 		if(!isset($_POST['ck_mail_security_nonce'])){
 			return;
 		}
@@ -50,7 +50,7 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
 		}
         $response = array('status'=> false);
         if ( isset( $_POST['email'] ) && ! empty( $_POST['email'] )) {
-            $email = $_POST['email'];
+            $email = sanitize_text_field( wp_unslash( $_POST['email'] ) );
             $validator = new EmailValidator();
             // ietf.org has MX records signaling a server with email capabilities
             $email_valid = $validator->isValid($email, new RFCValidation());

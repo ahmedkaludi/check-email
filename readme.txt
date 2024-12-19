@@ -2,7 +2,7 @@
 Contributors: checkemail
 Tags: logging, email, email log, smtp, log
 Requires at least: 5.0
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6.20
 Stable tag: 2.0.3
 License: GPLv3 or later
