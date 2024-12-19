@@ -55,17 +55,11 @@ function wp_chill_check_email_array_checked( $values, $current ) {
 }
 
 function wp_chill_check_email_get_dismiss_icon() {
-	// phpcs:ignore Squiz.PHP.Heredoc.NotAllowed
-	return <<<EOT
-<span class="dashicons dashicons-dismiss"></span>
-EOT;
+	return '<span class="dashicons dashicons-dismiss"></span>';
 }
 
 function wp_chill_check_email_get_confirm_icon() {
-	// phpcs:ignore Squiz.PHP.Heredoc.NotAllowed
-	return <<<EOT
-<span class="dashicons dashicons-yes-alt"></span>
-EOT;
+	return '<span class="dashicons dashicons-yes-alt"></span>';
 
 }
 
