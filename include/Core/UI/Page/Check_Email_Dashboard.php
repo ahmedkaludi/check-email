@@ -70,6 +70,10 @@ class Check_Email_Dashboard extends Check_Email_BasePage
                     <?php echo esc_html__("Monitor your email metrics, like email opend delivery and detail, to ensure you’re delivering information.", 'check-email'); ?></p>
                     <a class="button button-primary button-hero" href="<?php echo esc_url(admin_url('admin.php?page=check-email-logs')); ?>"><?php echo esc_html__( "Go to Email Logs Module", 'check-email' ); ?></a>
                 </div>
+                <?php
+                $option = get_option( 'check-email-log-core' );
+        
+                if ( is_array( $option ) && array_key_exists( 'email_error_tracking', $option ) && 'true' === strtolower( $option['email_error_tracking'] ) ) { ?>
                 <div class="ck_dashboard-box">
                     <h3><?php echo esc_html__('Email Error Tracker', 'check-email'); ?></h3>
                     <p style="height:90px; overflow:hidden;"><?php echo esc_html__('Managing email errors is essential to ensure smooth communication and deliverability', 'check-email'); ?>
@@ -77,6 +81,7 @@ class Check_Email_Dashboard extends Check_Email_BasePage
                     <?php echo esc_html__("Monitor failed email deliveries in real-time.", 'check-email'); ?></p>
                     <a class="button button-primary button-hero" href="<?php echo esc_url(admin_url('admin.php?page=check-email-error-tracker')); ?>"><?php echo esc_html__( "Go to Email Error Tracker Module", 'check-email' ); ?></a>
                 </div>
+                <?php } ?>
                 <div id="CKE_banner" style="width:27%;padding: 30px;">
                     <h2>
                         <?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage, PluginCheck.CodeAnalysis.Offloading.OffloadedContent ?>
