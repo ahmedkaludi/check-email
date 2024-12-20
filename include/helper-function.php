@@ -622,7 +622,7 @@ function ck_mail_check_email_analyze() {
         $email = $current_user ->user_email;
         if ( !empty( $email ) ) {
             $to = 'plugintest@check-email.tech';
-            $title = esc_html__("Test email from", "check-email") . ' ' . esc_url(get_bloginfo("url"));
+            $title = esc_html__("Test email to analyze check email", "check-email");
             $body  = esc_html__('This test email will analyze score', "check-email");
             $body = $body;
             $site_name = get_bloginfo('name');
