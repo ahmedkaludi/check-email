@@ -1,6 +1,6 @@
 <?php
 /*
-* Plugin Name: 				Check & Log Email
+* Plugin Name: 				Check & Log Email - Easy Email Testing & Mail logging
 * Description: 				Check & Log email allows you to test if your WordPress installation is sending emails correctly and logs every email.
 * Author: 					checkemail
 * Version: 					2.0.3
