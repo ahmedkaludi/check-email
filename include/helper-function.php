@@ -1152,6 +1152,3 @@ function check_email_content_with_tracking($open_tracking_id) {
     $email_content = "<img src='$tracking_url' class='check-email-tracking' alt='' width='1' height='1' style='display:none;' />";
     return $email_content;
 }
-
-
-

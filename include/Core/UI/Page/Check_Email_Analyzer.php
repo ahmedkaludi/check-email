@@ -23,6 +23,7 @@ class Check_Email_Analyzer extends Check_Email_BasePage {
     {
         parent::load();
         add_action('admin_enqueue_scripts', array($this, 'checkemail_assets'));
+        add_action('init', array($this, 'checkmail_load_table'));
     }
     public function register_page() {
         $this->page = add_submenu_page(
@@ -34,6 +35,11 @@ class Check_Email_Analyzer extends Check_Email_BasePage {
             array($this, 'render_page'),
             2
         );
+    }
+    public function checkmail_load_table() {
+        if (function_exists('ck_mail_create_spam_analyzer_table') ) {
+			ck_mail_create_spam_analyzer_table();
+		}
     }
 
     public function render_page() {
