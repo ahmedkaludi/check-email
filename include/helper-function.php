@@ -481,6 +481,42 @@ function ck_mail_create_error_logs() {
     // phpcs:enable.
 }
 
+function ck_mail_create_spam_analyzer_table() {
+
+    global $wpdb;
+
+    $table_name           = $wpdb->prefix . 'check_email_spam_analyzer';
+    $charset_collate = $wpdb->get_charset_collate();
+    // phpcs:disable.
+    if ( $wpdb->get_var( $wpdb->prepare( "show tables like %s",$wpdb->esc_like( $table_name )) ) != $table_name ) {
+
+        $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
+            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            `html_content` LONGTEXT DEFAULT NULL,
+            `spam_assassin` LONGTEXT DEFAULT NULL,
+            `authenticated` LONGTEXT DEFAULT NULL,
+            `block_listed` TEXT DEFAULT NULL,
+            `broken_links` TEXT DEFAULT NULL,
+            `final_score` TEXT DEFAULT NULL,
+            `test_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id)
+        )
+        ENGINE='InnoDB'
+        {$charset_collate};";
+
+        $wpdb->query($sql);
+    }
+    // phpcs:enable.
+}
+
+function ck_mail_insert_spam_analyzer($data_to_insert) {
+
+    global $wpdb;
+
+    $table_name           = $wpdb->prefix . 'check_email_spam_analyzer';
+    $wpdb->insert( $table_name, $data_to_insert ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+}
 function ck_mail_insert_error_logs($data_to_insert) {
 
     global $wpdb;
@@ -604,6 +640,19 @@ function ck_mail_check_dns() {
     wp_die();
 }
 
+function ck_email_verify($email) {
+    $validator = new Egulias\EmailValidator\EmailValidator();
+    // ietf.org has MX records signaling a server with email capabilities
+    $email_valid = $validator->isValid($email, new Egulias\EmailValidator\Validation\RFCValidation());
+    $dns_valid = $validator->isValid($email, new Egulias\EmailValidator\Validation\DNSCheckValidation());
+    $spoof_valid = $validator->isValid($email, new Egulias\EmailValidator\Validation\Extra\SpoofCheckValidation());
+    $response['status'] = true;
+    $response['spoof_valid'] = ($spoof_valid) ? 1 : 0;
+    $response['dns_valid'] = ($dns_valid) ? 1 : 0;
+    $response['email_valid'] = ($email_valid) ? 1 : 0;
+    return $response;
+}
+
 add_action( 'wp_ajax_check_dns', 'ck_mail_check_dns' );
 
 function ck_mail_check_email_analyze() {
@@ -635,6 +684,10 @@ function ck_mail_check_email_analyze() {
         $api_params = array(
             'email' => $email,
         );
+
+        if (function_exists('ck_mail_create_spam_analyzer_table') ) {
+			ck_mail_create_spam_analyzer_table();
+		}
 
         $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 
@@ -720,6 +773,19 @@ function ck_mail_check_email_analyze() {
                 }
                 update_option('check_email_spam_score_' . $current_user ->user_email, $spam_score);
                 $result['previous_spam_score'] = $spam_score;
+                $result['previous_email_result'] = ck_email_verify($email);
+                $data_to_insert = array(
+                    'html_content' => wp_json_encode($response['html_tab']),
+                    'spam_assassin' => wp_json_encode(array('data'=> $response['spamcheck_result'],'spam_final_score' => $spam_final_score)),
+                    'authenticated' => wp_json_encode(array('data'=> $response['authenticated'],'auth_final_score' => $auth_final_score)),
+                    'block_listed' => wp_json_encode(array('data'=> $blocklist,'block_final_score' => $block_final_score)),
+                    'broken_links' => wp_json_encode(array('data'=> $response['links'],'link_final_score' => $link_final_score)),
+                    'final_score' => $final_score,
+                    'test_date' => $current_date_time,
+                );
+                if ( function_exists('ck_mail_insert_spam_analyzer') ) {
+                    ck_mail_insert_spam_analyzer($data_to_insert);
+                }
             }
             echo wp_json_encode( $result );
         } else {

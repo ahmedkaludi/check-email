@@ -57,11 +57,17 @@ class Check_Email_Table_Manager implements Loadie {
 				if (function_exists('ck_mail_create_error_logs') ) {
 					ck_mail_create_error_logs();
 				}
+				if (function_exists('ck_mail_create_spam_analyzer_table') ) {
+					ck_mail_create_spam_analyzer_table();
+				}
 			}
 		} else {
 			$this->create_table_if_needed();
 			if (function_exists('ck_mail_create_error_logs') ) {
 				ck_mail_create_error_logs();
+			}
+			if (function_exists('ck_mail_create_spam_analyzer_table') ) {
+				ck_mail_create_spam_analyzer_table();
 			}
 		}
 	}

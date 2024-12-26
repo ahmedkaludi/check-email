@@ -114,7 +114,6 @@ class Check_Email_Status_Page extends Check_Email_BasePage {
             }
             ?>
             <?php require_once 'partials/check-email-admin-status-display.php'; ?>
-            <?php require_once 'partials/check-email-admin-check-dns.php'; ?>
 		</div>
 		<?php
 	}

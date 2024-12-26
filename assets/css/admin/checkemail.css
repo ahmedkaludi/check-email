@@ -559,21 +559,37 @@
 .ck_dashboard-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin-top:20px;
+    gap:20px 0px;
+    float: left;
 }
 
 .ck_dashboard-box {
-    padding: 15px;
-    width: 27%;
-    text-align: center;
-    background-color: white;
-    background-color: #FFF;
+    width: 25%;
     border: 1px solid #DDD;
+    background-color: #fff;
     max-width: 30%;
     padding: 30px;
     float: left;
+    position: relative;
 }
 .ck_dashboard-box button:hover {
     background-color: #1a5b8a;
+}
+.ck_dashboard-learn-more {
+    color: blue;
+    margin-top: 10px;
+    font-style: italic;
+    margin-left: 18px;
+    top: 5px;
+    position: relative;
+    text-decoration: none;
+}
+.ck_dashboard-free {
+    position: absolute;
+    top: 42px;
+    right: 36px;
+    color: #fff;
+    background: #4CAF50;
+    border-radius: 50px;
+    padding: 2px 11px;
 }

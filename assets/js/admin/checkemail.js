@@ -305,7 +305,6 @@
   function chec_email_manage_display_state() {
     if($('#check-email-enable-smtp').is(':checked')){
       var check_email_mailer_type = $(".check_email_mailer_type:checked").val();
-      console.log(check_email_mailer_type);
       if(check_email_mailer_type == 'outlook'){
         $('#check-email-outllook').show();
         $('#check-email-smtp-form').hide();
@@ -316,85 +315,6 @@
       }
     }
   }
-
-  
-  $("#ck_submit_email_verify").on("click", function(e){
-    console.log(1111)
-    e.preventDefault();
-    jQuery('.cm_js_error').html('');
-    jQuery('.cm_js_success').html('');
-    var t = $(this);
-    var email = $('#ck_email').val();
-    console.log(email)
-    var ajaxurl = checkemail_data.ajax_url;
-    var ck_mail_security_nonce = checkemail_data.ck_mail_security_nonce;
-    // var ck_mail_security_nonce = jQuery('#cm_security_nonce').attr('data');
-    data = { action:"ck_email_verify", 'email':email, ck_mail_security_nonce:ck_mail_security_nonce};
-    jQuery.ajax({
-      url:ajaxurl,
-      method:'post',
-      dataType: "json",
-      data:data,
-      beforeSend: function(response){
-        t.html('Email Verify<span class="spinner is-active"></span>');
-        t.prop('disabled',true);
-      },
-      success:function(response){
-        console.log(response)
-        html_content ="";
-        if (response.status) {
-          if (response.email_valid) {
-            html_content +='<div class="ck-card">\
-                  <h4>Format <span class="ck-status">Valid</span></h4>\
-                  <p>This email address has the correct format and is not gibberish.</p>\
-              </div>';
-          }else{
-            html_content +='<div class="ck-card">\
-                  <h4>Format <span class="ck-status" style="background-color:pink;color:red;">Invalid</span></h4>\
-                  <p>This email address is not correct.</p>\
-              </div>';
-          }
-          if (response.email_valid) {
-            html_content +='<div class="ck-card">\
-            <h4>Type <span class="ck-status" style="background-color: #cce5ff; color: #004085;">Professional</span></h4>\
-                <p>The domain name is not used for webmails or for creating temporary email addresses.</p>\
-            </div>';
-          }
-          if (response.dns_valid) {
-            html_content +='<div class="ck-card">\
-                  <h4>Server status <span class="ck-status">Valid</span></h4>\
-                  <p>MX records are present for the domain and we can connect to the SMTP server these MX records point to.</p>\
-              </div>';
-          }else{
-            html_content +='<div class="ck-card">\
-                  <h4>Server status <span class="ck-status" style="background-color:pink;color:red">Invalid</span></h4>\
-                  <p>MX records are not present for the domain, or we cannot connect to the SMTP server</p>\
-              </div>';
-          }
-          if (response.dns_valid) {
-            html_content +='<div class="ck-card">\
-                  <h4>Email status<span class="ck-status">Valid</span></h4>\
-                  <p>This email address exists and can receive emails.</p>\
-              </div>';
-          }else{
-            html_content +='<div class="ck-card">\
-                  <h4>Email status<span class="ck-status" style="background-color:pink;color:red">Invalid</span></h4>\
-                  <p>This email address can not receive emails.</p>\
-              </div>';
-          }
-        }else{
-          html_content ='<p style="color:red;">'+response.error+'</p>';
-        }
-        $("#ck_email_result").html(html_content);
-      },
-      complete:function(response){
-        console.log(response)
-        t.html('Email Verify');
-        t.prop('disabled',false);
-      }
-
-    });
-  });
 
   $("#ck_email_analyze").on("click", function(e){
     e.preventDefault();
@@ -416,6 +336,7 @@
       },
       success:function(response){
         if (response.is_error == 0) {
+          email_result = response.previous_email_result;
           blocklist = response.blocklist;
           previous_spam_score = response.previous_spam_score;
           links = response.data.links;
@@ -495,6 +416,49 @@
             html_tab+=`<div class="ck-accordion"><div class="ck-accordion-header" onclick="ck_toggleAccordion(this)"><div class="ck_icon_with_text"><span class="">`+spam_icon+`</span>
                     <span class="ck_header_span">`+spam_text+`</span><span class="ck_score_span">Score : `+totalScore.toFixed(1)+`</span></div></div><div class="ck-accordion-content">
                     <p><i>The famous spam filter SpamAssassin. </i> <strong>Score:`+totalScore.toFixed(1)+`</strong></p><p><i>A score below -5 is considered spam.</i></p><hr/><p><pre>`+report+`</pre></p></div></div>`;
+            email_result_html ="";
+            if (email_result.email_valid) {
+              email_result_html +='<div class="ck-card">\
+                    <h4>Format <span class="ck-status">Valid</span></h4>\
+                    <p>This email address has the correct format and is not gibberish.</p>\
+                </div>';
+            }else{
+              email_result_html +='<div class="ck-card">\
+                    <h4>Format <span class="ck-status" style="background-color:pink;color:red;">Invalid</span></h4>\
+                    <p>This email address is not correct.</p>\
+                </div>';
+            }
+            if (email_result.email_valid) {
+              email_result_html +='<div class="ck-card">\
+              <h4>Type <span class="ck-status" style="background-color: #cce5ff; color: #004085;">Professional</span></h4>\
+                  <p>The domain name is not used for webmails or for creating temporary email addresses.</p>\
+              </div>';
+            }
+            if (email_result.dns_valid) {
+              email_result_html +='<div class="ck-card">\
+                    <h4>Server status <span class="ck-status">Valid</span></h4>\
+                    <p>MX records are present for the domain and we can connect to the SMTP server these MX records point to.</p>\
+                </div>';
+            }else{
+              email_result_html +='<div class="ck-card">\
+                    <h4>Server status <span class="ck-status" style="background-color:pink;color:red">Invalid</span></h4>\
+                    <p>MX records are not present for the domain, or we cannot connect to the SMTP server</p>\
+                </div>';
+            }
+            if (email_result.dns_valid) {
+              email_result_html +='<div class="ck-card">\
+                    <h4>Email status<span class="ck-status">Valid</span></h4>\
+                    <p>This email address exists and can receive emails.</p>\
+                </div>';
+            }else{
+              email_result_html +='<div class="ck-card">\
+                    <h4>Email status<span class="ck-status" style="background-color:pink;color:red">Invalid</span></h4>\
+                    <p>This email address can not receive emails.</p>\
+                </div>';
+            }
+            html_tab+=`<div class="ck-accordion"><div class="ck-accordion-header" onclick="ck_toggleAccordion(this)"><div class="ck_icon_with_text"><span class="">`+yes_icon_svg+`</span>
+                    <span class="ck_header_span">Email validation result</span></div></div><div class="ck-accordion-content">`+email_result_html+`</div></div>`;
+
             html_content = "";
             vuln = "";
             vuln_count = 0;
@@ -529,6 +493,7 @@
                     <p style="color:red; overflow-wrap: break-word;"><strong>Vulnerabilities detected :</strong>Recommendation: Address the identified vulnerabilities to improve DNS security.</p>\
                 </div>';
             }
+
             html_tab+=`<div class="ck-accordion"><div class="ck-accordion-header" onclick="ck_toggleAccordion(this)"><div class="ck_icon_with_text"><span class="">`+auth_icon+`</span><span class="ck_header_span">`+auth_text+`</span></div></div><div class="ck-accordion-content">`+html_content+`</div></div>`;
             blocklist_html = "";
             block_count = 0;
