@@ -33,7 +33,7 @@ This WordPress plugin helps you store sent emails for auditing purposes, as well
 - <strong>Multisite Configure</strong> - Its allow to configure global setting for all your sites. 
 - <strong>Encoding</strong> - Its allow to encode emails and phone in page content. 
 - <strong>Outlook / MS 360</strong> - Its allow to send email using 360 / outlook configuration. 
-- <strong>Email Spam Testing</strong> - Its allow to testing of your mail for accurate delivery. 
+- <strong>Email Spam Testing</strong> - Its allow to testing of your mail for accurate delivery.
 
 == Features of the plugin Check & Log Email ==
 
@@ -117,6 +117,7 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 = v2.0.4 - 26/12/2024 =
 - Enhancement: Notice "Function _load_textdomain_just_in_time was called incorrectly" since wp 6.7 #116
 - Enhancement: Few improvement needed #112
+- Enhancement: Make an option to use one SMTP settings for multisite #97
 - Feature: Email Spam Analyzer #119
 - Fixed: Php error #117
 
