@@ -1,6 +1,7 @@
 {
     "require": {
-        "league/oauth2-client": "^2.5"
+        "league/oauth2-client": "^2.5",
+        "egulias/email-validator": "^3.2"
     },
     "config": {
         "platform": {
