@@ -958,7 +958,7 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
     
 		
 		$chars = str_split( $string );
-		$seed = wp_rand( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
+		$seed = openssl_random_pseudo_bytes( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
 		
 
 		foreach ( $chars as $key => $char ) {
