@@ -958,8 +958,9 @@ add_action( 'init', 'check_email_e_register_shortcode', 2000 );
     
 		
 		$chars = str_split( $string );
-		$seed = openssl_random_pseudo_bytes( 0, (int) abs( crc32( $string ) / strlen( $string ) ) );
-		
+        $string_length = (int) abs(crc32($string) / strlen($string));
+        $length = max($string_length, 1);
+        $seed = openssl_random_pseudo_bytes($length);
 
 		foreach ( $chars as $key => $char ) {
 			$ord = ord( $char );
