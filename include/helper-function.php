@@ -1179,7 +1179,7 @@ if ( is_admin() ) {
     function add_checmail_dashboard_widget() {
         wp_add_dashboard_widget(
             'checmail_dashboard_widget',
-            esc_html__('Check & Log Email', 'check-email'),
+            esc_html__('Check & Log Email Activity', 'check-email'),
             'checmail_dashboard_widget'
         );
     }
