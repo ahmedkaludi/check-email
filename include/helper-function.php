@@ -1226,7 +1226,7 @@ if ( is_admin() ) {
             if (!isset($daily_counts[$date])) {
                 $daily_counts[$date] = ['sent' => 0, 'failed' => 0];
             }
-            if ($status === 1) {
+            if ($status == 1) {
                 $daily_counts[$date]['sent']++;
             } else {
                 $daily_counts[$date]['failed']++;
