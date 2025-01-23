@@ -1153,3 +1153,98 @@ function check_email_content_with_tracking($open_tracking_id) {
     $email_content = "<img src='$tracking_url' class='check-email-tracking' alt='' width='1' height='1' style='display:none;' />";
     return $email_content;
 }
+
+if ( is_admin() ) {
+
+    function checmail_dashboard_widget() {
+        echo '<canvas id="checkmail-dashboard-chart" style="width: 100%; height: 250px;"></canvas>';
+        echo '
+            <div style="margin-top: 10px; text-align: center; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <select id="checkmail-dashboard-date-range">
+                        <option value="7">'.esc_html__('Last 7 Days', 'check-email').'</option>
+                        <option value="14">'.esc_html__('Last 14 Days', 'check-email').'</option>
+                        <option value="30">'.esc_html__('Last 30 Days', 'check-email').'</option>
+                    </select>
+                </div>
+                <div style="margin-top: 10px; text-align: center; font-size: 14px;">
+                    <p><span style="color: blue; font-weight: bold;" id="js_checkmail_total"></span> |
+                    <span style="color: green; font-weight: bold;" id="js_checkmail_sent"></span> |
+                    <span style="color: red; font-weight: bold;" id="js_checkmail_failed"></span></p>
+                </div>
+            </div>
+        ';
+    }
+
+    function add_checmail_dashboard_widget() {
+        wp_add_dashboard_widget(
+            'checmail_dashboard_widget',
+            esc_html__('Check & Log Email', 'check-email'),
+            'checmail_dashboard_widget'
+        );
+    }
+    add_action('wp_dashboard_setup', 'add_checmail_dashboard_widget');
+
+    function custom_dashboard_scripts($hook) {
+        if ($hook !== 'index.php') return;
+            $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+            wp_enqueue_script('chartjs', CK_MAIL_URL . 'assets/js/admin/chart.js', [], CK_MAIL_VERSION, true);
+            wp_register_script('custom-dashboard-chart', CK_MAIL_URL . 'assets/js/admin/checkmail-dashboard-chart'. $suffix .'.js', ['jquery','chartjs'], CK_MAIL_VERSION, true);
+            $data = array(
+                'ajax_url'                     => admin_url( 'admin-ajax.php' ),
+                'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
+            );
+
+            wp_localize_script( 'custom-dashboard-chart', 'checkmail_chart', $data );
+            wp_enqueue_script( 'custom-dashboard-chart' );
+
+        
+    
+    }
+    add_action('admin_enqueue_scripts', 'custom_dashboard_scripts');
+
+    function get_email_analytics_data() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'check_email_log';
+        $ck_days = isset($_GET['ck_days']) ? $_GET['ck_days'] : 7;
+        $query = $wpdb->prepare(
+            "SELECT * FROM $table_name WHERE sent_date >= CURDATE() - INTERVAL $ck_days DAY"
+        );
+        $results = $wpdb->get_results($query);
+        $data = [
+            'labels' => [],
+            'sent' => [],
+            'failed' => [],
+        ];
+
+        
+        $daily_counts = [];
+        foreach ($results as $row) {
+            $created_at = $row->sent_date;
+            $status = $row->result;
+            $date = date('M j', strtotime($created_at));
+            if (!isset($daily_counts[$date])) {
+                $daily_counts[$date] = ['sent' => 0, 'failed' => 0];
+            }
+            if ($status === 1) {
+                $daily_counts[$date]['sent']++;
+            } else {
+                $daily_counts[$date]['failed']++;
+            }
+        }
+        ksort($daily_counts);
+        foreach ($daily_counts as $date => $counts) {
+            $data['labels'][] = $date;
+            $data['sent'][] = $counts['sent'];
+            $data['failed'][] = $counts['failed'];
+        }
+
+        $data['total_mail'] =  array_sum($data['sent']) + array_sum($data['failed']);
+        $data['total_failed'] =  array_sum($data['failed']);
+        $data['total_sent'] =  array_sum($data['sent']);
+
+        wp_send_json($data);
+    }
+    add_action('wp_ajax_get_email_analytics', 'get_email_analytics_data');
+
+}
