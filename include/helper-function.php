@@ -641,11 +641,16 @@ function ck_mail_check_dns() {
 }
 
 function ck_email_verify($email) {
-    $validator = new Egulias\EmailValidator\EmailValidator();
-    // ietf.org has MX records signaling a server with email capabilities
-    $email_valid = $validator->isValid($email, new Egulias\EmailValidator\Validation\RFCValidation());
-    $dns_valid = $validator->isValid($email, new Egulias\EmailValidator\Validation\DNSCheckValidation());
-    $spoof_valid = $validator->isValid($email, new Egulias\EmailValidator\Validation\Extra\SpoofCheckValidation());
+    $spoof_valid = 1;
+    $dns_valid = 1;
+    $email_valid = 1;
+    if (class_exists('\Egulias\EmailValidator\EmailValidator')) {
+        $validator = new \Egulias\EmailValidator\EmailValidator();
+        // ietf.org has MX records signaling a server with email capabilities
+        $email_valid = $validator->isValid($email, new \Egulias\EmailValidator\Validation\RFCValidation());
+        $dns_valid = $validator->isValid($email, new \Egulias\EmailValidator\Validation\DNSCheckValidation());
+        $spoof_valid = $validator->isValid($email, new \Egulias\EmailValidator\Validation\Extra\SpoofCheckValidation());
+    }
     $response['status'] = true;
     $response['spoof_valid'] = ($spoof_valid) ? 1 : 0;
     $response['dns_valid'] = ($dns_valid) ? 1 : 0;
