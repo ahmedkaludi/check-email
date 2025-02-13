@@ -803,6 +803,40 @@ function ck_mail_check_email_analyze() {
 
 add_action( 'wp_ajax_check_email_analyze', 'ck_mail_check_email_analyze' );
 
+add_action('wp_ajax_checkmail_save_admin_fcm_token', 'checkmail_save_admin_fcm_token');
+
+function checkmail_save_admin_fcm_token() {
+    $result['status'] = false;
+    if (!isset($_POST['ck_mail_security_nonce'])) {
+        return;
+    }
+    if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ck_mail_security_nonce'])), 'ck_mail_security_nonce')) {
+        return;
+    }
+    if (isset($_POST['token']) && !empty($_POST['token'])) {
+
+        $current_user = wp_get_current_user();
+
+        if (in_array('administrator', (array) $current_user->roles)) {
+
+            $device_tokens = get_option('checkmail_admin_fcm_token');
+            if (!is_array($device_tokens)) {
+                $device_tokens = [];
+            }
+            $new_token = sanitize_text_field(wp_unslash(($_POST['token'] )));
+
+            if (!in_array($new_token, $device_tokens)) {
+                $device_tokens[] = $new_token;
+            }
+            $device_tokens = array_slice(array_unique($device_tokens), -5);
+            update_option('checkmail_admin_fcm_token', $device_tokens);
+            $result['status'] = true;
+        }
+    }
+    echo wp_json_encode( $result );
+    wp_die();
+}
+
 
 
 

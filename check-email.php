@@ -103,6 +103,7 @@ function check_email_log( $plugin_file ) {
 
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Multisite() );
 	$check_email->add_loadie( new \CheckEmail\Check_Email_Encode_Tab() );
+	$check_email->add_loadie( new \CheckEmail\Check_Email_Notify_Tab() );
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Logger() );
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Review() );
 	$check_email->add_loadie( new \CheckEmail\Core\Check_Email_Export_Log() );

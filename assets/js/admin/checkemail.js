@@ -315,6 +315,20 @@
       }
     }
   }
+  $(document).on('click', '#check-email-email-notify-options-is_enable', function(e){
+    if($(this).is(':checked')){
+      $('#ck-notify-table-id').show();
+    }else{
+      $('#ck-notify-table-id').hide();
+    }
+  });
+  $(document).on('click', '#check-email-notify-by-sms-enable', function(e){
+    if($(this).is(':checked')){
+      $('.check-email-twilio').show();
+    }else{
+      $('.check-email-twilio').hide();
+    }
+  });
 
   $("#ck_email_analyze").on("click", function(e){
     e.preventDefault();
