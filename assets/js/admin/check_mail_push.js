@@ -1,5 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOMContentLoaded')
     var ajax_url = checkemail_pushdata.ajax_url
     var ck_mail_security_nonce = checkemail_pushdata.ck_mail_security_nonce
     var firebaseConfig = checkemail_pushdata.fcm_config;
@@ -8,35 +9,50 @@ document.addEventListener("DOMContentLoaded", function() {
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-
-
-    document.addEventListener("push", (event) => {
-        console.log('payload push')
-        unreadCount += 1;
-        // Set or clear the badge.
-        if (navigator.setAppBadge) {
-            if (unreadCount && unreadCount > 0) {
-                navigator.setAppBadge(unreadCount);
-            } else {
-                navigator.clearAppBadge();
-            }
-        }
-    });
-
     
 
 
     function requestPermission() {
-        Notification.requestPermission().then(permission => {
-            console.log(permission)
-            if (permission === "granted") {
+        const savedToken = localStorage.getItem("adminTokenCheckMail");
+    
+        if (savedToken) {
+            console.log("Token already saved:");
+        } else {
+            if (Notification.permission === "granted") {
+                console.log("Permission already granted.");
                 messaging.getToken({ vapidKey: "AIzaSyDhRbFy9m-NXZVkozYJwKdDYJuwsL6W_bw" }).then(token => {
-                    // console.log("Admin FCM Token:", token);
-                    saveAdminToken(token);
+                    if (token) {
+                        localStorage.setItem("adminTokenCheckMail", token);
+                        saveAdminToken(token);
+                    }
+                }).catch(error => {
+                    console.log("Error fetching token:", error);
+                });
+            } else if (Notification.permission === "denied") {
+                console.log("Permission denied previously.");
+            } else if (Notification.permission === "default") {
+                console.log("Requesting permission...");
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        messaging.getToken({ vapidKey: "AIzaSyDhRbFy9m-NXZVkozYJwKdDYJuwsL6W_bw" }).then(token => {
+                            if (token) {
+                                localStorage.setItem("adminTokenCheckMail", token);
+                                saveAdminToken(token);
+                            }
+                        }).catch(error => {
+                            console.log("Error fetching token:", error);
+                        });
+                    } else {
+                        console.log("Notification permission denied.");
+                    }
+                }).catch(error => {
+                    console.log("Error requesting permission:", error);
                 });
             }
-        });
+        }
+        
     }
+    
 
 
     function saveAdminToken(token) {
@@ -48,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Token Saved:");
         });
     }
-    document.addEventListener("DOMContentLoaded", requestPermission);
+    // document.addEventListener("DOMContentLoaded", requestPermission);
 
     messaging.onMessage((payload) => {
         console.log("Message received. ", payload);
@@ -57,4 +73,6 @@ document.addEventListener("DOMContentLoaded", function() {
             icon: payload.notification.icon
         });
     });
+
+    requestPermission();
 })

@@ -19,39 +19,28 @@ var messageCount = 0;
 var unreadCount = 0;
 
 messaging.setBackgroundMessageHandler(function(payload) {
-	console.log(payload)
-const notificationTitle = payload.data.title;
-const notificationOptions = {
-				body: payload.data.body,
-				icon: payload.data.icon,
-				image: payload.data.image,
-				vibrate: [100, 50, 100],
-				data: {
-					dateOfArrival: Date.now(),
-					primarykey: payload.data.currentCampaign,
-					url : payload.data.url
-				  },
-				}
-				messageCount += 1;
-				setBadge(messageCount);
+	const notificationTitle = payload.data.title;
+	const notificationOptions = {
+		body: payload.data.body,
+		icon: payload.data.icon,
+		image: payload.data.image,
+		vibrate: [100, 50, 100],
+		data: {
+			dateOfArrival: Date.now(),
+			primarykey: payload.data.currentCampaign,
+			url : payload.data.url
+		},
+	}
+	messageCount += 1;
+	setBadge(messageCount);
 
 	return self.registration.showNotification(notificationTitle, notificationOptions);
-	
-
 });
-
-// messaging.onMessage((payload) => {
-// 	console.log("Message received. ", payload);
-// 	new Notification(payload.notification.title, {
-// 		body: payload.notification.body,
-// 		icon: payload.notification.icon
-// 	});
-// });
 
 
 self.addEventListener("notificationclose", function(e) {
-var notification = e.notification;
-var primarykey = notification.data.primarykey;
+	var notification = e.notification;
+	var primarykey = notification.data.primarykey;
 	messageCount -= 1;
 	unreadCount -= 1;
 	if(messageCount>0 && unreadCount > 0){
@@ -59,19 +48,13 @@ var primarykey = notification.data.primarykey;
 	}else{
 		clearBadge();
 	}
-	console.log("Closed notification: " + primarykey);
 });
 
 self.addEventListener("notificationclick", function(e) {
-var notification = e.notification;
-messageCount -= 1;
-unreadCount -= 1;
-
-
-
-notification.close(); // Close the notification
-
-console.log("Clicked notification: " + notification.data);
+	var notification = e.notification;
+	messageCount -= 1;
+	unreadCount -= 1;
+	notification.close();
 });  
 
 
@@ -100,7 +83,6 @@ function clearBadge() {
 }
 
 self.addEventListener("push", (event) => {
-	console.log('payload push')
 	unreadCount += 1;
 	// Set or clear the badge.
 	if (navigator.setAppBadge) {

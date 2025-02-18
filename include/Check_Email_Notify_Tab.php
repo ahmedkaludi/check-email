@@ -88,7 +88,6 @@ class Check_Email_Notify_Tab
 			];
 
 			$pn_response = $this->sendRequest('send-checkmail-notification', $notification_data, $method="post");
-			// error_log(print_r($pn_response,true));
 		}
 	}
 
@@ -135,7 +134,6 @@ class Check_Email_Notify_Tab
 	}
 	public function load_email_notify_settings()
 	{
-		$this->push_notify_admin_on_email_failure();
 		$is_enable = false;
 		$is_sms_enable = false;
 		if (isset($this->notify_options['is_enable']) && !empty($this->notify_options['is_enable'])) {
@@ -192,7 +190,8 @@ class Check_Email_Notify_Tab
 						</tr>
 					</tbody>
 				</table>
-				<h2>Notify By SMS</h2>
+				<hr/>
+				<h2><?php esc_html_e('Notification Methods', 'check-email'); ?></h2>
 				<table class="form-table" role="presentation">
 					<tbody>
 						<tr>
@@ -206,32 +205,31 @@ class Check_Email_Notify_Tab
 				<table class="form-table check-email-twilio" role="presentation" style="<?php echo $is_sms_enable ? "" : 'display:none;'; ?>">
 					<tbody>
 						<tr>
-							<th scope="row"><label for="check-email-notify-mobile-number" class="check-email-opt-labels"><?php esc_html_e('Mobile Number of Notifier', 'check-email'); ?></label></th>
+							<th scope="row"><label for="check-email-notify-mobile-number" class="check-email-opt-labels"><?php esc_html_e('Mobile number of notifier', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-mobile-number" name="check-email-email-notify-options[notifier_mobile]" value="<?php echo (isset($this->notify_options['notifier_mobile'])) ? $this->notify_options['notifier_mobile'] : ''; ?>">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-twilio-sid" class="check-email-opt-labels"><?php esc_html_e('YOUR TWILIO SID', 'check-email'); ?></label></th>
+							<th scope="row"><label for="check-email-notify-twilio-sid" class="check-email-opt-labels"><?php esc_html_e('Your twilio sid', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-twilio-sid" name="check-email-email-notify-options[twilio_sid]" value="<?php echo (isset($this->notify_options['twilio_sid'])) ? $this->notify_options['twilio_sid'] : ''; ?>">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-twilio-auth-token" class="check-email-opt-labels"><?php esc_html_e('YOUR TWILIO AUTH TOKEN', 'check-email'); ?></label></th>
+							<th scope="row"><label for="check-email-notify-twilio-auth-token" class="check-email-opt-labels"><?php esc_html_e('Your twilio auth token', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-twilio-auth-token" name="check-email-email-notify-options[twilio_auth_token]" value="<?php echo (isset($this->notify_options['twilio_auth_token'])) ? $this->notify_options['twilio_auth_token'] : ''; ?>">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-twilio-number" class="check-email-opt-labels"><?php esc_html_e('YOUR TWILIO NUMBER', 'check-email'); ?></label></th>
+							<th scope="row"><label for="check-email-notify-twilio-number" class="check-email-opt-labels"><?php esc_html_e('Your twilio number', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-twilio-number" name="check-email-email-notify-options[twilio_number]" value="<?php echo (isset($this->notify_options['twilio_number'])) ? $this->notify_options['twilio_number'] : ''; ?>">
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>Notify By Push Notification</h2>
 				<table class="form-table" role="presentation">
 					<tbody>
 						<tr>
@@ -401,7 +399,7 @@ class Check_Email_Notify_Tab
 		return $status;
 	}
 
-	function checkmail_write_a_file($path, $content, $action = null)
+	public function checkmail_write_a_file($path, $content, $action = null)
 	{
 
 		global $wp_filesystem;
@@ -419,6 +417,10 @@ class Check_Email_Notify_Tab
 			$writestatus =  wp_delete_file($path);
 		}
 
+		$check_email    = wpchill_check_email();
+		$plugin_dir_url = plugin_dir_url($check_email->get_plugin_file());
+		$file_path = $plugin_dir_url . 'assets/js/admin/checkmail-sw.js';
+		$content = file_get_contents($file_path);
 		if (! $action && $content) {
 			$writestatus = $wp_filesystem->put_contents($path, $content, FS_CHMOD_FILE);
 		}
@@ -460,12 +462,12 @@ class Check_Email_Notify_Tab
 				$error_message = strtolower($remoteResponse->get_error_message());
 				$error_pos = strpos($error_message, 'operation timed out');
 				if($error_pos !== false){
-					$message = __('Request timed out, please try again','push-notification');
+					$message = __('Request timed out, please try again','check-email');
 				}else{
 					$message = esc_html($remoteResponse->get_error_message());
 				}
 			}else{
-				$message = __("could not connect to server",'push-notification');
+				$message = __("could not connect to server",'check-email');
 			}
 			$remoteData = array('status'=>401, "response"=>$message);
 
