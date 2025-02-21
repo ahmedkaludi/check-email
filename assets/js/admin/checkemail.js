@@ -329,6 +329,16 @@
       $('.check-email-twilio').hide();
     }
   });
+  $(document).on('click', '.checkmail_trigger', function(e){
+    parent_tr = $(this).parents('tr')
+    if($(this).is(':checked')){
+      parent_tr.find('.checkmail_trigger_counts').show();
+      $(this).next('label').hide();
+    }else{
+      parent_tr.find('.checkmail_trigger_counts').hide();
+      $(this).next('label').show();
+    }
+  });
 
   $("#ck_email_analyze").on("click", function(e){
     e.preventDefault();

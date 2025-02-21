@@ -150,7 +150,7 @@ class Check_Email_Notify_Tab
 				<table class="form-table" role="presentation">
 					<tbody>
 						<tr>
-							<th scope="row"><label for="check-email-email-notify-options-is_enable" class="check-email-opt-labels"><?php esc_html_e('Nofity When Email Failed', 'check-email'); ?></label></th>
+							<th style="width: 280px;" scope="row"><label for="check-email-email-notify-options-is_enable" class="check-email-opt-labels"><?php esc_html_e('Nofity When Email Failed', 'check-email'); ?></label></th>
 							<td>
 								<input class="" type="checkbox" id="check-email-email-notify-options-is_enable" name="check-email-email-notify-options[is_enable]" value="1" <?php echo (isset($this->notify_options['is_enable'])) && $this->notify_options['is_enable'] ? "checked" : ''; ?>>
 							</td>
@@ -159,33 +159,53 @@ class Check_Email_Notify_Tab
 				</table>
 				<table class="form-table" role="presentation" id="ck-notify-table-id" style="<?php echo $is_enable ? "" : 'display:none;'; ?>">
 					<tbody>
+					<?php
+						$on_user_register =  (isset($this->notify_options['on_user_register'])) && $this->notify_options['on_user_register'] ? true : false;
+						$on_login =  (isset($this->notify_options['on_login'])) && $this->notify_options['on_login'] ? true : false;
+						$on_forget =  (isset($this->notify_options['on_forget'])) && $this->notify_options['on_forget'] ? true : false;
+						$on_order =  (isset($this->notify_options['on_order'])) && $this->notify_options['on_order'] ? true : false;
+					?>
 						<tr>
-							<th scope="row"><label for="check-email-notify-options-on_user_register" class="check-email-opt-labels"><?php esc_html_e('New user registration', 'check-email'); ?></label></th>
+							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-options-on_user_register" class="check-email-opt-labels"><?php esc_html_e('Notify me when New User Registers', 'check-email'); ?></label></th>
+							<td style="width: 40px;">
+								<input type="checkbox" class="checkmail_trigger" name="check-email-email-notify-options[on_user_register]" id="check-email-notify-options-on_user_register" value="1" <?php echo $on_user_register ? "checked" : ''; ?>><label style="<?php echo $on_user_register ? 'display:none;' : ''; ?>" for="check-email-notify-options-on_user_register" >Yes</label>
+							</td>
+							<th style="width: 280px;" scope="row" class=""><label style="<?php echo $on_user_register ? '' : 'display:none;'; ?>" for="check-email-notify-options-on_user_register" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed User Registeration Count', 'check-email'); ?></label></th>
+							<td class="">
+								<input style="<?php echo $on_user_register ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_user_register_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_user_register_count'])) && $this->notify_options['on_user_register_count'] ? $this->notify_options['on_user_register_count'] : 2; ?>">
+							</td>
+						</tr>
+						
+						<tr>
+							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-options-on_login" class="check-email-opt-labels"><?php esc_html_e('Notify me when Login password', 'check-email'); ?></label></th>
 							<td>
-								<input type="checkbox" name="check-email-email-notify-options[on_user_register]" id="check-email-notify-options-on_user_register" value="1" <?php echo (isset($this->notify_options['on_user_register'])) && $this->notify_options['on_user_register'] ? "checked" : ''; ?>>
+								<input type="checkbox" class="checkmail_trigger" name="check-email-email-notify-options[on_login]" id="check-email-notify-options-on_login" value="1" <?php echo $on_login ? "checked" : ''; ?>><label style="<?php echo $on_login ? 'display:none;' : ''; ?>" for="check-email-notify-options-on_login" >Yes</label>
+							</td>
+							<th scope="row"><label style="<?php echo $on_login ? '' : 'display:none;'; ?>" for="check-email-notify-options-on_login" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed Login Password Count', 'check-email'); ?></label></th>
+							<td>
+								<input style="<?php echo $on_login ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_login_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_login_count'])) && $this->notify_options['on_login_count'] ? $this->notify_options['on_login_count'] : 2; ?>">
+							</td>
+						</tr>
+						
+						<tr>
+							<th style="width: 280px;" scope="row"><label style="padding-left:10px;" for="check-email-notify-options-on_forget" class="check-email-opt-labels"><?php esc_html_e('Notify me when Forget password', 'check-email'); ?></label></th>
+							<td>
+								<input type="checkbox" class="checkmail_trigger" name="check-email-email-notify-options[on_forget]" id="check-email-notify-options-on_forget" value="1" <?php echo $on_forget ? "checked" : ''; ?>><label style="<?php echo $on_forget ? 'display:none;' : ''; ?>" for="check-email-notify-options-on_forget" >Yes</label>
+							</td>
+							<th style="width: 280px;" scope="row"><label style="<?php echo $on_forget ? '' : 'display:none;'; ?>" for="check-email-notify-options-on_forget" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed Forget Password Count', 'check-email'); ?></label></th>
+							<td>
+								<input style="<?php echo $on_forget ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_forget_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_forget_count'])) && $this->notify_options['on_forget_count'] ? $this->notify_options['on_forget_count'] : 2; ?>">
+							</td>
+						</tr>
 
-								<input class="regular-text" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_user_register_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_user_register_count'])) && $this->notify_options['on_user_register_count'] ? $this->notify_options['on_user_register_count'] : ''; ?>">
-							</td>
-						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-options-on_login" class="check-email-opt-labels"><?php esc_html_e('Login password', 'check-email'); ?></label></th>
+							<th scope="row"><label style="padding-left:10px;" for="check-email-email-notify-options-secondary-email" class="check-email-opt-labels"><?php esc_html_e('Notify me when Woocommerce order', 'check-email'); ?></label></th>
 							<td>
-								<input type="checkbox" name="check-email-email-notify-options[on_login]" id="check-email-notify-options-on_login" value="1" <?php echo (isset($this->notify_options['on_login'])) && $this->notify_options['on_login'] ? "checked" : ''; ?>>
-								<input class="regular-text" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_login_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_login_count'])) && $this->notify_options['on_login_count'] ? $this->notify_options['on_login_count'] : ''; ?>">
+								<input type="checkbox" class="checkmail_trigger" name="check-email-email-notify-options[on_order]" id="check-email-notify-options-on_order" value="1" <?php echo $on_order ? "checked" : ''; ?>><label  style="<?php echo $on_order ? 'display:none;' : ''; ?>" for="check-email-notify-options-on_order" >Yes</label>
 							</td>
-						</tr>
-						<tr>
-							<th scope="row"><label for="check-email-notify-options-on_forget" class="check-email-opt-labels"><?php esc_html_e('Forget password', 'check-email'); ?></label></th>
+							<th scope="row"><label style="<?php echo $on_order ? '' : 'display:none;'; ?>" for="check-email-email-notify-options-secondary-email" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed Order Count', 'check-email'); ?></label></th>
 							<td>
-								<input type="checkbox" name="check-email-email-notify-options[on_forget]" id="check-email-notify-options-on_forget" value="1" <?php echo (isset($this->notify_options['on_forget'])) && $this->notify_options['on_forget'] ? "checked" : ''; ?>>
-								<input class="regular-text" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_forget_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_forget_count'])) && $this->notify_options['on_forget_count'] ? $this->notify_options['on_forget_count'] : ''; ?>">
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><label for="check-email-email-notify-options-secondary-email" class="check-email-opt-labels"><?php esc_html_e('Woocommerce order email', 'check-email'); ?></label></th>
-							<td>
-								<input type="checkbox" name="check-email-email-notify-options[on_order]" id="check-email-notify-options-on_order" value="1" <?php echo (isset($this->notify_options['on_order'])) && $this->notify_options['on_order'] ? "checked" : ''; ?>>
-								<input class="regular-text" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_order_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_order_count'])) && $this->notify_options['on_order_count'] ? $this->notify_options['on_order_count'] : ''; ?>">
+								<input style="<?php echo $on_order ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_order_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_order_count'])) && $this->notify_options['on_order_count'] ? $this->notify_options['on_order_count'] : 2; ?>">
 							</td>
 						</tr>
 					</tbody>
@@ -195,9 +215,10 @@ class Check_Email_Notify_Tab
 				<table class="form-table" role="presentation">
 					<tbody>
 						<tr>
-							<th scope="row"><label for="check-email-notify-by-sms-enable" class="check-email-opt-labels"><?php esc_html_e('Enable Notify By SMS', 'check-email'); ?></label></th>
+							<th style="width: 280px;" scope="row"><label for="check-email-notify-by-sms-enable" class="check-email-opt-labels"><?php esc_html_e('Notify By SMS', 'check-email'); ?></label></th>
 							<td>
 								<input class="" type="checkbox" id="check-email-notify-by-sms-enable" name="check-email-email-notify-options[is_enable_by_sms]" value="1" <?php echo $is_sms_enable ? "checked" : ''; ?>>
+								<label for="check-email-notify-by-sms-enable" class="check-email-opt-labels"><?php esc_html_e('Receive instant alerts directly to your phone when emails fails to send via SMS', 'check-email'); ?></label>
 							</td>
 						</tr>
 					</tbody>
@@ -205,25 +226,25 @@ class Check_Email_Notify_Tab
 				<table class="form-table check-email-twilio" role="presentation" style="<?php echo $is_sms_enable ? "" : 'display:none;'; ?>">
 					<tbody>
 						<tr>
-							<th scope="row"><label for="check-email-notify-mobile-number" class="check-email-opt-labels"><?php esc_html_e('Mobile number of notifier', 'check-email'); ?></label></th>
+							<th style="width: 280px;" scope="row"><label style="padding-left:10px;" for="check-email-notify-mobile-number" class="check-email-opt-labels"><?php esc_html_e('Mobile number of notifier', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-mobile-number" name="check-email-email-notify-options[notifier_mobile]" value="<?php echo (isset($this->notify_options['notifier_mobile'])) ? $this->notify_options['notifier_mobile'] : ''; ?>">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-twilio-sid" class="check-email-opt-labels"><?php esc_html_e('Your twilio sid', 'check-email'); ?></label></th>
+							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-twilio-sid" class="check-email-opt-labels"><?php esc_html_e('Your twilio sid', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-twilio-sid" name="check-email-email-notify-options[twilio_sid]" value="<?php echo (isset($this->notify_options['twilio_sid'])) ? $this->notify_options['twilio_sid'] : ''; ?>">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-twilio-auth-token" class="check-email-opt-labels"><?php esc_html_e('Your twilio auth token', 'check-email'); ?></label></th>
+							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-twilio-auth-token" class="check-email-opt-labels"><?php esc_html_e('Your twilio auth token', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-twilio-auth-token" name="check-email-email-notify-options[twilio_auth_token]" value="<?php echo (isset($this->notify_options['twilio_auth_token'])) ? $this->notify_options['twilio_auth_token'] : ''; ?>">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="check-email-notify-twilio-number" class="check-email-opt-labels"><?php esc_html_e('Your twilio number', 'check-email'); ?></label></th>
+							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-twilio-number" class="check-email-opt-labels"><?php esc_html_e('Your twilio number', 'check-email'); ?></label></th>
 							<td>
 								<input class="regular-text" type="text" id="check-email-notify-twilio-number" name="check-email-email-notify-options[twilio_number]" value="<?php echo (isset($this->notify_options['twilio_number'])) ? $this->notify_options['twilio_number'] : ''; ?>">
 							</td>
@@ -233,9 +254,10 @@ class Check_Email_Notify_Tab
 				<table class="form-table" role="presentation">
 					<tbody>
 						<tr>
-							<th scope="row"><label for="check-email-notify-by-push-enable" class="check-email-opt-labels"><?php esc_html_e('Enable Notify By Push Notification', 'check-email'); ?></label></th>
+							<th style="width: 280px;" scope="row"><label for="check-email-notify-by-push-enable" class="check-email-opt-labels"><?php esc_html_e('Notify By Push Notification', 'check-email'); ?></label></th>
 							<td>
 								<input class="" type="checkbox" id="check-email-notify-by-push-enable" name="check-email-email-notify-options[is_enable_by_push]" value="1" <?php echo (isset($this->notify_options['is_enable_by_push'])) && $this->notify_options['is_enable_by_push'] ? "checked" : ''; ?>>
+								<label for="check-email-notify-by-push-enable" class="check-email-opt-labels"><?php esc_html_e('Receive instant alerts directly to your phone when emails fails to send by push notification', 'check-email'); ?></label>
 							</td>
 						</tr>
 
