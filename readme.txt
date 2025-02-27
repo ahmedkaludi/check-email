@@ -114,7 +114,7 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
-= v2.0.5 - 27/02/2024 =
+= v2.0.5 - 27/02/2025 =
 - Feature: Added Notify users after X (user defined) email sending failures #20
 - Feature: Added Graph detail of mail delivered and failed  #120
 - Fixed: Conflict with Gravity Forms #128
