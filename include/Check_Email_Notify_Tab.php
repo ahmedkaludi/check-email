@@ -8,9 +8,6 @@ defined('ABSPATH') || exit; // Exit if accessed directly
  * @class Check_Email_Notify_Tab
  * @since 2.0
  */
-/**
- * Its functionality is inspired by Email encode address
- */
 class Check_Email_Notify_Tab
 {
 
@@ -105,31 +102,39 @@ class Check_Email_Notify_Tab
 
 		if ($account_sid && $auth_token && $twilio_number && $to) {
 			$url = "https://api.twilio.com/2010-04-01/Accounts/{$account_sid}/Messages.json";
-	
+			
 			$data = [
 				'To' => $to,
 				'From' => $twilio_number,
 				'Body' => esc_html__('An email failed to send in your WordPress site', 'check-email'),
 			];
-	
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_USERPWD, "{$account_sid}:{$auth_token}");
-			curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
-	
-			// Fix SSL issue in localhost
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-	
-			$response = curl_exec($ch);
-			curl_close($ch);
-	
-			$result = json_decode($response, true);
-			return $response;
+		
+			// Set the headers
+			$headers = [
+				'Authorization' => 'Basic ' . base64_encode("{$account_sid}:{$auth_token}"),
+				'Content-Type' => 'application/x-www-form-urlencoded',
+			];
+		
+			// Make the POST request using wp_remote_post
+			$response = wp_remote_post( $url, [
+				'method'    => 'POST',
+				'body'      => http_build_query($data),
+				'headers'   => $headers,
+				'timeout'   => 15,
+				'sslverify' => false, // Disable SSL verification if you're on localhost
+			]);
+		
+			// Check for errors
+			if ( is_wp_error( $response ) ) {
+				$error_message = $response->get_error_message();
+				return $error_message;
+			}
+		
+			// Parse the response
+			$result = json_decode( wp_remote_retrieve_body( $response ), true );
+			return $result;
 		}
+		
 
 	}
 	public function load_email_notify_settings()
@@ -172,7 +177,7 @@ class Check_Email_Notify_Tab
 							</td>
 							<th style="width: 280px;" scope="row" class=""><label style="<?php echo $on_user_register ? '' : 'display:none;'; ?>" for="check-email-notify-options-on_user_register" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed User Registeration Count', 'check-email'); ?></label></th>
 							<td class="">
-								<input style="<?php echo $on_user_register ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_user_register_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_user_register_count'])) && $this->notify_options['on_user_register_count'] ? $this->notify_options['on_user_register_count'] : 2; ?>">
+								<input style="<?php echo $on_user_register ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_user_register_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_user_register_count'])) && $this->notify_options['on_user_register_count'] ? esc_attr($this->notify_options['on_user_register_count']) : 2; ?>">
 							</td>
 						</tr>
 						
@@ -183,7 +188,7 @@ class Check_Email_Notify_Tab
 							</td>
 							<th scope="row"><label style="<?php echo $on_login ? '' : 'display:none;'; ?>" for="check-email-notify-options-on_login" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed Login Password Count', 'check-email'); ?></label></th>
 							<td>
-								<input style="<?php echo $on_login ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_login_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_login_count'])) && $this->notify_options['on_login_count'] ? $this->notify_options['on_login_count'] : 2; ?>">
+								<input style="<?php echo $on_login ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_login_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_login_count'])) && $this->notify_options['on_login_count'] ? esc_attr($this->notify_options['on_login_count']) : 2; ?>">
 							</td>
 						</tr>
 						
@@ -194,7 +199,7 @@ class Check_Email_Notify_Tab
 							</td>
 							<th style="width: 280px;" scope="row"><label style="<?php echo $on_forget ? '' : 'display:none;'; ?>" for="check-email-notify-options-on_forget" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed Forget Password Count', 'check-email'); ?></label></th>
 							<td>
-								<input style="<?php echo $on_forget ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_forget_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_forget_count'])) && $this->notify_options['on_forget_count'] ? $this->notify_options['on_forget_count'] : 2; ?>">
+								<input style="<?php echo $on_forget ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_forget_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_forget_count'])) && $this->notify_options['on_forget_count'] ? esc_attr($this->notify_options['on_forget_count']) : 2; ?>">
 							</td>
 						</tr>
 
@@ -205,7 +210,7 @@ class Check_Email_Notify_Tab
 							</td>
 							<th scope="row"><label style="<?php echo $on_order ? '' : 'display:none;'; ?>" for="check-email-email-notify-options-secondary-email" class="check-email-opt-labels checkmail_trigger_counts"><?php esc_html_e('Failed Order Count', 'check-email'); ?></label></th>
 							<td>
-								<input style="<?php echo $on_order ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_order_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_order_count'])) && $this->notify_options['on_order_count'] ? $this->notify_options['on_order_count'] : 2; ?>">
+								<input style="<?php echo $on_order ? '' : 'display:none;'; ?>" class="checkmail_trigger_counts" type="number" min="1" id="check-email-email-notify-options-failed-email-count" name="check-email-email-notify-options[on_order_count]" placeholder="Number of failed email" value="<?php echo (isset($this->notify_options['on_order_count'])) && $this->notify_options['on_order_count'] ? esc_attr( $this->notify_options['on_order_count'] ) : 2; ?>">
 							</td>
 						</tr>
 					</tbody>
@@ -228,25 +233,25 @@ class Check_Email_Notify_Tab
 						<tr>
 							<th style="width: 280px;" scope="row"><label style="padding-left:10px;" for="check-email-notify-mobile-number" class="check-email-opt-labels"><?php esc_html_e('Mobile number of notifier', 'check-email'); ?></label></th>
 							<td>
-								<input class="regular-text" type="text" id="check-email-notify-mobile-number" name="check-email-email-notify-options[notifier_mobile]" value="<?php echo (isset($this->notify_options['notifier_mobile'])) ? $this->notify_options['notifier_mobile'] : ''; ?>">
+								<input class="regular-text" type="text" id="check-email-notify-mobile-number" name="check-email-email-notify-options[notifier_mobile]" value="<?php echo (isset($this->notify_options['notifier_mobile'])) ? esc_attr( $this->notify_options['notifier_mobile'] ) : ''; ?>">
 							</td>
 						</tr>
 						<tr>
 							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-twilio-sid" class="check-email-opt-labels"><?php esc_html_e('Your twilio sid', 'check-email'); ?></label></th>
 							<td>
-								<input class="regular-text" type="text" id="check-email-notify-twilio-sid" name="check-email-email-notify-options[twilio_sid]" value="<?php echo (isset($this->notify_options['twilio_sid'])) ? $this->notify_options['twilio_sid'] : ''; ?>">
+								<input class="regular-text" type="text" id="check-email-notify-twilio-sid" name="check-email-email-notify-options[twilio_sid]" value="<?php echo (isset($this->notify_options['twilio_sid'])) ? esc_attr( $this->notify_options['twilio_sid'] ) : ''; ?>">
 							</td>
 						</tr>
 						<tr>
 							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-twilio-auth-token" class="check-email-opt-labels"><?php esc_html_e('Your twilio auth token', 'check-email'); ?></label></th>
 							<td>
-								<input class="regular-text" type="text" id="check-email-notify-twilio-auth-token" name="check-email-email-notify-options[twilio_auth_token]" value="<?php echo (isset($this->notify_options['twilio_auth_token'])) ? $this->notify_options['twilio_auth_token'] : ''; ?>">
+								<input class="regular-text" type="text" id="check-email-notify-twilio-auth-token" name="check-email-email-notify-options[twilio_auth_token]" value="<?php echo (isset($this->notify_options['twilio_auth_token'])) ? esc_attr( $this->notify_options['twilio_auth_token'] ) : ''; ?>">
 							</td>
 						</tr>
 						<tr>
 							<th scope="row"><label style="padding-left:10px;" for="check-email-notify-twilio-number" class="check-email-opt-labels"><?php esc_html_e('Your twilio number', 'check-email'); ?></label></th>
 							<td>
-								<input class="regular-text" type="text" id="check-email-notify-twilio-number" name="check-email-email-notify-options[twilio_number]" value="<?php echo (isset($this->notify_options['twilio_number'])) ? $this->notify_options['twilio_number'] : ''; ?>">
+								<input class="regular-text" type="text" id="check-email-notify-twilio-number" name="check-email-email-notify-options[twilio_number]" value="<?php echo (isset($this->notify_options['twilio_number'])) ? esc_attr( $this->notify_options['twilio_number'] ) : ''; ?>">
 							</td>
 						</tr>
 					</tbody>
@@ -301,22 +306,22 @@ class Check_Email_Notify_Tab
 			}
 
 			$email_encode_option['on_user_register'] = 0;
-			if (isset($_POST['check-email-email-notify-options']['on_user_register'])) {
+			if ( isset( $_POST['check-email-email-notify-options']['on_user_register']) && isset( $_POST['check-email-email-notify-options']['on_user_register_count'] ) ) {
 				$email_encode_option['on_user_register'] = 1;
 				$email_encode_option['on_user_register_count'] = sanitize_text_field(wp_unslash($_POST['check-email-email-notify-options']['on_user_register_count']));
 			}
 			$email_encode_option['on_login'] = 0;
-			if (isset($_POST['check-email-email-notify-options']['on_login'])) {
+			if ( isset($_POST['check-email-email-notify-options']['on_login']) && isset( $_POST['check-email-email-notify-options']['on_login_count'] ) ) {
 				$email_encode_option['on_login'] = 1;
 				$email_encode_option['on_login_count'] = sanitize_text_field(wp_unslash($_POST['check-email-email-notify-options']['on_login_count']));
 			}
 			$email_encode_option['on_forget'] = 0;
-			if (isset($_POST['check-email-email-notify-options']['on_forget'])) {
+			if ( isset($_POST['check-email-email-notify-options']['on_forget'] ) && isset( $_POST['check-email-email-notify-options']['on_forget_count'] ) ) {
 				$email_encode_option['on_forget'] = 1;
 				$email_encode_option['on_forget_count'] = sanitize_text_field(wp_unslash($_POST['check-email-email-notify-options']['on_forget_count']));
 			}
 			$email_encode_option['on_order'] = 0;
-			if (isset($_POST['check-email-email-notify-options']['on_order'])) {
+			if ( isset($_POST['check-email-email-notify-options']['on_order']) && isset( $_POST['check-email-email-notify-options']['on_order_count'] ) ) {
 				$email_encode_option['on_order'] = 1;
 				$email_encode_option['on_order_count'] = sanitize_text_field(wp_unslash($_POST['check-email-email-notify-options']['on_order_count']));
 			}
@@ -335,9 +340,6 @@ class Check_Email_Notify_Tab
 			if (isset($_POST['check-email-email-notify-options']['twilio_number'])) {
 				$email_encode_option['twilio_number'] = sanitize_text_field(wp_unslash($_POST['check-email-email-notify-options']['twilio_number']));
 			}
-
-			// echo"<pre>";
-			// print_r($email_encode_option);die;
 			update_option('check-email-email-notify-options', $email_encode_option);
 
 			wp_safe_redirect(admin_url('admin.php?page=check-email-settings&tab=notify'));
@@ -373,14 +375,24 @@ class Check_Email_Notify_Tab
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url($check_email->get_plugin_file());
 		$home_url = $this->checkmail_home_url();
+		wp_enqueue_script(
+			'firebase-app',
+			$plugin_dir_url . 'assets/js/admin/firebase-app.js',
+			array(),
+			$check_email->get_version(),
+			true
+		);
+	
+		// Enqueue the Firebase messaging script
+		wp_enqueue_script(
+			'firebase-messaging',
+			$plugin_dir_url . 'assets/js/admin/firebase-messaging.js',
+			array('firebase-app'),
+			$check_email->get_version(),
+			true
+		);
 
-		?>
-		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-messaging.js"></script>
 		
-
-
-		<?php
 		$pn_response = $this->sendRequest('get-config-details', null, $method="post");
 
 		wp_enqueue_script('checkemail_push', $plugin_dir_url . 'assets/js/admin/check_mail_push' . $suffix . '.js', array(), $check_email->get_version(), true);
@@ -394,8 +406,8 @@ class Check_Email_Notify_Tab
 		<script type="text/javascript">
 			if ("serviceWorker" in navigator) {
 				navigator.serviceWorker
-					.register("<?php echo $plugin_dir_url . 'assets/js/admin/checkmail-sw.js'; ?>", {
-						scope: "<?php echo $plugin_dir_url . 'assets/js/admin/'; ?>"
+					.register("<?php echo esc_attr($plugin_dir_url . 'assets/js/admin/checkmail-sw.js'); ?>", {
+						scope: "<?php echo esc_attr($plugin_dir_url . 'assets/js/admin/'); ?>"
 					})
 					.then((registration) => {
 						console.log("Service Worker registered:");
@@ -412,13 +424,16 @@ class Check_Email_Notify_Tab
 	public function pwaforwp_swhtml_init_firebase_js($action = null)
 	{
 		//Dummy file to work FCM perfectly
-        $wppath                 = $_SERVER['DOCUMENT_ROOT']."/";
-        $wppath                 = apply_filters("checkmail_file_creation_path", $wppath);
-
-		$pn_sw_js       = $wppath . "firebase-messaging-sw.js";
-		$swjsContent    = '';
-		$status         =  $this->checkmail_write_a_file($pn_sw_js, $swjsContent, $action);
-		return $status;
+		if ( isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized , WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			$wppath                 = $_SERVER['DOCUMENT_ROOT']."/";
+			$wppath                 = apply_filters("checkmail_file_creation_path", $wppath);
+	
+			$pn_sw_js       = $wppath . "firebase-messaging-sw.js";
+			$swjsContent    = '';
+			$status         =  $this->checkmail_write_a_file($pn_sw_js, $swjsContent, $action);
+			return $status;
+		}
 	}
 
 	public function checkmail_write_a_file($path, $content, $action = null)
@@ -503,9 +518,10 @@ class Check_Email_Notify_Tab
 	function serve_firebase_sw() {
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url($check_email->get_plugin_file());
-			header("Content-Type: application/javascript");
-			readfile($plugin_dir_url . 'assets/js/admin/checkmail-sw.js');
-			exit;
+		header("Content-Type: application/javascript");
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+		readfile($plugin_dir_url . 'assets/js/admin/checkmail-sw.js');
+		exit;
 	}
 
 }

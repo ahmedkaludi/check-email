@@ -1243,13 +1243,26 @@ if ( is_admin() ) {
     add_action('admin_enqueue_scripts', 'custom_dashboard_scripts');
 
     function get_email_analytics_data() {
+        if( !isset( $_GET['ck_mail_security_nonce'] ) || isset( $_GET['ck_mail_security_nonce'] ) && !wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['ck_mail_security_nonce'] ) ), 'ck_mail_ajax_check_nonce' ) ) {
+            echo esc_html__('security_nonce_not_verified', 'check-email');
+            die();
+        }
+        if ( !current_user_can( 'manage_options' ) ) {
+            die();
+        }
         global $wpdb;
+
         $table_name = $wpdb->prefix . 'check_email_log';
-        $ck_days = isset($_GET['ck_days']) ? $_GET['ck_days'] : 7;
+        $ck_days = isset($_GET['ck_days']) ? sanitize_text_field( wp_unslash( $_GET['ck_days'] ) ) : 7;
         $query = $wpdb->prepare(
-            "SELECT * FROM $table_name WHERE sent_date >= CURDATE() - INTERVAL $ck_days DAY"
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            "SELECT * FROM $table_name WHERE sent_date >= CURDATE() - INTERVAL %d DAY",
+            $ck_days
         );
+        // phpcs:ignore InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
         $results = $wpdb->get_results($query);
+
         $data = [
             'labels' => [],
             'sent' => [],
@@ -1261,7 +1274,7 @@ if ( is_admin() ) {
         foreach ($results as $row) {
             $created_at = $row->sent_date;
             $status = $row->result;
-            $date = date('M j', strtotime($created_at));
+            $date = gmdate('M j', strtotime($created_at));
             if (!isset($daily_counts[$date])) {
                 $daily_counts[$date] = ['sent' => 0, 'failed' => 0];
             }

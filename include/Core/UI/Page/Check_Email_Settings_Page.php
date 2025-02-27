@@ -100,6 +100,7 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		foreach ( $sections as $section ) {
 			$section->page_slug = 'check-email-settings';
 			$section->fields = $this->build_fields();
+			// phpcs:ignore PluginCheck.CodeAnalysis.SettingSanitization.register_settingDynamic
 			register_setting(
 				$this->page_slug ,
 				$section->option_name,

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     var ajaxurl = checkmail_chart.ajax_url;
+    var ck_mail_security_nonce = checkmail_chart.ck_mail_security_nonce;
     let chartInstance;
 
     function createOrUpdateChart(data) {
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function checmail_fetch_chart_date(day=7) {
-        fetch(ajaxurl + '?action=get_email_analytics&ck_days='+day)
+        fetch(ajaxurl + '?action=get_email_analytics&ck_mail_security_nonce='+ck_mail_security_nonce+'&ck_days='+day)
         .then((response) => response.json())
         .then((data) => {
             createOrUpdateChart(data);
