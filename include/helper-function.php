@@ -1216,11 +1216,15 @@ if ( is_admin() ) {
     }
 
     function add_checmail_dashboard_widget() {
-        wp_add_dashboard_widget(
-            'checmail_dashboard_widget',
-            esc_html__('Check & Log Email Activity', 'check-email'),
-            'checmail_dashboard_widget'
-        );
+        $option = get_option( 'check-email-log-core' );
+       
+        if(!isset( $option['enable_dashboard_widget']) || (isset( $option['enable_dashboard_widget']) && $option['enable_dashboard_widget'] ) ){
+            wp_add_dashboard_widget(
+                'checmail_dashboard_widget',
+                esc_html__('Check & Log Email Activity', 'check-email'),
+                'checmail_dashboard_widget'
+            );
+        }
     }
     add_action('wp_dashboard_setup', 'add_checmail_dashboard_widget');
 

@@ -35,7 +35,7 @@ class Check_Email_Error_Tracker_list extends Check_Email_BasePage {
         
 	public function register_page() {
         $option = get_option( 'check-email-log-core' );
-        if ( is_array( $option ) && array_key_exists( 'email_error_tracking', $option ) && 'true' === strtolower( $option['email_error_tracking'] ) ) {
+        if (!isset($option['email_error_tracking']) ||  $option['email_error_tracking'] ) {
             $this->page = add_submenu_page(
                     Check_Email_Status_Page::PAGE_SLUG,
                     esc_html__( 'Error Tracker', 'check-email'),

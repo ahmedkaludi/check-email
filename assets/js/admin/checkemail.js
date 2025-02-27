@@ -238,6 +238,20 @@
         $(this).next('.check_mail_js_hidden_display').val(0);
       }
     });
+    $(".check_main_js_error_tracking").on("click", function () {
+      if ($(this).is(":checked")) {
+        $(this).next('.check_main_js_error_tracking_hidden').val(1);
+      } else {
+        $(this).next('.check_main_js_error_tracking_hidden').val(0);
+      }
+    });
+    $(".check-email-enable-widget_checkbox").on("click", function () {
+      if ($(this).is(":checked")) {
+        $(this).next('.check-email-enable-widget_display').val(1);
+      } else {
+        $(this).next('.check-email-enable-widget_display').val(0);
+      }
+    });
   
 
   });

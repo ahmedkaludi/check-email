@@ -64,9 +64,9 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 			'email_from_email'        => '',
 			'override_emails_from'    => false,
 			'forward_email'    => false,
-			'email_error_tracking'    => false,				
+			'email_error_tracking'    => true,				
 			'email_open_tracking'    => false,				
-			'enable_dashboard_widget' => false,
+			'enable_dashboard_widget' => true,
 			'db_size_notification'    => array(
 				'notify'                    => false,
 				'admin_email'               => '',
@@ -499,16 +499,16 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 
 	public function render_enable_dashboard_widget_settings( $args ) {
 		$option                  = $this->get_value();
-		$enable_dashboard_widget = $option[ $args['id'] ];
+		$field_value = $option[ $args['id'] ];
 
 		$field_name = $this->section->option_name . '[' . $args['id'] . ']';
 		$checked = "";
-		if($enable_dashboard_widget){
+		if($field_value){
 			$checked = "checked";
 		}
 		?>
-
-		<input id="check-email-enable-widget" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php echo esc_attr($checked); ?>>
+		<input id="check-email-enable-widget" class="check-email-enable-widget_checkbox" type="checkbox" value="true" <?php echo esc_attr($checked); ?>>
+		<input id="check-email-enable-widget-hidden" class="check-email-enable-widget_display" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
 		<label for="check-email-enable-widget" class="check-email-opt-labels"><?php esc_html_e( 'Check this box if you would like to enable dashboard widget.', 'check-email' ); ?></label>
 
 		<?php
@@ -757,8 +757,14 @@ class Check_Email_Settings_Page extends Check_Email_BasePage {
 		$option      = $this->get_value();
 		$field_value = $option[ $args['id'] ];
 		$field_name  = $this->section->option_name . '[' . $args['id'] . ']';
+		$checked = '';
+		if($field_value){
+			$checked = 'checked';
+		}
+		
 		?>
-            <input id="check-email-email_error_tracking" type="checkbox" name="<?php echo esc_attr( $field_name ); ?>" value="true" <?php checked( 'true', $field_value ); ?>>
+			<input id="check-email-email_error_tracking" class="check_main_js_error_tracking" type="checkbox" value="true" <?php echo esc_attr($checked); ?>>
+            <input id="check-email-email_error_tracking-hidden" class="check_main_js_error_tracking_hidden" type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
             <label for="check-email-email_error_tracking" class="check-email-opt-labels"><?php esc_html_e( 'You can easily track errors in email delivery.', 'check-email' ) ?></label>
 		<?php
 
