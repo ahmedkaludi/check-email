@@ -371,6 +371,9 @@ class Check_Email_Notify_Tab
 
 	public function checkemail_assets_notify()
 	{
+		if (!isset($this->notify_options['is_enable']) || empty($this->notify_options['is_enable']) || !isset($this->notify_options['is_enable_by_push']) || ($this->notify_options['is_enable_by_push'])) {
+			return;
+		}
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '';
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url($check_email->get_plugin_file());
@@ -516,6 +519,9 @@ class Check_Email_Notify_Tab
 	}
 
 	function serve_firebase_sw() {
+		if (!isset($this->notify_options['is_enable']) || empty($this->notify_options['is_enable']) || !isset($this->notify_options['is_enable_by_push']) || ($this->notify_options['is_enable_by_push'])) {
+			return;
+		}
 		$check_email    = wpchill_check_email();
 		$plugin_dir_url = plugin_dir_url($check_email->get_plugin_file());
 		header("Content-Type: application/javascript");
