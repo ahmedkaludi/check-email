@@ -371,7 +371,7 @@ class Check_Email_Notify_Tab
 
 	public function checkemail_assets_notify()
 	{
-		if (!isset($this->notify_options['is_enable']) || empty($this->notify_options['is_enable']) || !isset($this->notify_options['is_enable_by_push']) || ($this->notify_options['is_enable_by_push'])) {
+		if (!isset($this->notify_options['is_enable']) || empty($this->notify_options['is_enable']) || !isset($this->notify_options['is_enable_by_push']) || empty($this->notify_options['is_enable_by_push'])) {
 			return;
 		}
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '';
@@ -519,7 +519,7 @@ class Check_Email_Notify_Tab
 	}
 
 	function serve_firebase_sw() {
-		if (!isset($this->notify_options['is_enable']) || empty($this->notify_options['is_enable']) || !isset($this->notify_options['is_enable_by_push']) || ($this->notify_options['is_enable_by_push'])) {
+		if (!isset($this->notify_options['is_enable']) || empty($this->notify_options['is_enable']) || !isset($this->notify_options['is_enable_by_push']) || empty($this->notify_options['is_enable_by_push'])) {
 			return;
 		}
 		$check_email    = wpchill_check_email();

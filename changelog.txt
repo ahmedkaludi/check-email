@@ -1,4 +1,7 @@
 == Changelog ==
+= v2.0.5.1 - 28/02/2025 =
+- Fixed: No Access to /wp-admin After Update to v2.0.5 #131
+
 = v2.0.5 - 27/02/2025 =
 - Feature: Added Notify users after X (user defined) email sending failures #20
 - Feature: Added Graph detail of mail delivered and failed  #120
