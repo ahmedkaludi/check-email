@@ -498,9 +498,9 @@ function ck_mail_create_spam_analyzer_table() {
             `block_listed` TEXT DEFAULT NULL,
             `broken_links` TEXT DEFAULT NULL,
             `final_score` TEXT DEFAULT NULL,
-            `test_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (id)
+            `test_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`)
         )
         ENGINE='InnoDB'
         {$charset_collate};";
