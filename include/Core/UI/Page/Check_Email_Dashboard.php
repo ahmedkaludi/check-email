@@ -70,7 +70,7 @@ class Check_Email_Dashboard extends Check_Email_BasePage
                     <?php echo esc_html__('One of its kind FREE tool in WordPress', 'check-email'); ?>
                     <?php echo esc_html__("Did you know that 70% of the emails don't get visibility because of the wrong configuration", 'check-email'); ?></p>
                     <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=spam-analyzer')); ?>"><?php echo esc_html__( "Go to Spam Analyzer Module", 'check-email' ); ?></a>
-                    <a class="ck_dashboard-learn-more" target="_blank" href="<?php echo esc_url('https://check-email.tech/docs/'); ?>"><?php echo esc_html__( "Learn More", 'check-email' ); ?></a>
+                    <a class="ck_dashboard-learn-more" target="_blank" href="<?php echo esc_url('https://check-email.tech/docs/knowledge-base/how-to-use-the-email-spam-analyzer-an-essential-tool-for-every-e-commerce-store/'); ?>"><?php echo esc_html__( "Learn More", 'check-email' ); ?></a>
                 </div>
                 <div class="ck_dashboard-box wrap">
                     <h2><?php echo esc_html__('Email Logs', 'check-email'); ?></h2>

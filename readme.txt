@@ -115,8 +115,9 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 
 == Changelog ==
 
-= v2.0.9 - 08/09/2025 =
+= v2.0.9 - 09/09/2025 =
 - Fixed: PHP Errors #143
+- Fixed: Uncaught TypeError: Cannot read properties of null in checkmail-dashboard-chart.min.js when Dashboard Widget is disabled #147
 - Enhancement: improved the ux to increase the positioning of premium features #142
 
 = v2.0.8 - 07/07/2025 =
