@@ -1233,14 +1233,14 @@ if ( is_admin() ) {
             if(!isset( $option['enable_dashboard_widget']) || (isset( $option['enable_dashboard_widget']) && $option['enable_dashboard_widget'] ) ){
                 $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
                 wp_enqueue_script('chartjs', CK_MAIL_URL . 'assets/js/admin/chart.js', [], CK_MAIL_VERSION, true);
-                wp_register_script('custom-dashboard-chart', CK_MAIL_URL . 'assets/js/admin/checkmail-dashboard-chart'. $suffix .'.js', ['jquery','chartjs'], CK_MAIL_VERSION, true);
+                wp_register_script('checkmail-dashboard-chart', CK_MAIL_URL . 'assets/js/admin/checkmail-dashboard-chart'. $suffix .'.js', ['jquery','chartjs'], CK_MAIL_VERSION, true);
                 $data = array(
                     'ajax_url'                     => admin_url( 'admin-ajax.php' ),
                     'ck_mail_security_nonce'         => wp_create_nonce('ck_mail_ajax_check_nonce'),
                 );
 
-                wp_localize_script( 'custom-dashboard-chart', 'checkmail_chart', $data );
-                wp_enqueue_script( 'custom-dashboard-chart' );
+                wp_localize_script( 'checkmail-dashboard-chart', 'checkmail_chart', $data );
+                wp_enqueue_script( 'checkmail-dashboard-chart' );
             }
 
         
