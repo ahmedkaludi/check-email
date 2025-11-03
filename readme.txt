@@ -92,6 +92,14 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 1. Check & Log Email - Status
 2. Check & Log Email - View Logs
 3. Check & Log Email - Settings
+4. Check & Log Email - Spam Analyzer
+5. Check & Log Email - Error Tracker
+6. Check & Log Email - General settings setup page
+7. Check & Log Email - Email logging page
+8. Check & Log Email - SMTP Configuration
+9. Check & Log Email - Email encoding page
+10. Check & Log Email - Tools page
+11. Check & Log Email - Notify page
 
 == Installation ==
 
