@@ -1,8 +1,9 @@
 == Changelog ==
-= v2.0.10 - 28/11/2025 =
+= v2.0.10 - 04/12/2025 =
 - Feature Added: Error Log notification #46
 - Improvement: Create backword compatibility #148
 - Added: Promotion Banner BFCM #153
+- Tested: WordPress version upto 6.9
 
 = v2.0.9 - 09/09/2025 =
 - Fixed: PHP Errors #143
