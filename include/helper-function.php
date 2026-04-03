@@ -905,8 +905,6 @@ if ( ! defined( 'CHECK_EMAIL_E_REGEXP' ) ) {
             (?:mailto:)?      # Optional mailto:
             (?:
                 [-!#$%&*+/=?^_`.{|}~\w\x80-\xFF]+  # Local part before @
-            |
-                ".*?"                               # Quoted local part
             )
             \@               # At sign (@)
             (?:
