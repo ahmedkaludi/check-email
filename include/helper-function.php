@@ -685,7 +685,8 @@ function ck_mail_check_email_analyze() {
             $site_name = get_bloginfo('name');
             $headers = [
                 'Content-Type: text/html; charset=UTF-8',
-                'From: '.$site_name .'<'.$email.'>'
+                'From: '.$site_name .'<'.$email.'>',
+                'Reply-To: '.$email
             ];
             wp_mail($to, $title, $body, $headers);
         }
