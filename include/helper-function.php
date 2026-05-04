@@ -569,6 +569,12 @@ function ck_mail_update_network_settings() {
             foreach ($all_fields as $key => $value) {
                 $all_fields[sanitize_key( $key ) ] = sanitize_text_field( $value );
             }
+            if ( isset( $all_fields['smtp_username'] ) ) {
+                $all_fields['smtp_username'] = base64_encode( $all_fields['smtp_username'] );
+            }
+            if ( isset( $all_fields['smtp_password'] ) ) {
+                $all_fields['smtp_password'] = base64_encode( $all_fields['smtp_password'] );
+            }
             $all_fields['enable_smtp'] = 1;
 
             if (!isset($all_fields['enable_global'])) {
