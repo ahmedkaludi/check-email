@@ -126,7 +126,7 @@ Someone using one of my other plugins had trouble with emails not being sent. I 
 = v2.0.14 - 18/05/2026 =
 - Fixed: Spam Analyzer option gives Undefined error And Need to fix Go to Email log button. #162
 - Fixed: Setting SMTP settings for multisite is broken #166
-- Tested: WordPress version upto 6.9
+- Tested: WordPress version upto 7.0
 
 = v2.0.13.2 - 13/04/2026 =
 - Fixed: Vulnerability reported by Kishan Vyas
