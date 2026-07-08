@@ -569,6 +569,12 @@ function ck_mail_update_network_settings() {
             foreach ($all_fields as $key => $value) {
                 $all_fields[sanitize_key( $key ) ] = sanitize_text_field( $value );
             }
+            if ( isset( $all_fields['smtp_username'] ) ) {
+                $all_fields['smtp_username'] = base64_encode( $all_fields['smtp_username'] );
+            }
+            if ( isset( $all_fields['smtp_password'] ) ) {
+                $all_fields['smtp_password'] = base64_encode( $all_fields['smtp_password'] );
+            }
             $all_fields['enable_smtp'] = 1;
 
             if (!isset($all_fields['enable_global'])) {
@@ -675,7 +681,7 @@ function ck_mail_check_email_analyze() {
             return;
         }
         // $api_url = 'http://127.0.0.1:8000/custom-api/email-analyze';
-        $api_url = 'https://enchain.tech/custom-api/email-analyze';
+        $api_url = 'https://spamanalyser.check-email.tech/custom-api/email-analyze';
         $current_user = wp_get_current_user();
         $email = $current_user->user_email;
         if ( !empty( $email ) ) {
@@ -685,7 +691,8 @@ function ck_mail_check_email_analyze() {
             $site_name = get_bloginfo('name');
             $headers = [
                 'Content-Type: text/html; charset=UTF-8',
-                'From: '.$site_name .'<'.$email.'>'
+                'From: '.$site_name .'<'.$email.'>',
+                'Reply-To: '.$email
             ];
             wp_mail($to, $title, $body, $headers);
         }
