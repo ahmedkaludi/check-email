@@ -280,6 +280,7 @@
 
   $(document).on('click', '#check_email_remove_outlook', function(e){
     t = jQuery(this);
+    e.preventDefault();
     var ajaxurl = checkemail_data.ajax_url;
     var nonce = checkemail_data.ck_mail_security_nonce;
     jQuery.ajax({
