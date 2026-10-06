@@ -904,7 +904,7 @@ function check_email_is_ip_blocked($ip) {
 if ( ! defined( 'CHECK_EMAIL_E_FILTER_PRIORITY' ) ) {
 	define(
 		'CHECK_EMAIL_E_FILTER_PRIORITY',
-		(integer) get_option( 'check_email_e_filter_priority', 2000 )
+		(int) get_option( 'check_email_e_filter_priority', 2000 )
 	);
 }
 
