@@ -226,6 +226,7 @@ class Check_Email_Wizard_Page extends Check_Email_BasePage {
 			$sanitized_roles = array();
 
 			if ( isset( $_POST['allowed_user_roles'] ) && is_array( $_POST['allowed_user_roles'] ) ) {
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitization is done below
 				foreach ( wp_unslash( $_POST['allowed_user_roles'] ) as $role_id ) {
 					$role_id = sanitize_key( $role_id );
 					if ( 'administrator' !== $role_id && in_array( $role_id, $available_roles, true ) ) {
