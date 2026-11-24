@@ -46,6 +46,7 @@ define( 'CK_MAIL_VERSION', '2.0.18' );
 require_once(CK_MAIL_PATH. "/include/helper-function.php" );
 if ( is_admin() ) {
 	require_once(CK_MAIL_PATH. "/include/class-check-email-newsletter.php" );
+	require_once(CK_MAIL_PATH. "/include/class-check-email-black-friday-banner.php" );
 }
 require_once(CK_MAIL_PATH. "/include/Check_Email_SMTP_Tab.php" );
 
